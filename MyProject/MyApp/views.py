@@ -3,7 +3,7 @@ from MyApp.models import District, Category, Subcategory
 from MyApp.forms import CategoryForm, DistrictForm, SubcategoryForm
 
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'admin/index.html')
 
 def adddistrict(request):
     if request.method == 'POST':
@@ -13,11 +13,11 @@ def adddistrict(request):
             return redirect('viewdistrict')
     else:
         form = DistrictForm()
-    return render(request, 'adddistrict.html', {'form': form})
+    return render(request, 'admin/adddistrict.html', {'form': form})
 
 def viewdistrict(request):
     districts = District.objects.all()
-    return render(request, 'viewdistrict.html', {'districts': districts})
+    return render(request, 'admin/viewdistrict.html', {'districts': districts})
 
 def editdistrict(request, district_id):
     try:
@@ -32,7 +32,7 @@ def editdistrict(request, district_id):
             return redirect('viewdistrict')
     else:
         form = DistrictForm(instance=district)
-    return render(request, 'editdistrict.html', {'form': form, 'district': district})
+    return render(request, 'admin/editdistrict.html', {'form': form, 'district': district})
 def deletedistrict(request, district_id):
     try:
         district = District.objects.get(district_id=district_id)
@@ -48,10 +48,10 @@ def addcategory(request):
             return redirect('viewcategory')
     else:
         form = CategoryForm()
-    return render(request, 'addcategory.html', {'form': form})
+    return render(request, 'admin/addcategory.html', {'form': form})
 def viewcategory(request):
     categories = Category.objects.all()
-    return render(request, 'viewcategory.html', {'categories': categories})
+    return render(request, 'admin/viewcategory.html', {'categories': categories})
 
 def editcategory(request, category_id):
     try:
@@ -66,7 +66,7 @@ def editcategory(request, category_id):
             return redirect('viewcategory')
     else:
         form = CategoryForm(instance=category)
-    return render(request, 'editcategory.html', {'form': form, 'category': category})
+    return render(request, 'admin/editcategory.html', {'form': form, 'category': category})
 
 def deletecategory(request, category_id):
     try:
@@ -83,11 +83,11 @@ def addsubcategory(request):
             return redirect('viewsubcategory')
     else:
         form = SubcategoryForm()
-    return render(request, 'addsubcategory.html', {'form': form})
+    return render(request, 'admin/addsubcategory.html', {'form': form})
 
 def viewsubcategory(request):
     subcategories = Subcategory.objects.all()
-    return render(request, 'viewsubcategory.html', {'subcategories': subcategories})
+    return render(request, 'admin/viewsubcategory.html', {'subcategories': subcategories})
 
 def editsubcategory(request, subcategory_id):
     try:
@@ -102,7 +102,7 @@ def editsubcategory(request, subcategory_id):
             return redirect('viewsubcategory')
     else:
         form = SubcategoryForm(instance=subcategory)
-    return render(request, 'editsubcategory.html', {'form': form, 'subcategory': subcategory})
+    return render(request, 'admin/editsubcategory.html', {'form': form, 'subcategory': subcategory})
 
 def deletesubcategory(request, subcategory_id):
     try:
