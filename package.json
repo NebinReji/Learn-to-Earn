@@ -1,0 +1,21 @@
+{
+  "name": "learn-to-earn",
+  "version": "1.0.0",
+  "description": "A student ecosystem where students can learn to earn money and experience to make their life better",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "test": "echo \"No tests specified yet\" && exit 0"
+  },
+  "keywords": ["education", "learning", "earning", "student", "ecosystem"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
