@@ -9,8 +9,8 @@ npm start
 ```
 
 ### Step 2: Access the Application
-- Open `frontend/index.html` in your web browser
-- Or visit: `file:///path/to/Learn-to-Earn/frontend/index.html`
+- Open your web browser and navigate to: http://localhost:5000
+- The application will load automatically
 
 ### Step 3: Create Your Account
 1. Fill in the registration form with:

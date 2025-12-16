@@ -66,8 +66,8 @@ npm run dev
 ```
 
 4. Open the application:
-- Backend API: http://localhost:5000
-- Frontend: Open `frontend/index.html` in your browser
+- Open your browser and go to: http://localhost:5000
+- API endpoints are available at: http://localhost:5000/api
 
 ## 📖 How to Use
 
