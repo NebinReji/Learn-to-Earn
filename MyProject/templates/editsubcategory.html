@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+            <!-- START CONTENT -->
+            <section id="main-content" class=" ">
+                <section class="wrapper main-wrapper" >
+                    <div class="col-lg-8 offset-lg-2">
+                        <section class="box ">
+                            <header class="panel_header">
+                                <h2 class="title text-center">Edit Subcategory</h2>
+                            </header>
+                            <div class="content-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-8">
+                                        <form method="post" action="">
+                                            {% csrf_token %}
+                                            {{ form.as_p }}
+                                            <div class="text-center">
+                                                <button type="submit" class="btn btn-primary">Update Subcategory</button>
+                                                <a href="{% url 'viewsubcategory' %}" class="btn btn-secondary">Cancel</a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </section>
+            <!-- END CONTENT -->
+{% endblock %}
