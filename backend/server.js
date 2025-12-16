@@ -11,6 +11,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Serve frontend static files
+app.use(express.static(path.join(__dirname, '../frontend')));
+
 // In-memory data store (for simplicity - in production use a real database)
 global.dataStore = {
   students: [],
@@ -42,8 +45,19 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
+// Serve frontend for any other routes
+app.get('*', (req, res) => {
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(__dirname, '../frontend/index.html'));
+  } else {
+    res.status(404).json({ error: 'API endpoint not found' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+  console.log(`Frontend available at: http://localhost:${PORT}`);
+  console.log(`API available at: http://localhost:${PORT}/api`);
 });
 
 module.exports = app;
