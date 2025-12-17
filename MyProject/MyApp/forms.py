@@ -1,6 +1,6 @@
 
 from django import forms
-from MyApp.models import District,Category, Subcategory
+from MyApp.models import District, Category, Subcategory
 
 class DistrictForm(forms.ModelForm):
     class Meta:
@@ -26,3 +26,4 @@ class SubcategoryForm(forms.ModelForm):
             'subcategory_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Subcategory Name'}),
             'category': forms.Select(attrs={'class': 'form-control'}),
         }
+

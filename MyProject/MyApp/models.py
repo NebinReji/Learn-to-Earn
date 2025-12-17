@@ -22,3 +22,9 @@ class Subcategory(models.Model):
 
     def __str__(self):
         return self.subcategory_name
+    
+
+
+
+
+    
