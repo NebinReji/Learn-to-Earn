@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from guest.models import Employer
-from guest.forms import EmployerForm, JobPostingForm
+from guest.forms import EmployerForm, JobPostingForm, SignupForm
 
 def guest_index(request):
     return render(request, 'guest/index.html')
@@ -47,7 +47,17 @@ def addjob(request):
         form = JobPostingForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('viewjobpostings')
+            return redirect('guest_index')
     else:
         form = JobPostingForm()
     return render(request, 'guest/addjob.html', {'form': form})
+
+def addstudent(request):
+    if request.method == 'POST':
+        form = SignupForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('guest_index')
+    else:
+        form = SignupForm()
+    return render(request, 'guest/addstudent.html', {'form': form})
