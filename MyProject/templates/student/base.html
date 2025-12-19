@@ -95,7 +95,7 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{% url 'addemployer' %}" class="nav-link">Add Employer</a>
+                                    <a href="{% url 'student_view_jobs' %}" class="nav-link">View Jobs</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link dropdown-toggle">Jobs</a>
@@ -204,8 +204,8 @@
                             </ul>
 
                             <div class="other-option">
-                                <a href="sign-up.html" class="signup-btn">Sign Up</a>
-                                <a href="sign-in.html" class="signin-btn">Sign In</a>
+                                
+                                <a href="{% url 'logout' %}" class="signin-btn">Log Out</a>
                             </div>
                         </div>
                     </nav>

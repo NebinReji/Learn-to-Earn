@@ -1,0 +1,117 @@
+{% extends 'employer/base.html' %}
+{% load static %}
+{% block content %}
+        <!-- Page Title Start -->
+        <section class="page-title title-bg5">
+            <div class="d-table">
+                <div class="d-table-cell">
+                    <h2>Edit Job</h2>
+                    <ul>
+                        <li>
+                            <a href="{% url 'employer_index' %}">Home</a>
+                        </li>
+                        <li>Edit Job</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="lines">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+        </section>
+        <!-- Page Title End -->
+
+		<!-- Post Job Section Start -->
+		<section class="post-job-section pt-100 pb-70">
+			<div class="container">
+				<div class="section-title text-center">
+					<h2>Edit Job Posting</h2>
+					<p>Update the job details below</p>
+				</div>
+
+				<div class="row justify-content-center">
+					<div class="col-lg-8">
+						<div class="post-job-form">
+							<form method="post" novalidate>
+								{% csrf_token %}
+								
+								{% if form.non_field_errors %}
+									<div class="alert alert-danger">
+										{{ form.non_field_errors }}
+									</div>
+								{% endif %}
+
+								<div class="form-group mb-20">
+									{{ form.job_title.label_tag }}
+									{{ form.job_title }}
+									{% if form.job_title.errors %}
+										<div class="text-danger small">{{ form.job_title.errors }}</div>
+									{% endif %}
+								</div>
+
+								<div class="form-group mb-20">
+									{{ form.job_description.label_tag }}
+									{{ form.job_description }}
+									{% if form.job_description.errors %}
+										<div class="text-danger small">{{ form.job_description.errors }}</div>
+									{% endif %}
+								</div>
+
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group mb-20">
+											{{ form.location.label_tag }}
+											{{ form.location }}
+											{% if form.location.errors %}
+												<div class="text-danger small">{{ form.location.errors }}</div>
+											{% endif %}
+										</div>
+									</div>
+
+									<div class="col-md-6">
+										<div class="form-group mb-20">
+											{{ form.work_mode.label_tag }}
+											{{ form.work_mode }}
+											{% if form.work_mode.errors %}
+												<div class="text-danger small">{{ form.work_mode.errors }}</div>
+											{% endif %}
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group mb-20">
+											{{ form.salary_range.label_tag }}
+											{{ form.salary_range }}
+											{% if form.salary_range.errors %}
+												<div class="text-danger small">{{ form.salary_range.errors }}</div>
+											{% endif %}
+										</div>
+									</div>
+
+									<div class="col-md-6">
+										<div class="form-group mb-20">
+											{{ form.expiry_date.label_tag }}
+											{{ form.expiry_date }}
+											{% if form.expiry_date.errors %}
+												<div class="text-danger small">{{ form.expiry_date.errors }}</div>
+											{% endif %}
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<button type="submit" class="btn btn-primary">Update Job</button>
+									<a href="{% url 'viewjobs' %}" class="btn btn-secondary">Cancel</a>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- Post Job Section End -->
+
+{% endblock %}

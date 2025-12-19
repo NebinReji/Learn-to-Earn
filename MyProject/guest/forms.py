@@ -82,6 +82,12 @@ class SignupForm(forms.Form):
             raise ValidationError("Name should contain only letters and spaces.")
         return name
 
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        if CustomUser.objects.filter(email=email).exists():
+            raise ValidationError("Email already registered. Please use a different email.")
+        return email
+
     def clean_phone_number(self):
         phone = self.cleaned_data["phone_number"]
         if student.objects.filter(phone_number=phone).exists():
@@ -103,13 +109,17 @@ class SignupForm(forms.Form):
             password=self.cleaned_data["password1"],
             role='student'
         )
+        user.is_active = False
+        user.save()
 
         student.objects.create(
             user=user,
+            student_name=self.cleaned_data["name"],
+            email=self.cleaned_data["email"],
             phone_number=self.cleaned_data["phone_number"],
-            academic_status=self.cleaned_data.get("academic_status"),
-            skills=self.cleaned_data.get("skills"),
-            id_card=self.cleaned_data.get("id_card"),
+            academic_status=self.cleaned_data.get("academic_status", ""),
+            skills=self.cleaned_data.get("skills", ""),
+            id_card=self.cleaned_data.get("id_card") or "",
         )
 
         return user
@@ -148,6 +158,12 @@ class EmployerSignupForm(forms.ModelForm):
 
     # ---------- VALIDATION ----------
 
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if CustomUser.objects.filter(email=email).exists():
+            raise forms.ValidationError("Email already registered. Please use a different email.")
+        return email
+
     def clean(self):
         cleaned_data = super().clean()
         if cleaned_data.get("password1") != cleaned_data.get("password2"):
@@ -165,6 +181,8 @@ class EmployerSignupForm(forms.ModelForm):
             password=self.cleaned_data["password1"],
             role='employer'
         )
+        user.is_active = False
+        user.save()
 
         employer.user = user
 

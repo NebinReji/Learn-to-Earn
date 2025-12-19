@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('applied_date', models.DateTimeField(auto_now_add=True)),
                 ('status', models.CharField(choices=[('pending', 'Pending'), ('reviewed', 'Reviewed'), ('shortlisted', 'Shortlisted'), ('rejected', 'Rejected'), ('accepted', 'Accepted')], default='pending', max_length=20)),
                 ('interview_date', models.DateTimeField(blank=True, null=True)),
-                ('job', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='job_applications', to='guest.jobposting')),
+                ('job', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='job_applications', to='employer.jobposting')),
                 ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='applications', to='guest.student')),
             ],
         ),

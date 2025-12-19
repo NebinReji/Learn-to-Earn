@@ -406,7 +406,7 @@
                                 </a>
                             </li>
                             <li class="last dropdown-item">
-                                <a href="ui-login.html">
+                                <a href="guest/login.html">
                                     <i class="fa fa-lock"></i>
                                     Logout
                                 </a>
@@ -515,6 +515,24 @@
 
                          
                         </ul>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'view_employers' %}">
+                            <i class="fa fa-building"></i>
+                            <span class="title">Employer Verification</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'view_students' %}">
+                            <i class="fa fa-graduation-cap"></i>
+                            <span class="title">Student Verification</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'logout' %}">
+                            <i class="fa fa-sign-out"></i>
+                            <span class="title">Logout</span>
+                        </a>
                     </li>
                     <!-- <li class="">
                         <a href="javascript:;">

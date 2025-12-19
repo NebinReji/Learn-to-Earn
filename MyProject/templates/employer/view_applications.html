@@ -1,0 +1,118 @@
+{% extends 'employer/base.html' %}
+{% load static %}
+{% block content %}
+        <!-- Page Title Start -->
+        <section class="page-title title-bg5">
+            <div class="d-table">
+                <div class="d-table-cell">
+                    <h2>Job Applications</h2>
+                    <ul>
+                        <li>
+                            <a href="{% url 'employer_index' %}">Home</a>
+                        </li>
+                        <li>Applications</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="lines">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+        </section>
+        <!-- Page Title End -->
+
+        <section class="job-section pt-100 pb-70">
+            <div class="container">
+                <div class="section-title text-center">
+                    <h2>Applications for Your Jobs</h2>
+                    <p>Manage all applications received for your job postings</p>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        {% if applications %}
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover" style="font-size: 16px; min-width: 900px;">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Job Title</th>
+                                        <th>Student Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Applied Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for application in applications %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ application.job.job_title }}</td>
+                                        <td>{{ application.student.student_name }}</td>
+                                        <td>{{ application.student.email }}</td>
+                                        <td>{{ application.student.phone_number }}</td>
+                                        <td>{{ application.applied_date|date:"d M Y, h:i A" }}</td>
+                                        <td>
+                                            <span class="badge
+                                                {% if application.status == 'pending' %}bg-warning text-dark
+                                                {% elif application.status == 'reviewed' %}bg-info text-white
+                                                {% elif application.status == 'shortlisted' %}bg-success text-white
+                                                {% elif application.status == 'accepted' %}bg-success text-white
+                                                {% elif application.status == 'rejected' %}bg-danger text-white
+                                                {% endif %}
+                                            ">
+                                                {{ application.get_status_display }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#appModal{{ application.id }}">
+                                                View Details
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Modal for Application Details -->
+                                    <div class="modal fade" id="appModal{{ application.id }}" tabindex="-1" role="dialog" aria-labelledby="appModalLabel{{ application.id }}" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="appModalLabel{{ application.id }}">{{ application.student.student_name }} - {{ application.job.job_title }}</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p><strong>Student Name:</strong> {{ application.student.student_name }}</p>
+                                                    <p><strong>Email:</strong> {{ application.student.email }}</p>
+                                                    <p><strong>Phone:</strong> {{ application.student.phone_number }}</p>
+                                                    <p><strong>Academic Status:</strong> {{ application.student.academic_status|default:"N/A" }}</p>
+                                                    <p><strong>Skills:</strong> {{ application.student.skills|default:"N/A" }}</p>
+                                                    <p><strong>Applied Date:</strong> {{ application.applied_date|date:"d M Y, h:i A" }}</p>
+                                                    <p><strong>Current Status:</strong> {{ application.get_status_display }}</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                            <div class="alert alert-info text-center">
+                                <h4>No Applications Yet</h4>
+                                <p>You haven't received any applications yet. Keep your job postings active to attract more candidates.</p>
+                                <a href="{% url 'addjob' %}" class="btn btn-primary">Post a New Job</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+{% endblock %}

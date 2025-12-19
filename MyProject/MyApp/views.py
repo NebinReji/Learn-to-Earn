@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from MyApp.models import District, Category, Subcategory
 from MyApp.forms import CategoryForm, DistrictForm, SubcategoryForm
+from guest.models import Employer, student
+from django.contrib import messages
 
 def index(request):
     return render(request, 'admin/index.html')
@@ -111,3 +113,65 @@ def deletesubcategory(request, subcategory_id):
     except Subcategory.DoesNotExist:
         pass
     return redirect('viewsubcategory')
+
+# Employer Verification Views
+def view_employers(request):
+    employers = Employer.objects.all().order_by('-id')
+    return render(request, 'admin/viewemployers.html', {'employers': employers})
+
+def approve_employer(request, employer_id):
+    try:
+        employer = Employer.objects.get(id=employer_id)
+        employer.verification_status = True
+        employer.save()
+        # Activate the user account
+        if employer.user:
+            employer.user.is_active = True
+            employer.user.save()
+        messages.success(request, f'{employer.company_name} has been approved and activated!')
+    except Employer.DoesNotExist:
+        messages.error(request, 'Employer not found.')
+    return redirect('view_employers')
+
+def reject_employer(request, employer_id):
+    try:
+        employer = Employer.objects.get(id=employer_id)
+        employer.verification_status = False
+        employer.save()
+        # Deactivate the user account
+        if employer.user:
+            employer.user.is_active = False
+            employer.user.save()
+        messages.warning(request, f'{employer.company_name} has been rejected and deactivated.')
+    except Employer.DoesNotExist:
+        messages.error(request, 'Employer not found.')
+    return redirect('view_employers')
+
+# Student Verification Views
+def view_students(request):
+    students = student.objects.all().order_by('-id')
+    return render(request, 'admin/viewstudents.html', {'students': students})
+
+def approve_student(request, student_id):
+    try:
+        stud = student.objects.get(id=student_id)
+        # Activate the user account
+        if stud.user:
+            stud.user.is_active = True
+            stud.user.save()
+        messages.success(request, f'{stud.student_name} has been approved and activated!')
+    except student.DoesNotExist:
+        messages.error(request, 'Student not found.')
+    return redirect('view_students')
+
+def reject_student(request, student_id):
+    try:
+        stud = student.objects.get(id=student_id)
+        # Deactivate the user account
+        if stud.user:
+            stud.user.is_active = False
+            stud.user.save()
+        messages.warning(request, f'{stud.student_name} has been rejected and deactivated.')
+    except student.DoesNotExist:
+        messages.error(request, 'Student not found.')
+    return redirect('view_students')

@@ -9,6 +9,20 @@
         </div>
     </div>
 
+    <!-- Display Messages -->
+    {% if messages %}
+        <div class="row">
+            <div class="col">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
     <!-- Tabs -->
     <ul class="nav nav-tabs justify-content-center" id="signupTab" role="tablist">
         <li class="nav-item" role="presentation">
@@ -26,20 +40,91 @@
                     <h4 class="mb-0">Student Registration</h4>
                 </div>
                 <div class="card-body">
+                    <div class="alert alert-info">
+                        <strong>ℹ️ Note:</strong> Your student account will be activated after admin verification.
+                    </div>
                     <form method="post" enctype="multipart/form-data" novalidate>
                         {% csrf_token %}
+                        
+                        <!-- Display non-field errors -->
+                        {% if student_form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ student_form.non_field_errors }}
+                            </div>
+                        {% endif %}
+                        
                         <div class="row g-3">
-                            <div class="col-md-6">{{ student_form.name.label_tag }}{{ student_form.name }}</div>
-                            <div class="col-md-6">{{ student_form.email.label_tag }}{{ student_form.email }}</div>
-                            <div class="col-md-6">{{ student_form.phone_number.label_tag }}{{ student_form.phone_number }}</div>
-                            <div class="col-md-6">{{ student_form.dob.label_tag }}{{ student_form.dob }}</div>
-                            <div class="col-md-6">{{ student_form.place.label_tag }}{{ student_form.place }}</div>
-                            <div class="col-md-6">{{ student_form.academic_status.label_tag }}{{ student_form.academic_status }}</div>
-                            <div class="col-12">{{ student_form.skills.label_tag }}{{ student_form.skills }}</div>
-                            <div class="col-md-6">{{ student_form.id_card.label_tag }}{{ student_form.id_card }}</div>
+                            <div class="col-md-6">
+                                {{ student_form.name.label_tag }}
+                                {{ student_form.name }}
+                                {% if student_form.name.errors %}
+                                    <div class="text-danger small">{{ student_form.name.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ student_form.email.label_tag }}
+                                {{ student_form.email }}
+                                {% if student_form.email.errors %}
+                                    <div class="text-danger small">{{ student_form.email.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ student_form.phone_number.label_tag }}
+                                {{ student_form.phone_number }}
+                                {% if student_form.phone_number.errors %}
+                                    <div class="text-danger small">{{ student_form.phone_number.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ student_form.dob.label_tag }}
+                                {{ student_form.dob }}
+                                {% if student_form.dob.errors %}
+                                    <div class="text-danger small">{{ student_form.dob.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ student_form.place.label_tag }}
+                                {{ student_form.place }}
+                                {% if student_form.place.errors %}
+                                    <div class="text-danger small">{{ student_form.place.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ student_form.academic_status.label_tag }}
+                                {{ student_form.academic_status }}
+                                {% if student_form.academic_status.errors %}
+                                    <div class="text-danger small">{{ student_form.academic_status.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-12">
+                                {{ student_form.skills.label_tag }}
+                                {{ student_form.skills }}
+                                {% if student_form.skills.errors %}
+                                    <div class="text-danger small">{{ student_form.skills.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ student_form.id_card.label_tag }}
+                                {{ student_form.id_card }}
+                                {% if student_form.id_card.errors %}
+                                    <div class="text-danger small">{{ student_form.id_card.errors }}</div>
+                                {% endif %}
+                            </div>
                             <div class="col-md-6"></div>
-                            <div class="col-md-6">{{ student_form.password1.label_tag }}{{ student_form.password1 }}</div>
-                            <div class="col-md-6">{{ student_form.password2.label_tag }}{{ student_form.password2 }}</div>
+                            <div class="col-md-6">
+                                {{ student_form.password1.label_tag }}
+                                {{ student_form.password1 }}
+                                {% if student_form.password1.errors %}
+                                    <div class="text-danger small">{{ student_form.password1.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ student_form.password2.label_tag }}
+                                {{ student_form.password2 }}
+                                {% if student_form.password2.errors %}
+                                    <div class="text-danger small">{{ student_form.password2.errors }}</div>
+                                {% endif %}
+                            </div>
                         </div>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
                             <button type="submit" name="student-submit" class="btn btn-primary">Register as Student</button>
@@ -55,17 +140,76 @@
                     <h4 class="mb-0">Employer Registration</h4>
                 </div>
                 <div class="card-body">
+                    <div class="alert alert-info">
+                        <strong>ℹ️ Note:</strong> Your employer account will be activated after admin verification. You will be able to login once approved.
+                    </div>
                     <form method="post" novalidate>
                         {% csrf_token %}
+                        
+                        <!-- Display non-field errors -->
+                        {% if employer_form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ employer_form.non_field_errors }}
+                            </div>
+                        {% endif %}
+                        
                         <div class="row g-3">
-                            <div class="col-md-6">{{ employer_form.company_name.label_tag }}{{ employer_form.company_name }}</div>
-                            <div class="col-md-6">{{ employer_form.contact_person.label_tag }}{{ employer_form.contact_person }}</div>
-                            <div class="col-md-6">{{ employer_form.phone.label_tag }}{{ employer_form.phone }}</div>
-                            <div class="col-md-6">{{ employer_form.email.label_tag }}{{ employer_form.email }}</div>
-                            <div class="col-md-6">{{ employer_form.district.label_tag }}{{ employer_form.district }}</div>
-                            <div class="col-md-6">{{ employer_form.address.label_tag }}{{ employer_form.address }}</div>
-                            <div class="col-md-6">{{ employer_form.password1.label_tag }}{{ employer_form.password1 }}</div>
-                            <div class="col-md-6">{{ employer_form.password2.label_tag }}{{ employer_form.password2 }}</div>
+                            <div class="col-md-6">
+                                {{ employer_form.company_name.label_tag }}
+                                {{ employer_form.company_name }}
+                                {% if employer_form.company_name.errors %}
+                                    <div class="text-danger small">{{ employer_form.company_name.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ employer_form.contact_person.label_tag }}
+                                {{ employer_form.contact_person }}
+                                {% if employer_form.contact_person.errors %}
+                                    <div class="text-danger small">{{ employer_form.contact_person.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ employer_form.phone.label_tag }}
+                                {{ employer_form.phone }}
+                                {% if employer_form.phone.errors %}
+                                    <div class="text-danger small">{{ employer_form.phone.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ employer_form.email.label_tag }}
+                                {{ employer_form.email }}
+                                {% if employer_form.email.errors %}
+                                    <div class="text-danger small">{{ employer_form.email.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ employer_form.district.label_tag }}
+                                {{ employer_form.district }}
+                                {% if employer_form.district.errors %}
+                                    <div class="text-danger small">{{ employer_form.district.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ employer_form.address.label_tag }}
+                                {{ employer_form.address }}
+                                {% if employer_form.address.errors %}
+                                    <div class="text-danger small">{{ employer_form.address.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ employer_form.password1.label_tag }}
+                                {{ employer_form.password1 }}
+                                {% if employer_form.password1.errors %}
+                                    <div class="text-danger small">{{ employer_form.password1.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ employer_form.password2.label_tag }}
+                                {{ employer_form.password2 }}
+                                {% if employer_form.password2.errors %}
+                                    <div class="text-danger small">{{ employer_form.password2.errors }}</div>
+                                {% endif %}
+                            </div>
                         </div>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
                             <button type="submit" name="employer-submit" class="btn btn-success">Register as Employer</button>

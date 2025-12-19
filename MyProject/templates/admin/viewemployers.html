@@ -1,0 +1,93 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+{% block content %}
+            <!-- START CONTENT -->
+            <section id="main-content" class=" ">
+                <section class="wrapper main-wrapper">
+                    <div class="col-lg-12">
+                        <div class="page-title">
+                            <div class="pull-left">
+                                <h1 class="title">Employer Verification</h1>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <section class="box ">
+                            <header class="panel_header d-flex align-items-center justify-content-between">
+                                <h2 class="title mb-0">Employer Accounts</h2>
+                                <span class="badge badge-primary">Total: {{ employers|length }}</span>
+                            </header>
+                            <div class="content-body">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+
+                                        <!-- Display Messages -->
+                                        {% if messages %}
+                                            {% for message in messages %}
+                                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                                    {{ message }}
+                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+
+                                        {% if employers %}
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-hover" style="font-size: 14px;">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Company Name</th>
+                                                        <th>Contact Person</th>
+                                                        <th>Email</th>
+                                                        <th>Phone</th>
+                                                        <th>District</th>
+                                                        <th>Status</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for employer in employers %}
+                                                    <tr>
+                                                        <td>{{ employer.id }}</td>
+                                                        <td>{{ employer.company_name }}</td>
+                                                        <td>{{ employer.contact_person }}</td>
+                                                        <td>{{ employer.email }}</td>
+                                                        <td>{{ employer.phone }}</td>
+                                                        <td>{{ employer.district.district_name }}</td>
+                                                        <td>
+                                                            {% if employer.verification_status %}
+                                                                <span class="badge bg-success">Verified</span>
+                                                            {% else %}
+                                                                <span class="badge bg-warning text-dark">Pending</span>
+                                                            {% endif %}
+                                                        </td>
+                                                        <td>
+                                                            {% if employer.verification_status %}
+                                                                <a href="{% url 'reject_employer' employer.id %}" class="btn btn-warning btn-sm">Revoke</a>
+                                                            {% else %}
+                                                                <a href="{% url 'approve_employer' employer.id %}" class="btn btn-success btn-sm">Approve</a>
+                                                                <a href="{% url 'reject_employer' employer.id %}" class="btn btn-danger btn-sm">Reject</a>
+                                                            {% endif %}
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        {% else %}
+                                            <div class="alert alert-info mb-0">No employers found.</div>
+                                        {% endif %}
+
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </section>
+            <!-- END CONTENT -->
+{% endblock %}

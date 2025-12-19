@@ -98,26 +98,12 @@
                                     <a href="{% url 'addjob' %}" class="nav-link">Add Job</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link dropdown-toggle">Jobs</a>
-
-                                    <ul class="dropdown-menu">
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">Find A  Job</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="post-job.html" class="nav-link">Post A Job</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="job-list.html" class="nav-link">Job List</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="job-grid.html" class="nav-link">Job Grid</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="job-details.html" class="nav-link">Job Details</a>
-                                        </li>
-                                    </ul>
-                                </li>                
+                                    <a href="{% url 'viewjobs' %}" class="nav-link">View Jobs</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'view_applications' %}" class="nav-link">Applications</a>
+                                </li>
+                                            
                                 <li class="nav-item">
                                     <a href="#" class="nav-link dropdown-toggle">Candidates</a>
                                     <ul class="dropdown-menu">
@@ -204,8 +190,8 @@
                             </ul>
 
                             <div class="other-option">
-                                <a href="sign-up.html" class="signup-btn">Sign Up</a>
-                                <a href="sign-in.html" class="signin-btn">Sign In</a>
+
+                                <a href="{% url 'logout' %}" class="signin-btn">Log Out</a>
                             </div>
                         </div>
                     </nav>

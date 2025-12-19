@@ -1,10 +1,9 @@
 from django.db import models
-from employer.models import Jobposting
 
 
 class Application(models.Model):
-    student= models.ForeignKey('guest.student', on_delete=models.CASCADE, related_name='applications')
-    job = models.ForeignKey(Jobposting, on_delete=models.CASCADE, related_name='job_applications')
+    student = models.ForeignKey('guest.student', on_delete=models.CASCADE, related_name='applications')
+    job = models.ForeignKey('employer.Jobposting', on_delete=models.CASCADE, related_name='job_applications')
     applied_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=[
         ('pending', 'Pending'),
