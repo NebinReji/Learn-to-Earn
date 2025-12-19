@@ -1,0 +1,79 @@
+{% extends 'guest/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container" style="margin-top: 60px; margin-bottom: 80px;">
+    <div class="row mb-4 text-center">
+        <div class="col">
+            <h2 class="fw-bold">Sign Up</h2>
+            <p class="text-muted">Choose your role and complete the form.</p>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <ul class="nav nav-tabs justify-content-center" id="signupTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="student-tab" data-bs-toggle="tab" data-bs-target="#student" type="button" role="tab" aria-controls="student" aria-selected="true">Student</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="employer-tab" data-bs-toggle="tab" data-bs-target="#employer" type="button" role="tab" aria-controls="employer" aria-selected="false">Employer</button>
+        </li>
+    </ul>
+
+    <div class="tab-content pt-4" id="signupTabContent">
+        <div class="tab-pane fade show active" id="student" role="tabpanel" aria-labelledby="student-tab">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Student Registration</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-md-6">{{ student_form.name.label_tag }}{{ student_form.name }}</div>
+                            <div class="col-md-6">{{ student_form.email.label_tag }}{{ student_form.email }}</div>
+                            <div class="col-md-6">{{ student_form.phone_number.label_tag }}{{ student_form.phone_number }}</div>
+                            <div class="col-md-6">{{ student_form.dob.label_tag }}{{ student_form.dob }}</div>
+                            <div class="col-md-6">{{ student_form.place.label_tag }}{{ student_form.place }}</div>
+                            <div class="col-md-6">{{ student_form.academic_status.label_tag }}{{ student_form.academic_status }}</div>
+                            <div class="col-12">{{ student_form.skills.label_tag }}{{ student_form.skills }}</div>
+                            <div class="col-md-6">{{ student_form.id_card.label_tag }}{{ student_form.id_card }}</div>
+                            <div class="col-md-6"></div>
+                            <div class="col-md-6">{{ student_form.password1.label_tag }}{{ student_form.password1 }}</div>
+                            <div class="col-md-6">{{ student_form.password2.label_tag }}{{ student_form.password2 }}</div>
+                        </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                            <button type="submit" name="student-submit" class="btn btn-primary">Register as Student</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="employer" role="tabpanel" aria-labelledby="employer-tab">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">Employer Registration</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-md-6">{{ employer_form.company_name.label_tag }}{{ employer_form.company_name }}</div>
+                            <div class="col-md-6">{{ employer_form.contact_person.label_tag }}{{ employer_form.contact_person }}</div>
+                            <div class="col-md-6">{{ employer_form.phone.label_tag }}{{ employer_form.phone }}</div>
+                            <div class="col-md-6">{{ employer_form.email.label_tag }}{{ employer_form.email }}</div>
+                            <div class="col-md-6">{{ employer_form.district.label_tag }}{{ employer_form.district }}</div>
+                            <div class="col-md-6">{{ employer_form.address.label_tag }}{{ employer_form.address }}</div>
+                            <div class="col-md-6">{{ employer_form.password1.label_tag }}{{ employer_form.password1 }}</div>
+                            <div class="col-md-6">{{ employer_form.password2.label_tag }}{{ employer_form.password2 }}</div>
+                        </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                            <button type="submit" name="employer-submit" class="btn btn-success">Register as Employer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

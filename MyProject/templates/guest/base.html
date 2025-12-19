@@ -204,8 +204,8 @@
                             </ul>
 
                             <div class="other-option">
-                                <a href="{% url 'addemployer' %}" class="signup-btn">Sign Up</a>
-                                <a href="sign-in.html" class="signin-btn">Sign In</a>
+                                <a href="{% url 'signup' %}" class="signup-btn">Sign Up</a>
+                                <a href="{% url 'login' %}" class="signin-btn">Sign In</a>
                             </div>
                         </div>
                     </nav>
@@ -215,6 +215,13 @@
         <!-- Navbar Area End -->
 {% block content %}
 {% endblock %}
+        {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" role="alert">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
 	<footer class="footer-area pt-100 pb-70">
 			<div class="container">
 				<div class="row justify-content-center">

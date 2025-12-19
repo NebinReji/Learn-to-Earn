@@ -1,56 +1,22 @@
 from django.shortcuts import render, redirect
 from guest.models import Employer
-from guest.forms import EmployerForm, JobPostingForm, SignupForm
+from guest.forms import EmployerForm, EmployerSignupForm, LoginForm, SignupForm
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
 
 def guest_index(request):
     return render(request, 'guest/index.html')
 
 def addemployer(request):
     if request.method == 'POST':
-        form = EmployerForm(request.POST)
+        form = EmployerSignupForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('viewemployer')
+            return redirect('login_view')
     else:
-        form = EmployerForm()
+        form = EmployerSignupForm()
     return render(request, 'guest/addemployer.html', {'form': form})
 
-def viewemployer(request):
-    employers = Employer.objects.all()
-    return render(request, 'guest/viewemployer.html', {'employers': employers})
-
-def editemployer(request, employer_id):
-    try:
-        employer = Employer.objects.get(employer_id=employer_id)
-    except Employer.DoesNotExist:
-        return redirect('viewemployer')
-    
-    if request.method == 'POST':
-        form = EmployerForm(request.POST, instance=employer)
-        if form.is_valid():
-            form.save()
-            return redirect('viewemployer')
-    else:
-        form = EmployerForm(instance=employer)
-    return render(request, 'guest/editemployer.html', {'form': form, 'employer': employer})
-
-def deleteemployer(request, employer_id):
-    try:
-        employer = Employer.objects.get(employer_id=employer_id)
-        employer.delete()
-    except Employer.DoesNotExist:
-        pass
-    return redirect('viewemployer')
-
-def addjob(request):
-    if request.method == 'POST':
-        form = JobPostingForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('guest_index')
-    else:
-        form = JobPostingForm()
-    return render(request, 'guest/addjob.html', {'form': form})
 
 def addstudent(request):
     if request.method == 'POST':
@@ -61,3 +27,58 @@ def addstudent(request):
     else:
         form = SignupForm()
     return render(request, 'guest/addstudent.html', {'form': form})
+
+
+def signup(request):
+    student_form = SignupForm(prefix="student")
+    employer_form = EmployerSignupForm(prefix="employer")
+
+    if request.method == 'POST':
+        if 'student-submit' in request.POST:
+            student_form = SignupForm(request.POST, request.FILES, prefix="student")
+            employer_form = EmployerSignupForm(prefix="employer")
+            if student_form.is_valid():
+                student_form.save()
+                return redirect('guest_index')
+        elif 'employer-submit' in request.POST:
+            employer_form = EmployerSignupForm(request.POST, prefix="employer")
+            student_form = SignupForm(prefix="student")
+            if employer_form.is_valid():
+                employer_form.save()
+                return redirect('login_view')
+
+    return render(request, 'guest/signup.html', {
+        'student_form': student_form,
+        'employer_form': employer_form,
+    })
+
+def login_view(request):
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data["email"]
+            password = form.cleaned_data["password"]
+
+            # authenticate using email as username (CustomUser has USERNAME_FIELD = "email")
+            user = authenticate(username=email, password=password)
+
+            if user is not None:
+                login(request, user)
+                messages.success(request, "Login successful!")
+
+                # Redirect based on user role
+                if user.role == 'admin':
+                    return redirect("admin_index")
+                elif user.role == 'employer':
+                    return redirect("employer_index")
+                elif user.role == 'student':
+                    return redirect("student_index")
+                else:
+                    return redirect("guest_index")
+
+            else:
+                messages.error(request, "Invalid email or password.")
+    else:
+        form = LoginForm()
+
+    return render(request, "guest/login.html", {"form": form})

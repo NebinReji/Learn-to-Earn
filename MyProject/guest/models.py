@@ -18,6 +18,7 @@ class CustomUserManager(BaseUserManager):
     def create_superuser(self, email, name, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("role", "admin")
         return self.create_user(email, name, password, **extra_fields)
 
 
@@ -26,6 +27,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+
+    ROLE_CHOICES = [
+        ('admin', 'Admin'),
+        ('employer', 'Employer'),
+        ('student', 'Student'),
+    ]
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='student')
 
     objects = CustomUserManager()
 
@@ -65,16 +73,4 @@ class student(models.Model):
     id_card = models.FileField(upload_to='id_cards/')
 
     def __str__(self):
-        return self.student_name
-
-class Jobposting(models.Model):
-    employer = models.ForeignKey(Employer, on_delete=models.CASCADE, related_name='job_postings')
-    job_title = models.CharField(max_length=200)
-    job_description = models.TextField()
-    location = models.CharField(max_length=100)
-    work_mode = models.CharField(max_length=50)
-    posted_date = models.DateField(auto_now_add=True)
-    expiry_date = models.DateField()
-    salary_range = models.CharField(max_length=100)
-    def __str__(self):
-        return self.job_title    
+        return self.student_name    

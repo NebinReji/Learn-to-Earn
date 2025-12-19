@@ -22,8 +22,9 @@ from django.conf import settings
 
 urlpatterns = [
     path("", include("guest.urls")),
-    path('admin/', admin.site.urls),
+    # Ensure app dashboard under /admin/ takes precedence over Django admin
     path('admin/', include("MyApp.urls")),
+    path('djadmin/', admin.site.urls),
     path('employer/', include('employer.urls')),
     path('student/', include('student.urls')),
 ]

@@ -75,6 +75,15 @@ WSGI_APPLICATION = 'MyProject.wsgi.application'
 
 AUTH_USER_MODEL = 'guest.CustomUser'
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'dashboard'   
+LOGOUT_REDIRECT_URL = 'login'
+
+
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 

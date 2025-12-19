@@ -1,5 +1,5 @@
 from django.db import models
-from guest.models import Jobposting
+from employer.models import Jobposting
 
 
 class Application(models.Model):

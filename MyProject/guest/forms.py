@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 import re
-from guest.models import Employer, Jobposting, student
+from guest.models import CustomUser, Employer, student
 from MyApp.models import District
 
 class EmployerForm(forms.ModelForm):
@@ -17,143 +17,175 @@ class EmployerForm(forms.ModelForm):
             'address': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter Address', 'rows': 3}),
         }
 
-class JobPostingForm(forms.ModelForm):
-    class Meta:
-        model = Jobposting
-        fields = ['job_title', 'job_description', 'location', 'work_mode', 'expiry_date', 'salary_range']
-        widgets = {
-            'job_title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Job Title'}),
-            'job_description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter Job Description', 'rows': 4}),
-            'location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Location'}),
-            'work_mode': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Work Mode'}),
-            'expiry_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'salary_range': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Salary Range'}),
-        }
 
+class SignupForm(forms.Form):
+    name = forms.CharField(
+        label="Full Name",
+        widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter full name"})
+    )
 
+    email = forms.EmailField(
+        label="Email",
+        widget=forms.EmailInput(attrs={"class": "form-control", "placeholder": "Enter email address"})
+    )
 
-class SignupForm(forms.ModelForm):
     phone_number = forms.CharField(
         label="Phone Number",
-        required=True,
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Phone number'
-        })
+        widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter phone number"})
     )
+
     dob = forms.DateField(
         label="Date of Birth",
-        widget=forms.DateInput(attrs={
-            'class': 'form-control',
-            'type': 'date'
-        }),
-        required=False   # optional
+        required=False,
+        widget=forms.DateInput(attrs={"type": "date", "class": "form-control"})
     )
+
     place = forms.CharField(
-        label="Place / City",
-        required=False,  # optional
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Your city'
-        })
+        label="Place",
+        required=False,
+        widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "City / Town"})
     )
-    password1 = forms.CharField(
-        label="Password",
-        widget=forms.PasswordInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Enter password'
-        }),
-        required=True
-    )
-    password2 = forms.CharField(
-        label="Confirm Password",
-        widget=forms.PasswordInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Confirm password'
-        }),
-        required=True
-    )
+
     academic_status = forms.CharField(
         label="Academic Status",
         required=False,
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'e.g., Final year B.Tech'
-        })
+        widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "e.g., Undergraduate, Final year"})
     )
+
     skills = forms.CharField(
         label="Skills",
         required=False,
-        widget=forms.Textarea(attrs={
-            'class': 'form-control',
-            'placeholder': 'List your skills',
-            'rows': 4
-        })
+        widget=forms.Textarea(attrs={"rows": 3, "class": "form-control", "placeholder": "List key skills"})
     )
+
     id_card = forms.FileField(
-        label="Student ID Card",
+        label="ID Card (optional)",
         required=False,
-        widget=forms.ClearableFileInput(attrs={
-            'class': 'form-control-file'
-        })
+        widget=forms.ClearableFileInput(attrs={"class": "form-control"})
     )
 
-    class Meta:
-        model = student
-        fields = ["student_name", "email", "phone_number", "academic_status", "skills", "id_card"]
-        widgets = {
-            "student_name": forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Full Name'
-            }),
-            "email": forms.EmailInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Email Address'
-            }),
-        }
-        labels = {
-            "student_name": "Full Name",
-            "email": "Email Address",
-        }
+    password1 = forms.CharField(
+        label="Password",
+        widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Enter password"})
+    )
 
-    def clean_student_name(self):
-        name = self.cleaned_data.get("student_name")
-        if not name:
-            raise ValidationError("Name is required.")
-        if not re.match(r'^[A-Za-z\s]+$', name):
-            raise ValidationError("Name should only contain letters and spaces.")
+    password2 = forms.CharField(
+        label="Confirm Password",
+        widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Confirm password"})
+    )
+
+    # ---------------- VALIDATIONS ----------------
+
+    def clean_name(self):
+        name = self.cleaned_data["name"]
+        if not re.match(r"^[A-Za-z\s]+$", name):
+            raise ValidationError("Name should contain only letters and spaces.")
         return name
 
     def clean_phone_number(self):
-        phone = self.cleaned_data.get("phone_number")
-        if not phone:
-            raise ValidationError("Phone number is required.")
+        phone = self.cleaned_data["phone_number"]
         if student.objects.filter(phone_number=phone).exists():
-            raise ValidationError("This phone number is already registered.")
+            raise ValidationError("Phone number already registered.")
         return phone
 
-    def clean_password2(self):
-        p1 = self.cleaned_data.get("password1")
-        p2 = self.cleaned_data.get("password2")
-        if not p1 or not p2:
-            raise forms.ValidationError("Both password fields are required.")
-        if p1 != p2:
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get("password1") != cleaned_data.get("password2"):
+            raise ValidationError("Passwords do not match.")
+        return cleaned_data
+
+    # ---------------- SAVE ----------------
+
+    def save(self):
+        user = CustomUser.objects.create_user(
+            email=self.cleaned_data["email"],
+            name=self.cleaned_data["name"],
+            password=self.cleaned_data["password1"],
+            role='student'
+        )
+
+        student.objects.create(
+            user=user,
+            phone_number=self.cleaned_data["phone_number"],
+            academic_status=self.cleaned_data.get("academic_status"),
+            skills=self.cleaned_data.get("skills"),
+            id_card=self.cleaned_data.get("id_card"),
+        )
+
+        return user
+
+
+
+
+class EmployerSignupForm(forms.ModelForm):
+    password1 = forms.CharField(
+        label="Password",
+        widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Enter password"})
+    )
+    password2 = forms.CharField(
+        label="Confirm Password",
+        widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Confirm password"})
+    )
+
+    class Meta:
+        model = Employer
+        fields = [
+            "company_name",
+            "contact_person",
+            "phone",
+            "email",
+            "district",
+            "address",
+        ]
+        widgets = {
+            "company_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter company name"}),
+            "contact_person": forms.TextInput(attrs={"class": "form-control", "placeholder": "Contact person"}),
+            "phone": forms.TextInput(attrs={"class": "form-control", "placeholder": "Phone number"}),
+            "email": forms.EmailInput(attrs={"class": "form-control", "placeholder": "Email address"}),
+            "district": forms.Select(attrs={"class": "form-control"}),
+            "address": forms.Textarea(attrs={"class": "form-control", "rows": 3, "placeholder": "Office address"}),
+        }
+
+    # ---------- VALIDATION ----------
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get("password1") != cleaned_data.get("password2"):
             raise forms.ValidationError("Passwords do not match")
-        return p2
+        return cleaned_data
+
+    # ---------- SAVE ----------
 
     def save(self, commit=True):
-        user = super().save(commit=False)
-        user.set_password(self.cleaned_data["password1"])  # hashes password
+        employer = super().save(commit=False)
+
+        user = CustomUser.objects.create_user(
+            email=self.cleaned_data["email"],
+            name=self.cleaned_data["contact_person"],
+            password=self.cleaned_data["password1"],
+            role='employer'
+        )
+
+        employer.user = user
 
         if commit:
-            user.save()
+            employer.save()
 
-            # Assign default membership card (order=1)
+        return employer
 
-            CustomerProfile.objects.create(
-                user=user,
-                mobile=self.cleaned_data["mobile"],
-                dob=self.cleaned_data.get("dob"),
-                place=self.cleaned_data.get("place"),
-            )
-        return user
+class LoginForm(forms.Form):
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Email Address',
+            'required': True
+        })
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Password',
+            'required': True
+        })
+    )
+    
