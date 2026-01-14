@@ -1,58 +1,72 @@
 {% extends 'student/base.html' %}
 {% load static %}
 {% block content %}
-        <!-- Page Title Start -->
-        <section class="page-title title-bg5">
-            <div class="d-table">
-                <div class="d-table-cell">
-                    <h2>{{ job.job_title }}</h2>
-                    <ul>
-                        <li><a href="{% url 'student_index' %}">Home</a></li>
-                        <li><a href="{% url 'student_view_jobs' %}">Jobs</a></li>
-                        <li>Details</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="lines">
-                <div class="line"></div>
-                <div class="line"></div>
-                <div class="line"></div>
-            </div>
-        </section>
-        <!-- Page Title End -->
+<!-- Page Title Start -->
+<section class="page-title title-bg5">
+    <div class="d-table">
+        <div class="d-table-cell">
+            <h2>{{ job.job_title }}</h2>
+            <ul>
+                <li><a href="{% url 'student_index' %}">Home</a></li>
+                <li><a href="{% url 'student_view_jobs' %}">Jobs</a></li>
+                <li>Details</li>
+            </ul>
+        </div>
+    </div>
+    <div class="lines">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+</section>
+<!-- Page Title End -->
 
-        <section class="job-section pt-100 pb-70">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-10">
-                        <div class="job-details">
-                            <div class="job-details-header d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h3>{{ job.job_title }}</h3>
-                                    <ul>
-                                        <li><i class='bx bx-briefcase'></i> {{ job.work_mode }}</li>
-                                        <li><i class='bx bx-location-plus'></i> {{ job.location }}</li>
-                                        <li><i class='bx bx-money'></i> {{ job.salary_range }}</li>
-                                        <li><i class='bx bx-calendar'></i> Posted: {{ job.posted_date|date:"d M Y" }}</li>
-                                        <li><i class='bx bx-calendar'></i> Expires: {{ job.expiry_date|date:"d M Y" }}</li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div class="job-details-content mt-4">
-                                <h4>Description</h4>
-                                <p>{{ job.job_description }}</p>
-                            </div>
-
-                            <div class="mt-4">
-                                <a href="{% url 'apply_job' job.id %}" class="btn btn-success" style="margin-right: 10px;">
-                                    Apply Now
-                                </a>
-                                <a href="{% url 'student_view_jobs' %}" class="btn btn-secondary">Back to Jobs</a>
-                            </div>
+<section class="job-section pt-100 pb-70">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="job-details">
+                    <div class="job-details-header d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3>{{ job.job_title }}</h3>
+                            <ul>
+                                <li><i class='bx bx-briefcase'></i> {{ job.work_mode }}</li>
+                                <li><i class='bx bx-location-plus'></i> {{ job.location }}</li>
+                                <li><i class='bx bx-money'></i> {{ job.salary_range }}</li>
+                                <li><i class='bx bx-calendar'></i> Posted: {{ job.posted_date|date:"d M Y" }}</li>
+                                <li><i class='bx bx-calendar'></i> Expires: {{ job.expiry_date|date:"d M Y" }}</li>
+                            </ul>
                         </div>
+                    </div>
+
+                    <div class="job-details-desc">
+                        {% if application %}
+                        <div class="alert alert-info">
+                            <h4>Application Status: <strong>{{ application.status|title }}</strong></h4>
+
+                            {% if application.interview_date %}
+                            <hr>
+                            <h5><i class='bx bx-calendar-event'></i> Interview Scheduled!</h5>
+                            <p><strong>Date:</strong> {{ application.interview_date }}</p>
+                            <p><strong>Mode:</strong> {{ application.interview_mode }}</p>
+                            <p><strong>Details:</strong> {{ application.interview_location }}</p>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+
+                        <h3>Job Description</h3>
+                        <p>{{ job.job_description }}</p>
+                    </div>
+
+                    <div class="mt-4">
+                        <a href="{% url 'apply_job' job.id %}" class="btn btn-success" style="margin-right: 10px;">
+                            Apply Now
+                        </a>
+                        <a href="{% url 'student_view_jobs' %}" class="btn btn-secondary">Back to Jobs</a>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </div>
+</section>
 {% endblock %}

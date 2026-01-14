@@ -40,17 +40,17 @@
                                                     
                                                     <td>{{ category.category_name }}</td>
                                                     <td>
-                                                        <a href="{% url 'editcategory' category.category_id %}"
+                                                        <a href="{% url 'editcategory' category.id %}"
                                                            class="btn btn-sm btn-primary confirm-action"
                                                            data-action="navigate"
-                                                           data-target-url="{% url 'editcategory' category.category_id %}"
+                                                           data-target-url="{% url 'editcategory' category.id %}"
                                                            data-message="Proceed to edit this category?">
                                                             Edit
                                                         </a>
-                                                        <a href="{% url 'deletecategory' category.category_id %}"
+                                                        <a href="{% url 'deletecategory' category.id %}"
                                                            class="btn btn-sm btn-danger confirm-action"
                                                            data-action="navigate"
-                                                           data-target-url="{% url 'deletecategory' category.category_id %}"
+                                                           data-target-url="{% url 'deletecategory' category.id %}"
                                                            data-message="Are you sure you want to delete this category?">
                                                             Delete
                                                         </a>

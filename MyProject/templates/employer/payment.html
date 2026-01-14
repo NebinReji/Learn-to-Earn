@@ -1,0 +1,169 @@
+{% extends 'employer/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Page Title Start -->
+<section class="page-title title-bg10">
+    <div class="d-table">
+        <div class="d-table-cell">
+            <h2>Secure Payment</h2>
+            <ul>
+                <li><a href="{% url 'employer_index' %}">Home</a></li>
+                <li>Payment</li>
+            </ul>
+        </div>
+    </div>
+    <div class="lines">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+</section>
+<!-- Page Title End -->
+
+<section class="user-area-all-style ptb-100">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="contact-form-action">
+                    <div class="section-title text-center">
+                        <h2>Complete Your Purchase</h2>
+                        <p>You are upgrading to the <strong>{{ plan_name|title }}</strong> Plan</p>
+                        <h3 class="mt-2 text-primary">${{ price }}</h3>
+                    </div>
+
+                    <form method="post" action="{% url 'process_payment' %}" id="paymentForm"
+                        onsubmit="return validatePaymentForm()">
+                        {% csrf_token %}
+                        <input type="hidden" name="plan" value="{{ plan_name }}">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Card Number</label>
+                                    <input class="form-control" type="text" id="cardNumber" name="card_number"
+                                        placeholder="0000 0000 0000 0000" maxlength="19" required>
+                                    <small class="text-danger" id="cardError" style="display:none;">Enter a valid
+                                        16-digit card number.</small>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Expiry Date</label>
+                                    <input class="form-control" type="text" id="expiryDate" name="expiry"
+                                        placeholder="MM/YY" maxlength="5" required>
+                                    <small class="text-danger" id="expiryError" style="display:none;">Invalid Date
+                                        (MM/YY).</small>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>CVV</label>
+                                    <input class="form-control" type="password" id="cvv" name="cvv" placeholder="123"
+                                        maxlength="3" required>
+                                    <small class="text-danger" id="cvvError" style="display:none;">CVV must be 3
+                                        digits.</small>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Cardholder Name</label>
+                                    <input class="form-control" type="text" id="cardName" name="name_on_card"
+                                        placeholder="John Doe" required>
+                                    <small class="text-danger" id="nameError" style="display:none;">Name is
+                                        required.</small>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <button class="default-btn btn-two" type="submit">
+                                    Pay Now & Activate
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Format Card Number (adds space every 4 digits)
+    document.getElementById('cardNumber').addEventListener('input', function (e) {
+        var target = e.target;
+        var position = target.selectionStart;
+        var length = target.value.length;
+        var value = target.value.replace(/\D/g, '').substring(0, 16);
+        var formattedValue = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+        target.value = formattedValue;
+
+        // Adjust cursor position
+        if (target.value.length > length) {
+            position += 1;
+        }
+        target.setSelectionRange(position, position);
+    });
+
+    // Format Expiry Date (adds slash after 2 digits)
+    document.getElementById('expiryDate').addEventListener('input', function (e) {
+        var input = this.value.replace(/\D/g, '').substring(0, 4);
+        var formatted = input;
+        if (input.length > 2) {
+            formatted = input.substring(0, 2) + '/' + input.substring(2, 4);
+        }
+        this.value = formatted;
+    });
+
+    // Restrict CVV to numbers only
+    document.getElementById('cvv').addEventListener('input', function (e) {
+        this.value = this.value.replace(/\D/g, '');
+    });
+
+    function validatePaymentForm() {
+        let valid = true;
+
+        // Validate Card Number
+        const cardNum = document.getElementById('cardNumber').value.replace(/\s/g, '');
+        if (cardNum.length !== 16 || isNaN(cardNum)) {
+            document.getElementById('cardError').style.display = 'block';
+            valid = false;
+        } else {
+            document.getElementById('cardError').style.display = 'none';
+        }
+
+        // Validate Expiry
+        const expiry = document.getElementById('expiryDate').value;
+        const expiryRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+        if (!expiryRegex.test(expiry)) {
+            document.getElementById('expiryError').style.display = 'block';
+            valid = false;
+        } else {
+            document.getElementById('expiryError').style.display = 'none';
+        }
+
+        // Validate CVV
+        const cvv = document.getElementById('cvv').value;
+        if (cvv.length !== 3 || isNaN(cvv)) {
+            document.getElementById('cvvError').style.display = 'block';
+            valid = false;
+        } else {
+            document.getElementById('cvvError').style.display = 'none';
+        }
+
+        // Validate Name
+        const name = document.getElementById('cardName').value.trim();
+        if (name.length < 2) {
+            document.getElementById('nameError').style.display = 'block';
+            valid = false;
+        } else {
+            document.getElementById('nameError').style.display = 'none';
+        }
+
+        return valid;
+    }
+</script>
+{% endblock %}

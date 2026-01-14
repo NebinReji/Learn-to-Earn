@@ -1,87 +1,120 @@
-{% extends 'student/base.html' %}
+﻿{% extends 'student/base.html' %}
 {% load static %}
 {% block content %}
-        <!-- Page Title Start -->
-        <section class="page-title title-bg5">
-            <div class="d-table">
-                <div class="d-table-cell">
-                    <h2>Browse Jobs</h2>
-                    <ul>
-                        <li><a href="{% url 'student_index' %}">Home</a></li>
-                        <li>Jobs</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="lines">
-                <div class="line"></div>
-                <div class="line"></div>
-                <div class="line"></div>
-            </div>
-        </section>
-        <!-- Page Title End -->
+<!-- Page Title Start -->
+<section class="page-title title-bg5">
+    <div class="d-table">
+        <div class="d-table-cell">
+            <h2>Browse Jobs</h2>
+            <ul>
+                <li><a href="{% url 'student_index' %}">Home</a></li>
+                <li>Jobs</li>
+            </ul>
+        </div>
+    </div>
+    <div class="lines">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+</section>
+<!-- Page Title End -->
 
-        <section class="job-section jobs-grid-section pt-100 pb-70">
-            <div class="container">
-                <div class="section-title text-center">
-                    <h2>Available Jobs</h2>
-                    <p>Find a role that fits you.</p>
-                </div>
+<section class="job-section jobs-grid-section pt-100 pb-70">
+    <div class="container">
+        <div class="section-title text-center">
+            <h2>Available Jobs</h2>
+            <p>Find a role that fits you.</p>
+        </div>
 
-                <div class="row justify-content-center">
-                    {% if jobs %}
-                        {% for job in jobs %}
-                        <div class="col-md-8">
-                            <div class="job-card">
-                                <div class="row align-items-center justify-content-between">
-                                    <div class="col-lg-8">
-                                        <div class="job-info">
-                                            <h3>
-                                                <a href="{% url 'student_job_detail' job.id %}">{{ job.job_title }}</a>
-                                            </h3>
-                                            <ul>
-                                                <li>
-                                                    <i class='bx bx-briefcase'></i>
-                                                    {{ job.work_mode }}
-                                                </li>
-                                                <li>
-                                                    <i class='bx bx-location-plus'></i>
-                                                    {{ job.location }}
-                                                </li>
-                                                <li>
-                                                    <i class='bx bx-money'></i>
-                                                    {{ job.salary_range }}
-                                                </li>
-                                                <li>
-                                                    <i class='bx bx-calendar'></i>
-                                                    Posted: {{ job.posted_date|date:"d M Y" }}
-                                                </li>
-                                            </ul>
-                                            <p style="margin-top: 10px; color: #666;">{{ job.job_description|truncatewords:20 }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="job-save" style="text-align: center;">
-                                            <a href="{% url 'student_job_detail' job.id %}" class="btn btn-primary btn-sm" style="margin-bottom: 5px; display: block;">
-                                                View Details
-                                            </a>
-                                            <a href="{% url 'apply_job' job.id %}" class="btn btn-success btn-sm" style="display: block;">
-                                                Apply Job
-                                            </a>
-                                        </div>
-                                    </div>
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-8">
+                <form method="get" class="d-flex justify-content-end align-items-center">
+                    <label for="work_mode" style="margin-right: 10px; font-weight: 600;">Filter by:</label>
+                    <select name="work_mode" id="work_mode" class="form-control" style="width: 200px;"
+                        onchange="this.form.submit()">
+                        <option value="">All Jobs</option>
+                        <option value="Online" {% if request.GET.work_mode == 'Online' %}selected{% endif %}>Online
+                        </option>
+                        <option value="Offline" {% if request.GET.work_mode == 'Offline' %}selected{% endif %}>Offline
+                        </option>
+                    </select>
+                </form>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            {% if jobs %}
+            {% for job in jobs %}
+            <div class="col-md-8">
+                <div class="job-card" style="position: relative;">
+                    <!-- Badge -->
+                    <span class="badge {% if job.work_mode == 'Online' %}bg-success{% else %}bg-warning{% endif %}"
+                        style="position: absolute; top: 15px; right: 15px; padding: 8px 12px; border-radius: 20px;">
+                        {{ job.work_mode }}
+                    </span>
+
+                    <div class="row align-items-center justify-content-between">
+                        <div class="col-lg-8">
+                            <div class="job-info d-flex align-items-start">
+                                {% if job.employer.company_logo %}
+                                <img src="{{ job.employer.company_logo.url }}" alt="Logo"
+                                    class="img-fluid rounded-circle"
+                                    style="width: 60px; height: 60px; margin-right: 15px; object-fit: cover;">
+                                {% else %}
+                                <div class="company-logo-placeholder"
+                                    style="width: 60px; height: 60px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-weight: bold; color: #888;">
+                                    {{ job.employer.company_name|slice:":1" }}
+                                </div>
+                                {% endif %}
+                                <div>
+                                    <h3>
+                                        <a href="{% url 'student_job_detail' job.id %}">{{ job.job_title }}</a>
+                                    </h3>
+                                    <p class="text-muted mb-2">{{ job.employer.company_name }}</p>
+                                    <ul>
+                                        <li>
+                                            <i class='bx bx-time'></i>
+                                            {{ job.working_hours }}
+                                        </li>
+                                        <li>
+                                            <i class='bx bx-location-plus'></i>
+                                            {{ job.location|default:"Remote" }}
+                                        </li>
+                                        <li>
+                                            <i class='bx bx-money'></i>
+                                            {{ job.salary_range }}
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
+                            <p style="margin-top: 15px; color: #666;">{{ job.job_description|truncatewords:20 }}</p>
                         </div>
-                        {% endfor %}
-                    {% else %}
-                        <div class="col-md-8">
-                            <div class="alert alert-info text-center">
-                                <h4>No jobs found</h4>
-                                <p>Please check back later.</p>
+                        <div class="col-lg-4">
+                            <div class="job-save" style="text-align: center;">
+                                <a href="{% url 'student_job_detail' job.id %}" class="btn btn-primary btn-sm"
+                                    style="margin-bottom: 5px; display: block;">
+                                    View Details
+                                </a>
+                                <a href="{% url 'apply_job' job.id %}" class="btn btn-success btn-sm"
+                                    style="display: block;">
+                                    Apply Job
+                                </a>
                             </div>
                         </div>
-                    {% endif %}
+                    </div>
                 </div>
             </div>
-        </section>
+            {% endfor %}
+            {% else %}
+            <div class="col-md-8">
+                <div class="alert alert-info text-center">
+                    <h4>No jobs found</h4>
+                    <p>Please check back later.</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
 {% endblock %}

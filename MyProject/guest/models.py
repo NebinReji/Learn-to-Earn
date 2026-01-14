@@ -54,23 +54,32 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 class Employer(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="employer_profile",null=True)
     company_name = models.CharField(max_length=200)
+    company_logo = models.ImageField(upload_to='company_logos/', blank=True, null=True)
     contact_person = models.CharField(max_length=100)
     phone = models.CharField(max_length=15)
     email = models.EmailField()
+    website = models.URLField(blank=True, null=True)
     district = models.ForeignKey(District, on_delete=models.CASCADE, related_name='employers')
     address = models.TextField()
+    description = models.TextField(blank=True, help_text="About the company")
     verification_status = models.BooleanField(default=False)
 
     def __str__(self):
         return self.company_name
+
 class student(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="student_profile",null=True)
     student_name = models.CharField(max_length=200)
+    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
     email = models.EmailField()
     phone_number = models.CharField(max_length=15)
     academic_status = models.CharField(max_length=100)
     skills = models.TextField()
+    bio = models.TextField(blank=True, help_text="Short professional summary")
+    resume = models.FileField(upload_to='resumes/', blank=True, null=True)
+    portfolio_link = models.URLField(blank=True, null=True)
     id_card = models.FileField(upload_to='id_cards/')
+    district = models.ForeignKey(District, on_delete=models.SET_NULL, null=True, blank=True, related_name='students')
 
     def __str__(self):
         return self.student_name    

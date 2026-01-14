@@ -1,223 +1,539 @@
 {% extends 'guest/base.html' %}
 {% load static %}
 {% block content %}
-<div class="container" style="margin-top: 60px; margin-bottom: 80px;">
-    <div class="row mb-4 text-center">
-        <div class="col">
-            <h2 class="fw-bold">Sign Up</h2>
-            <p class="text-muted">Choose your role and complete the form.</p>
+<!-- Page Title Start -->
+<section class="page-title title-bg13">
+    <div class="d-table">
+        <div class="d-table-cell">
+            <h2>Sign Up</h2>
+            <ul>
+                <li>
+                    <a href="{% url 'guest_index' %}">Home</a>
+                </li>
+                <li>Sign Up</li>
+            </ul>
         </div>
     </div>
+    <div class="lines">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+</section>
+<!-- Page Title End -->
 
-    <!-- Display Messages -->
-    {% if messages %}
-        <div class="row">
-            <div class="col">
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<!-- Sign up Section Start -->
+<div class="signup-section ptb-100">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-9 col-sm-12">
+                <!-- Display Messages -->
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="margin-bottom: 25px; border-radius: 5px; border: none;">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <!-- Signup Tabs -->
+                <div class="signup-tabs">
+                    <div class="tab-header" style="margin-bottom: 40px;">
+                        <ul class="nav nav-tabs justify-content-center" id="signupTab" role="tablist" style="border-bottom: 2px solid #e9ecef;">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="student-tab" data-bs-toggle="tab" data-bs-target="#student" type="button" role="tab" aria-controls="student" aria-selected="true" style="color: #333; font-weight: 600; border: none; padding: 15px 35px; font-size: 16px;">
+                                    <i class='bx bxs-graduation' style="margin-right: 8px;"></i>Student
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="employer-tab" data-bs-toggle="tab" data-bs-target="#employer" type="button" role="tab" aria-controls="employer" aria-selected="false" style="color: #999; font-weight: 600; border: none; padding: 15px 35px; font-size: 16px;">
+                                    <i class='bx bxs-briefcase' style="margin-right: 8px;"></i>Employer
+                                </button>
+                            </li>
+                        </ul>
                     </div>
-                {% endfor %}
-            </div>
-        </div>
-    {% endif %}
 
-    <!-- Tabs -->
-    <ul class="nav nav-tabs justify-content-center" id="signupTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="student-tab" data-bs-toggle="tab" data-bs-target="#student" type="button" role="tab" aria-controls="student" aria-selected="true">Student</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="employer-tab" data-bs-toggle="tab" data-bs-target="#employer" type="button" role="tab" aria-controls="employer" aria-selected="false">Employer</button>
-        </li>
-    </ul>
+                    <div class="tab-content" id="signupTabContent">
+                        <!-- Student Signup Tab -->
+                        <div class="tab-pane fade show active" id="student" role="tabpanel" aria-labelledby="student-tab">
+                            <form class="signup-form" method="post" enctype="multipart/form-data" novalidate>
+                                {% csrf_token %}
+                                <input type="hidden" name="student-submit" value="1">
 
-    <div class="tab-content pt-4" id="signupTabContent">
-        <div class="tab-pane fade show active" id="student" role="tabpanel" aria-labelledby="student-tab">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">Student Registration</h4>
-                </div>
-                <div class="card-body">
-                    <div class="alert alert-info">
-                        <strong>ℹ️ Note:</strong> Your student account will be activated after admin verification.
+                                <!-- Display non-field errors -->
+                                {% if student_form.non_field_errors %}
+                                    <div class="alert alert-danger" style="margin-bottom: 25px; border-radius: 5px; border: none;">
+                                        {{ student_form.non_field_errors }}
+                                    </div>
+                                {% endif %}
+
+                                <div class="form-group mb-4">
+                                    <label for="id_name" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">Full Name <span style="color: #e74c3c;">*</span></label>
+                                    {{ student_form.name }}
+                                    {% if student_form.name.errors %}
+                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ student_form.name.errors }}</small>
+                                    {% endif %}
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="id_email" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">Email Address <span style="color: #e74c3c;">*</span></label>
+                                    {{ student_form.email }}
+                                    {% if student_form.email.errors %}
+                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ student_form.email.errors }}</small>
+                                    {% endif %}
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="id_phone_number" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">Phone Number <span style="color: #e74c3c;">*</span></label>
+                                    {{ student_form.phone_number }}
+                                    {% if student_form.phone_number.errors %}
+                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ student_form.phone_number.errors }}</small>
+                                    {% endif %}
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="id_dob" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">Date of Birth</label>
+                                    {{ student_form.dob }}
+                                    {% if student_form.dob.errors %}
+                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ student_form.dob.errors }}</small>
+                                    {% endif %}
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="id_district" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">District</label>
+                                    {{ student_form.district }}
+                                    {% if student_form.district.errors %}
+                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ student_form.district.errors }}</small>
+                                    {% endif %}
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="id_place" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">City/Place</label>
+                                    {{ student_form.place }}
+                                    {% if student_form.place.errors %}
+                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ student_form.place.errors }}</small>
+                                    {% endif %}
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="id_academic_status" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">Academic Status</label>
+                                    {{ student_form.academic_status }}
+                                    {% if student_form.academic_status.errors %}
+                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ student_form.academic_status.errors }}</small>
+                                    {% endif %}
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="id_skills" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">Skills <span style="color: #e74c3c;">*</span></label>
+                                    {{ student_form.skills }}
+                                    {% if student_form.skills.errors %}
+                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ student_form.skills.errors }}</small>
+                                    {% endif %}
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="id_id_card" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">Upload ID Card/Document <span style="color: #e74c3c;">*</span></label>
+                                    {{ student_form.id_card }}
+                                    {% if student_form.id_card.errors %}
+                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ student_form.id_card.errors }}</small>
+                                    {% endif %}
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="id_password1" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">Password <span style="color: #e74c3c;">*</span></label>
+                                    {{ student_form.password1 }}
+                                    {% if student_form.password1.errors %}
+                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ student_form.password1.errors }}</small>
+                                    {% endif %}
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="id_password2" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">Confirm Password <span style="color: #e74c3c;">*</span></label>
+                                    {{ student_form.password2 }}
+                                    {% if student_form.password2.errors %}
+                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ student_form.password2.errors }}</small>
+                                    {% endif %}
+                                </div>
+
+                                <div class="signup-btn text-center" style="margin-top: 35px;">
+                                    <button type="submit" class="btn-submit">Register as Student</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Employer Signup Tab -->
+                        <div class="tab-pane fade" id="employer" role="tabpanel" aria-labelledby="employer-tab">
+                            <form class="signup-form" method="post" novalidate>
+                                {% csrf_token %}
+                                <input type="hidden" name="employer-submit" value="1">
+
+                                <!-- Display non-field errors -->
+                                {% if employer_form.non_field_errors %}
+                                    <div class="alert alert-danger" style="margin-bottom: 25px; border-radius: 5px; border: none;">
+                                        {{ employer_form.non_field_errors }}
+                                    </div>
+                                {% endif %}
+
+                                <div class="form-group mb-4">
+                                    <label for="id_company_name" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">Company Name <span style="color: #e74c3c;">*</span></label>
+                                    {{ employer_form.company_name }}
+                                    {% if employer_form.company_name.errors %}
+                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ employer_form.company_name.errors }}</small>
+                                    {% endif %}
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="id_contact_person" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">Contact Person <span style="color: #e74c3c;">*</span></label>
+                                    {{ employer_form.contact_person }}
+                                    {% if employer_form.contact_person.errors %}
+                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ employer_form.contact_person.errors }}</small>
+                                    {% endif %}
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="id_email" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">Email Address <span style="color: #e74c3c;">*</span></label>
+                                    {{ employer_form.email }}
+                                    {% if employer_form.email.errors %}
+                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ employer_form.email.errors }}</small>
+                                    {% endif %}
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="id_phone" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">Phone Number <span style="color: #e74c3c;">*</span></label>
+                                    {{ employer_form.phone }}
+                                    {% if employer_form.phone.errors %}
+                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ employer_form.phone.errors }}</small>
+                                    {% endif %}
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="id_district" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">District <span style="color: #e74c3c;">*</span></label>
+                                    {{ employer_form.district }}
+                                    {% if employer_form.district.errors %}
+                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ employer_form.district.errors }}</small>
+                                    {% endif %}
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="id_address" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">Address <span style="color: #e74c3c;">*</span></label>
+                                    {{ employer_form.address }}
+                                    {% if employer_form.address.errors %}
+                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ employer_form.address.errors }}</small>
+                                    {% endif %}
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="id_password1" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">Password <span style="color: #e74c3c;">*</span></label>
+                                    {{ employer_form.password1 }}
+                                    {% if employer_form.password1.errors %}
+                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ employer_form.password1.errors }}</small>
+                                    {% endif %}
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="id_password2" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">Confirm Password <span style="color: #e74c3c;">*</span></label>
+                                    {{ employer_form.password2 }}
+                                    {% if employer_form.password2.errors %}
+                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ employer_form.password2.errors }}</small>
+                                    {% endif %}
+                                </div>
+
+                                <div class="signup-btn text-center" style="margin-top: 35px;">
+                                    <button type="submit" class="btn-submit">Register as Employer</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <form method="post" enctype="multipart/form-data" novalidate>
-                        {% csrf_token %}
-                        
-                        <!-- Display non-field errors -->
-                        {% if student_form.non_field_errors %}
-                            <div class="alert alert-danger">
-                                {{ student_form.non_field_errors }}
-                            </div>
-                        {% endif %}
-                        
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                {{ student_form.name.label_tag }}
-                                {{ student_form.name }}
-                                {% if student_form.name.errors %}
-                                    <div class="text-danger small">{{ student_form.name.errors }}</div>
-                                {% endif %}
-                            </div>
-                            <div class="col-md-6">
-                                {{ student_form.email.label_tag }}
-                                {{ student_form.email }}
-                                {% if student_form.email.errors %}
-                                    <div class="text-danger small">{{ student_form.email.errors }}</div>
-                                {% endif %}
-                            </div>
-                            <div class="col-md-6">
-                                {{ student_form.phone_number.label_tag }}
-                                {{ student_form.phone_number }}
-                                {% if student_form.phone_number.errors %}
-                                    <div class="text-danger small">{{ student_form.phone_number.errors }}</div>
-                                {% endif %}
-                            </div>
-                            <div class="col-md-6">
-                                {{ student_form.dob.label_tag }}
-                                {{ student_form.dob }}
-                                {% if student_form.dob.errors %}
-                                    <div class="text-danger small">{{ student_form.dob.errors }}</div>
-                                {% endif %}
-                            </div>
-                            <div class="col-md-6">
-                                {{ student_form.place.label_tag }}
-                                {{ student_form.place }}
-                                {% if student_form.place.errors %}
-                                    <div class="text-danger small">{{ student_form.place.errors }}</div>
-                                {% endif %}
-                            </div>
-                            <div class="col-md-6">
-                                {{ student_form.academic_status.label_tag }}
-                                {{ student_form.academic_status }}
-                                {% if student_form.academic_status.errors %}
-                                    <div class="text-danger small">{{ student_form.academic_status.errors }}</div>
-                                {% endif %}
-                            </div>
-                            <div class="col-12">
-                                {{ student_form.skills.label_tag }}
-                                {{ student_form.skills }}
-                                {% if student_form.skills.errors %}
-                                    <div class="text-danger small">{{ student_form.skills.errors }}</div>
-                                {% endif %}
-                            </div>
-                            <div class="col-md-6">
-                                {{ student_form.id_card.label_tag }}
-                                {{ student_form.id_card }}
-                                {% if student_form.id_card.errors %}
-                                    <div class="text-danger small">{{ student_form.id_card.errors }}</div>
-                                {% endif %}
-                            </div>
-                            <div class="col-md-6"></div>
-                            <div class="col-md-6">
-                                {{ student_form.password1.label_tag }}
-                                {{ student_form.password1 }}
-                                {% if student_form.password1.errors %}
-                                    <div class="text-danger small">{{ student_form.password1.errors }}</div>
-                                {% endif %}
-                            </div>
-                            <div class="col-md-6">
-                                {{ student_form.password2.label_tag }}
-                                {{ student_form.password2 }}
-                                {% if student_form.password2.errors %}
-                                    <div class="text-danger small">{{ student_form.password2.errors }}</div>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
-                            <button type="submit" name="student-submit" class="btn btn-primary">Register as Student</button>
-                        </div>
-                    </form>
                 </div>
-            </div>
-        </div>
 
-        <div class="tab-pane fade" id="employer" role="tabpanel" aria-labelledby="employer-tab">
-            <div class="card shadow">
-                <div class="card-header bg-success text-white">
-                    <h4 class="mb-0">Employer Registration</h4>
+                <!-- Social Login Section -->
+                <div class="other-signup text-center" style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #e9ecef;">
+                    <span style="color: #666; font-weight: 500; display: block; margin-bottom: 20px;">Or sign up with</span>
+                    <ul style="list-style: none; display: flex; gap: 15px; justify-content: center; margin: 0; padding: 0;">
+                        <li>
+                            <a href="#" title="Google" style="display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; border: 2px solid #e9ecef; border-radius: 50%; color: #333; font-size: 22px; transition: all 0.3s ease;">
+                                <i class='bx bxl-google'></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" title="Facebook" style="display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; border: 2px solid #e9ecef; border-radius: 50%; color: #333; font-size: 22px; transition: all 0.3s ease;">
+                                <i class='bx bxl-facebook'></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" title="Twitter" style="display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; border: 2px solid #e9ecef; border-radius: 50%; color: #333; font-size: 22px; transition: all 0.3s ease;">
+                                <i class='bx bxl-twitter'></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" title="LinkedIn" style="display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; border: 2px solid #e9ecef; border-radius: 50%; color: #333; font-size: 22px; transition: all 0.3s ease;">
+                                <i class='bx bxl-linkedin'></i>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-                <div class="card-body">
-                    <div class="alert alert-info">
-                        <strong>ℹ️ Note:</strong> Your employer account will be activated after admin verification. You will be able to login once approved.
-                    </div>
-                    <form method="post" novalidate>
-                        {% csrf_token %}
-                        
-                        <!-- Display non-field errors -->
-                        {% if employer_form.non_field_errors %}
-                            <div class="alert alert-danger">
-                                {{ employer_form.non_field_errors }}
-                            </div>
-                        {% endif %}
-                        
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                {{ employer_form.company_name.label_tag }}
-                                {{ employer_form.company_name }}
-                                {% if employer_form.company_name.errors %}
-                                    <div class="text-danger small">{{ employer_form.company_name.errors }}</div>
-                                {% endif %}
-                            </div>
-                            <div class="col-md-6">
-                                {{ employer_form.contact_person.label_tag }}
-                                {{ employer_form.contact_person }}
-                                {% if employer_form.contact_person.errors %}
-                                    <div class="text-danger small">{{ employer_form.contact_person.errors }}</div>
-                                {% endif %}
-                            </div>
-                            <div class="col-md-6">
-                                {{ employer_form.phone.label_tag }}
-                                {{ employer_form.phone }}
-                                {% if employer_form.phone.errors %}
-                                    <div class="text-danger small">{{ employer_form.phone.errors }}</div>
-                                {% endif %}
-                            </div>
-                            <div class="col-md-6">
-                                {{ employer_form.email.label_tag }}
-                                {{ employer_form.email }}
-                                {% if employer_form.email.errors %}
-                                    <div class="text-danger small">{{ employer_form.email.errors }}</div>
-                                {% endif %}
-                            </div>
-                            <div class="col-md-6">
-                                {{ employer_form.district.label_tag }}
-                                {{ employer_form.district }}
-                                {% if employer_form.district.errors %}
-                                    <div class="text-danger small">{{ employer_form.district.errors }}</div>
-                                {% endif %}
-                            </div>
-                            <div class="col-md-6">
-                                {{ employer_form.address.label_tag }}
-                                {{ employer_form.address }}
-                                {% if employer_form.address.errors %}
-                                    <div class="text-danger small">{{ employer_form.address.errors }}</div>
-                                {% endif %}
-                            </div>
-                            <div class="col-md-6">
-                                {{ employer_form.password1.label_tag }}
-                                {{ employer_form.password1 }}
-                                {% if employer_form.password1.errors %}
-                                    <div class="text-danger small">{{ employer_form.password1.errors }}</div>
-                                {% endif %}
-                            </div>
-                            <div class="col-md-6">
-                                {{ employer_form.password2.label_tag }}
-                                {{ employer_form.password2 }}
-                                {% if employer_form.password2.errors %}
-                                    <div class="text-danger small">{{ employer_form.password2.errors }}</div>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
-                            <button type="submit" name="employer-submit" class="btn btn-success">Register as Employer</button>
-                        </div>
-                    </form>
+
+                <!-- Login Link Section -->
+                <div class="create-btn text-center" style="margin-top: 30px; padding-bottom: 20px;">
+                    <p style="margin: 0; color: #666; font-size: 15px;">
+                        Already have an Account?
+                        <a href="{% url 'login' %}" style="color: #007bff; text-decoration: none; font-weight: 600; transition: color 0.3s;">
+                            Sign In
+                            <i class='bx bx-chevrons-right' style="font-size: 16px; margin-left: 5px; vertical-align: middle;"></i>
+                        </a>
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<!-- Sign Up Section End -->
+
+<style>
+    /* Form Group Styling */
+    .signup-form .form-group {
+        margin-bottom: 25px;
+    }
+
+    .signup-form label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: 600;
+        color: #333;
+        font-size: 14px;
+    }
+
+    /* Input Field Styling */
+    .signup-form input[type="text"],
+    .signup-form input[type="email"],
+    .signup-form input[type="password"],
+    .signup-form input[type="date"],
+    .signup-form input[type="tel"],
+    .signup-form input[type="file"],
+    .signup-form textarea,
+    .signup-form select {
+        width: 100%;
+        padding: 13px 16px;
+        border: 1.5px solid #e0e0e0;
+        border-radius: 5px;
+        font-size: 14px;
+        font-family: inherit;
+        transition: all 0.3s ease;
+        background-color: #fafafa;
+        box-sizing: border-box;
+    }
+
+    .signup-form input[type="text"]:focus,
+    .signup-form input[type="email"]:focus,
+    .signup-form input[type="password"]:focus,
+    .signup-form input[type="date"]:focus,
+    .signup-form input[type="tel"]:focus,
+    .signup-form input[type="file"]:focus,
+    .signup-form textarea:focus,
+    .signup-form select:focus {
+        outline: none;
+        border-color: #007bff;
+        background-color: #fff;
+        box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.08);
+    }
+
+    .signup-form textarea {
+        resize: vertical;
+        min-height: 110px;
+        font-family: inherit;
+    }
+
+    /* Button Styling */
+    .signup-btn {
+        margin-top: 35px;
+        text-align: center;
+    }
+
+    .btn-submit {
+        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+        color: white;
+        border: none;
+        padding: 14px 50px;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+    }
+
+    .btn-submit:hover {
+        background: linear-gradient(135deg, #0056b3 0%, #003d82 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);
+    }
+
+    .btn-submit:active {
+        transform: translateY(-1px);
+    }
+
+    /* Signup Tab Navigation - Specific Styling */
+    .signup-tabs .nav-link {
+        position: relative;
+        color: #999 !important;
+        font-weight: 600;
+        border: none !important;
+        padding: 15px 35px !important;
+        font-size: 15px;
+        transition: all 0.3s ease;
+    }
+
+    .signup-tabs .nav-link:hover {
+        color: #555 !important;
+    }
+
+    .signup-tabs .nav-link.active {
+        color: #007bff !important;
+    }
+
+    .signup-tabs .nav-link.active::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: #007bff;
+        border-radius: 2px 2px 0 0;
+    }
+
+    /* Social Links */
+    .other-signup a {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .other-signup a:hover {
+        border-color: #007bff !important;
+        color: #007bff !important;
+        background: rgba(0, 123, 255, 0.05) !important;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 123, 255, 0.15);
+    }
+
+    /* Alert Messages */
+    .alert {
+        border-radius: 5px !important;
+        border: none !important;
+        padding: 15px 20px !important;
+        font-size: 14px;
+    }
+
+    .alert-danger {
+        background-color: #fff5f5 !important;
+        color: #c53030 !important;
+        border-left: 4px solid #e74c3c !important;
+    }
+
+    .alert-success {
+        background-color: #f0fdf4 !important;
+        color: #15803d !important;
+        border-left: 4px solid #22c55e !important;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .signup-tabs .nav-link {
+            padding: 12px 20px !important;
+            font-size: 14px;
+        }
+
+        .btn-submit {
+            padding: 12px 35px;
+            font-size: 15px;
+        }
+
+        .signup-form input,
+        .signup-form textarea,
+        .signup-form select {
+            padding: 11px 13px;
+            font-size: 13px;
+        }
+
+        .signup-form label {
+            font-size: 13px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .col-lg-7 {
+            padding: 0 15px;
+        }
+
+        .signup-tabs .nav-link {
+            padding: 10px 15px !important;
+            font-size: 13px;
+        }
+
+        .other-signup {
+            gap: 10px;
+        }
+
+        .other-signup a {
+            width: 45px !important;
+            height: 45px !important;
+        }
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get the district and location select elements
+    const districtSelect = document.getElementById('id_student-district');
+    const locationSelect = document.getElementById('id_student-location');
+
+    if (districtSelect && locationSelect) {
+        // Store the original location options
+        const originalLocationOptions = Array.from(locationSelect.options).map(option => ({
+            value: option.value,
+            text: option.text,
+            districtId: option.getAttribute('data-district-id')
+        }));
+
+        // Function to filter locations based on selected district
+        function filterLocations() {
+            const selectedDistrictId = districtSelect.value;
+            
+            // Clear current location options
+            locationSelect.innerHTML = '<option value="">---------</option>';
+            
+            if (selectedDistrictId) {
+                // Fetch locations from server
+                fetch(`{% url 'get_locations' %}?district_id=${selectedDistrictId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Add filtered locations to select
+                        data.forEach(location => {
+                            const option = document.createElement('option');
+                            option.value = location.id;
+                            option.textContent = location.location_name;
+                            locationSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching locations:', error);
+                    });
+            }
+        }
+
+        // Add event listener to district select
+        districtSelect.addEventListener('change', filterLocations);
+
+        // Initialize on page load if district is already selected
+        if (districtSelect.value) {
+            filterLocations();
+        }
+    }
+});
+</script>
 {% endblock %}

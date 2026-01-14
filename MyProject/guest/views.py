@@ -39,7 +39,7 @@ def signup(request):
             employer_form = EmployerSignupForm(prefix="employer")
             if student_form.is_valid():
                 student_form.save()
-                messages.success(request, "Student registration successful! Your account is pending admin approval.")
+                messages.success(request, "Registration Successful! Please login.")
                 return redirect('login')
             else:
                 messages.error(request, "Please correct the errors below.")
@@ -48,7 +48,7 @@ def signup(request):
             student_form = SignupForm(prefix="student")
             if employer_form.is_valid():
                 employer_form.save()
-                messages.success(request, "Employer registration successful! Your account is pending admin approval.")
+                messages.success(request, "Employer Registration Successful! Please login.")
                 return redirect('login')
             else:
                 messages.error(request, "Please correct the errors below.")
@@ -91,7 +91,7 @@ def login_view(request):
                         return render(request, "guest/login.html", {"form": form})
                 
                 login(request, user)
-                messages.success(request, "Login successful!")
+                messages.success(request, f"Welcome back, {user.first_name}!")
 
                 # Redirect based on user role
                 if user.role == 'admin':

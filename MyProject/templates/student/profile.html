@@ -1,0 +1,103 @@
+{% extends 'student/base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Page Title -->
+<section class="page-title title-bg10">
+    <div class="d-table">
+        <div class="d-table-cell">
+            <h2>My Profile</h2>
+            <ul>
+                <li><a href="{% url 'student_index' %}">Home</a></li>
+                <li>Profile</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Profile Section -->
+<section class="ptb-100">
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar / Profile Card -->
+            <div class="col-lg-4">
+                <div class="account-profile-card">
+                    <div class="text-center">
+                        {% if student.profile_picture %}
+                        <img src="{{ student.profile_picture.url }}" alt="Profile" class="img-fluid rounded-circle mb-3"
+                            style="width: 150px; height: 150px; object-fit: cover;">
+                        {% else %}
+                        <img src="{% static 'guest/assets/img/user-dummy.png' %}" alt="Profile"
+                            class="img-fluid rounded-circle mb-3"
+                            style="width: 150px; height: 150px; background: #eee;">
+                        {% endif %}
+                        <h3>{{ student.student_name }}</h3>
+                        <p>{{ student.academic_status }}</p>
+                    </div>
+                    <div class="profile-info-list" style="margin-top: 20px;">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>Email:</strong> {{ student.email }}</li>
+                            <li class="list-group-item"><strong>Phone:</strong> {{ student.phone_number }}</li>
+                            <li class="list-group-item"><strong>Location:</strong> {{ student.district }}</li>
+                        </ul>
+                        {% if student.resume %}
+                        <div class="mt-3 text-center">
+                            <a href="{{ student.resume.url }}" target="_blank"
+                                class="btn btn-outline-primary btn-sm">View Resume</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Form -->
+            <div class="col-lg-8">
+                <div class="job-post-form-wrapper">
+                    <h3>Edit Profile Details</h3>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                        {% endfor %}
+                        {% endif %}
+
+                        {{ form.as_p }}
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .account-profile-card {
+        padding: 30px;
+        background: #fff;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+        border-radius: 8px;
+    }
+
+    .job-post-form-wrapper {
+        padding: 30px;
+        background: #fff;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+        border-radius: 8px;
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+</style>
+
+{% endblock %}

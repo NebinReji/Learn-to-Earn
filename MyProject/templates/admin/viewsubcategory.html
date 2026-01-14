@@ -38,21 +38,21 @@
                                                 {% for subcategory in subcategories %}
                                                 <tr>
                                                     <td>{{ forloop.counter }}</td>
-                                                    <td>{{ subcategory.subcategory_id }}</td>
+                                                    <td>{{ subcategory.id }}</td>
                                                     <td>{{ subcategory.subcategory_name }}</td>
                                                     <td>{{ subcategory.category.category_name }}</td>
                                                     <td>
-                                                        <a href="{% url 'editsubcategory' subcategory.subcategory_id %}"
+                                                        <a href="{% url 'editsubcategory' subcategory.id %}"
                                                            class="btn btn-sm btn-primary confirm-action"
                                                            data-action="navigate"
-                                                           data-target-url="{% url 'editsubcategory' subcategory.subcategory_id %}"
+                                                           data-target-url="{% url 'editsubcategory' subcategory.id %}"
                                                            data-message="Proceed to edit this subcategory?">
                                                             Edit
                                                         </a>
-                                                        <a href="{% url 'deletesubcategory' subcategory.subcategory_id %}"
+                                                        <a href="{% url 'deletesubcategory' subcategory.id %}"
                                                            class="btn btn-sm btn-danger confirm-action"
                                                            data-action="navigate"
-                                                           data-target-url="{% url 'deletesubcategory' subcategory.subcategory_id %}"
+                                                           data-target-url="{% url 'deletesubcategory' subcategory.id %}"
                                                            data-message="Are you sure you want to delete this subcategory?">
                                                             Delete
                                                         </a>

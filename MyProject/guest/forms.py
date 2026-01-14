@@ -40,6 +40,13 @@ class SignupForm(forms.Form):
         widget=forms.DateInput(attrs={"type": "date", "class": "form-control"})
     )
 
+    district = forms.ModelChoiceField(
+        label="District",
+        queryset=District.objects.all(),
+        required=False,
+        widget=forms.Select(attrs={"class": "form-control"})
+    )
+
     place = forms.CharField(
         label="Place",
         required=False,
@@ -120,6 +127,7 @@ class SignupForm(forms.Form):
             academic_status=self.cleaned_data.get("academic_status", ""),
             skills=self.cleaned_data.get("skills", ""),
             id_card=self.cleaned_data.get("id_card") or "",
+            district=self.cleaned_data.get("district"),
         )
 
         return user

@@ -1,0 +1,148 @@
+{% extends 'employer/base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Page Title Start -->
+<section class="page-title title-bg10">
+	<div class="d-table">
+		<div class="d-table-cell">
+			<h2>Subscriptions</h2>
+			<ul>
+				<li><a href="{% url 'employer_index' %}">Home</a></li>
+				<li>Subscriptions</li>
+			</ul>
+		</div>
+	</div>
+	<div class="lines">
+		<div class="line"></div>
+		<div class="line"></div>
+		<div class="line"></div>
+	</div>
+</section>
+<!-- Page Title End -->
+
+<!-- Subscription History Section -->
+<section class="pt-100 pb-70">
+	<div class="container">
+		<div class="section-title text-center">
+			<h2>Your Subscriptions</h2>
+			<p>View your active and past subscription plans.</p>
+		</div>
+		<div class="row justify-content-center mb-5">
+			<div class="col-lg-10">
+				<div class="table-responsive">
+					<table class="table table-bordered table-striped text-center">
+						<thead class="table-dark">
+							<tr>
+								<th>Plan Name</th>
+								<th>Start Date</th>
+								<th>End Date</th>
+								<th>Price</th>
+								<th>Features</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for plan in plans %}
+							<tr>
+								<td><span class="badge bg-primary">{{ plan.plan_name|title }}</span></td>
+								<td>{{ plan.start_date }}</td>
+								<td>{{ plan.end_date }}</td>
+								<td>${{ plan.price }}</td>
+								<td>{{ plan.features|truncatechars:50 }}</td>
+							</tr>
+							{% empty %}
+							<tr>
+								<td colspan="5" class="text-center">No subscription history found.</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- Pricing Section Start -->
+<section class="pricing-section pb-70">
+	<div class="container">
+		<div class="section-title text-center">
+			<h2>Upgrade Your Plan</h2>
+			<p>Choose a plan to control posting limits, visibility, and candidate reach.</p>
+		</div>
+
+		<div class="row justify-content-center">
+			<!-- Free Plan -->
+			<div class="col-lg-4 col-sm-6">
+				<div class="price-card">
+					<div class="price-top">
+						<h3>Free</h3>
+						<i class='bx bx-user'></i>
+						<h2>0<sub>/Month</sub></h2>
+					</div>
+
+					<div class="price-feature">
+						<ul>
+							<li><i class='bx bx-check'></i> Post up to 2 jobs/month</li>
+							<li><i class='bx bx-check'></i> Basic listing visibility</li>
+							<li><i class='bx bx-check'></i> Manage candidates in dashboard</li>
+						</ul>
+					</div>
+
+					<div class="price-btn">
+						<a href="#" class="default-btn disabled"
+							style="background-color: #ccc; cursor: default;">Current Standard</a>
+					</div>
+				</div>
+			</div>
+
+			<!-- Sponsor Plan -->
+			<div class="col-lg-4 col-sm-6">
+				<div class="price-card mt-12">
+					<div class="price-top">
+						<h3>Sponsor</h3>
+						<i class='bx bx-user'></i>
+						<h2>199<sub>/Month</sub></h2>
+					</div>
+
+					<div class="price-feature">
+						<ul>
+							<li><i class='bx bx-check'></i> Priority placement in listings</li>
+							<li><i class='bx bx-check'></i> Boosted reach for jobs</li>
+							<li><i class='bx bx-check'></i> Email + mobile job alerts</li>
+						</ul>
+					</div>
+
+					<div class="price-btn">
+						<a href="{% url 'payment_page' 'sponsor' %}" class="default-btn">Choose Sponsor</a>
+					</div>
+				</div>
+			</div>
+
+			<!-- Premium Plan -->
+			<div class="col-lg-4 col-sm-6">
+				<div class="price-card">
+					<div class="price-top">
+						<h3>Premium</h3>
+						<i class='bx bx-user'></i>
+						<h2>299<sub>/Month</sub></h2>
+					</div>
+
+					<div class="price-feature">
+						<ul>
+							<li><i class='bx bx-check'></i> Job ads live for 6 weeks</li>
+							<li><i class='bx bx-check'></i> Premium placement & visibility</li>
+							<li><i class='bx bx-check'></i> Email + mobile job alerts</li>
+						</ul>
+					</div>
+
+					<div class="price-btn">
+						<a href="{% url 'payment_page' 'premium' %}" class="default-btn">Choose Premium</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- Pricing Section End -->
+{% endblock %}
