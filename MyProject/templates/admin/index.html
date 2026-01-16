@@ -496,54 +496,5 @@
 
 <!-- Add this in your template, preferably after your main content -->
 
-<!-- Statistics Section -->
-<div class="row">
-    <div class="col-md-3">
-        <div class="card text-white bg-primary mb-3">
-            <div class="card-header">Total Students</div>
-            <div class="card-body">
-                <h5 class="card-title">{{ total_students }}</h5>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card text-white bg-success mb-3">
-            <div class="card-header">Total Employers</div>
-            <div class="card-body">
-                <h5 class="card-title">{{ total_employers }}</h5>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card text-white bg-info mb-3">
-            <div class="card-header">Active Jobs</div>
-            <div class="card-body">
-                <h5 class="card-title">{{ total_jobs }}</h5>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card text-white bg-warning mb-3">
-            <div class="card-header">Pending Approvals</div>
-            <div class="card-body">
-                <h5 class="card-title">{{ pending_employers }}</h5>
-                <a href="{% url 'view_employers' %}" class="text-white" style="text-decoration: underline;">View</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row mt-4">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                Quick Actions
-            </div>
-            <div class="card-body">
-                <a href="{% url 'addcategory' %}" class="btn btn-outline-primary m-1">Add Category</a>
-                <a href="{% url 'adddistrict' %}" class="btn btn-outline-secondary m-1">Add District</a>
-            </div>
-        </div>
-    </div>
-</div>
+<!-- END CONTENT -->
 {% endblock %}

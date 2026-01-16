@@ -2,94 +2,207 @@
 {% load static %}
 
 {% block content %}
-<!-- Page Title Start -->
-<section class="page-title title-bg10">
-    <div class="d-table">
-        <div class="d-table-cell">
-            <h2>Secure Payment</h2>
-            <ul>
-                <li><a href="{% url 'employer_index' %}">Home</a></li>
-                <li>Payment</li>
-            </ul>
-        </div>
-    </div>
-    <div class="lines">
-        <div class="line"></div>
-        <div class="line"></div>
-        <div class="line"></div>
-    </div>
-</section>
-<!-- Page Title End -->
+<style>
+    .payment-section {
+        background-color: #f8f9fa;
+        min-height: 100vh;
+        padding-top: 60px;
+    }
 
-<section class="user-area-all-style ptb-100">
-    <div class="container">
+    .payment-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+    }
+
+    .order-summary {
+        background: #212529;
+        color: white;
+        padding: 40px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .payment-form-wrapper {
+        padding: 40px;
+    }
+
+    .form-control-lg {
+        border-radius: 10px;
+        font-size: 0.95rem;
+        border: 1px solid #dee2e6;
+        padding: 12px 20px;
+        background-color: #fdfdfd;
+    }
+
+    .form-control-lg:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1);
+        background-color: #fff;
+    }
+
+    .btn-pay {
+        padding: 15px;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
+    }
+
+    .btn-pay:hover {
+        transform: translateY(-2px);
+    }
+
+    .trust-badges {
+        margin-top: 20px;
+        opacity: 0.6;
+    }
+
+    .trust-badges i {
+        font-size: 1.5rem;
+        margin-right: 10px;
+    }
+
+    .verified-badge {
+        display: flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 10px 15px;
+        border-radius: 10px;
+        margin-top: auto;
+    }
+</style>
+
+<div class="payment-section">
+    <div class="container pb-5">
         <div class="row justify-content-center">
-            <div class="col-lg-6">
-                <div class="contact-form-action">
-                    <div class="section-title text-center">
-                        <h2>Complete Your Purchase</h2>
-                        <p>You are upgrading to the <strong>{{ plan_name|title }}</strong> Plan</p>
-                        <h3 class="mt-2 text-primary">${{ price }}</h3>
-                    </div>
+            <div class="col-lg-10">
+                <div class="payment-card row g-0">
+                    <!-- Order Summary Side -->
+                    <div class="col-lg-5 order-lg-2">
+                        <div class="order-summary">
+                            <h4 class="fw-bold mb-4">Order Summary</h4>
 
-                    <form method="post" action="{% url 'process_payment' %}" id="paymentForm"
-                        onsubmit="return validatePaymentForm()">
-                        {% csrf_token %}
-                        <input type="hidden" name="plan" value="{{ plan_name }}">
-
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label>Card Number</label>
-                                    <input class="form-control" type="text" id="cardNumber" name="card_number"
-                                        placeholder="0000 0000 0000 0000" maxlength="19" required>
-                                    <small class="text-danger" id="cardError" style="display:none;">Enter a valid
-                                        16-digit card number.</small>
-                                </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="text-white-50">Plan Selected</span>
+                                <span class="fw-bold badge bg-primary">{{ plan_name|title }}</span>
+                            </div>
+                            <div
+                                class="d-flex justify-content-between align-items-center mb-4 pb-4 border-bottom border-secondary">
+                                <span class="text-white-50">Billing Cycle</span>
+                                <span class="fw-bold">Monthly</span>
                             </div>
 
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Expiry Date</label>
-                                    <input class="form-control" type="text" id="expiryDate" name="expiry"
-                                        placeholder="MM/YY" maxlength="5" required>
-                                    <small class="text-danger" id="expiryError" style="display:none;">Invalid Date
-                                        (MM/YY).</small>
-                                </div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="h5 mb-0">Total Due</span>
+                                <span class="h2 mb-0 fw-bold text-success">${{ price }}</span>
                             </div>
+                            <div class="text-end text-white-50 small mb-5">Including all taxes</div>
 
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>CVV</label>
-                                    <input class="form-control" type="password" id="cvv" name="cvv" placeholder="123"
-                                        maxlength="3" required>
-                                    <small class="text-danger" id="cvvError" style="display:none;">CVV must be 3
-                                        digits.</small>
+                            <div class="verified-badge">
+                                <i class="bi bi-shield-lock-fill fs-2 me-3 text-success"></i>
+                                <div>
+                                    <div class="fw-bold">Secure SSL Payment</div>
+                                    <div class="small text-white-50">Your data is encrypted and secure</div>
                                 </div>
-                            </div>
-
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label>Cardholder Name</label>
-                                    <input class="form-control" type="text" id="cardName" name="name_on_card"
-                                        placeholder="John Doe" required>
-                                    <small class="text-danger" id="nameError" style="display:none;">Name is
-                                        required.</small>
-                                </div>
-                            </div>
-
-                            <div class="col-12">
-                                <button class="default-btn btn-two" type="submit">
-                                    Pay Now & Activate
-                                </button>
                             </div>
                         </div>
-                    </form>
+                    </div>
+
+                    <!-- Payment Form Side -->
+                    <div class="col-lg-7 order-lg-1">
+                        <div class="payment-form-wrapper">
+                            <div class="mb-4">
+                                <h3 class="fw-bold mb-1">Payment Details</h3>
+                                <p class="text-muted">Complete your purchase by providing your payment details.</p>
+                            </div>
+
+                            <div class="alert alert-info border-0 shadow-sm d-flex align-items-center mb-4">
+                                <i class="bi bi-info-circle-fill fs-4 me-3 text-info"></i>
+                                <div class="small">This is a secure checkout. No card information is stored on our
+                                    servers.</div>
+                            </div>
+
+                            <form method="post" action="{% url 'process_payment' %}" id="paymentForm"
+                                onsubmit="return validatePaymentForm()">
+                                {% csrf_token %}
+                                <input type="hidden" name="plan" value="{{ plan_name }}">
+
+                                <div class="mb-4">
+                                    <label class="form-label text-muted fw-bold small text-uppercase">Cardholder
+                                        Name</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white border-end-0"><i
+                                                class="bi bi-person text-muted"></i></span>
+                                        <input type="text" class="form-control form-control-lg border-start-0 ps-0"
+                                            id="cardName" name="name_on_card" placeholder="John Doe" required>
+                                    </div>
+                                    <small class="text-danger mt-1" id="nameError" style="display:none;">Name is
+                                        required.</small>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label text-muted fw-bold small text-uppercase">Card
+                                        Number</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white border-end-0"><i
+                                                class="bi bi-credit-card text-muted"></i></span>
+                                        <input type="text" class="form-control form-control-lg border-start-0 ps-0"
+                                            id="cardNumber" name="card_number" placeholder="0000 0000 0000 0000"
+                                            maxlength="19" required>
+                                        <span class="input-group-text bg-white border-start-0 text-muted"><i
+                                                class="fab fa-cc-visa me-1"></i> <i
+                                                class="fab fa-cc-mastercard"></i></span>
+                                    </div>
+                                    <small class="text-danger mt-1" id="cardError" style="display:none;">Enter a valid
+                                        16-digit card number.</small>
+                                </div>
+
+                                <div class="row mb-4">
+                                    <div class="col-6">
+                                        <label class="form-label text-muted fw-bold small text-uppercase">Expiry
+                                            Date</label>
+                                        <input type="text" class="form-control form-control-lg" id="expiryDate"
+                                            name="expiry" placeholder="MM / YY" maxlength="5" required>
+                                        <small class="text-danger mt-1" id="expiryError" style="display:none;">Invalid
+                                            Date (MM/YY).</small>
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label text-muted fw-bold small text-uppercase">CVV /
+                                            CVC</label>
+                                        <div class="input-group">
+                                            <input type="password" class="form-control form-control-lg border-end-0"
+                                                id="cvv" name="cvv" placeholder="123" maxlength="3" required>
+                                            <span class="input-group-text bg-white border-start-0 text-muted"><i
+                                                    class="bi bi-question-circle" data-bs-toggle="tooltip"
+                                                    title="3-digit code on back"></i></span>
+                                        </div>
+                                        <small class="text-danger mt-1" id="cvvError" style="display:none;">CVV must be
+                                            3 digits.</small>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-primary btn-pay w-100" type="submit">
+                                    <span class="me-2">Pay ${{ price }}</span> <i class="bi bi-arrow-right"></i>
+                                </button>
+
+                                <div class="text-center mt-3">
+                                    <a href="{% url 'employer_subscriptions' %}"
+                                        class="text-decoration-none text-muted small"><i
+                                            class="bi bi-arrow-left me-1"></i> Cancel and Return</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</section>
+</div>
 
 <script>
     // Format Card Number (adds space every 4 digits)
@@ -101,11 +214,9 @@
         var formattedValue = value.replace(/(\d{4})(?=\d)/g, '$1 ');
         target.value = formattedValue;
 
-        // Adjust cursor position
-        if (target.value.length > length) {
-            position += 1;
-        }
-        target.setSelectionRange(position, position);
+        if (target.value.length > length) { position += 1; }
+        // target.setSelectionRange(position, position); 
+        // Note: setSelectionRange might misbehave with formatting insert, simplified for now
     });
 
     // Format Expiry Date (adds slash after 2 digits)

@@ -39,7 +39,7 @@ def signup(request):
             employer_form = EmployerSignupForm(prefix="employer")
             if student_form.is_valid():
                 student_form.save()
-                messages.success(request, "Registration Successful! Please login.")
+                messages.success(request, "Student registration successful! Your account is pending admin approval.")
                 return redirect('login')
             else:
                 messages.error(request, "Please correct the errors below.")
@@ -48,7 +48,7 @@ def signup(request):
             student_form = SignupForm(prefix="student")
             if employer_form.is_valid():
                 employer_form.save()
-                messages.success(request, "Employer Registration Successful! Please login.")
+                messages.success(request, "Employer registration successful! Your account is pending admin approval.")
                 return redirect('login')
             else:
                 messages.error(request, "Please correct the errors below.")
@@ -91,7 +91,7 @@ def login_view(request):
                         return render(request, "guest/login.html", {"form": form})
                 
                 login(request, user)
-                messages.success(request, f"Welcome back, {user.first_name}!")
+                messages.success(request, "Welcome Back!")
 
                 # Redirect based on user role
                 if user.role == 'admin':
@@ -109,3 +109,8 @@ def login_view(request):
         form = LoginForm()
 
     return render(request, "guest/login.html", {"form": form})
+
+def custom_logout(request):
+    from django.contrib.auth import logout
+    logout(request)
+    return redirect('login')

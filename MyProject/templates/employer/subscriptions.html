@@ -1,58 +1,222 @@
 {% extends 'employer/base.html' %}
 {% load static %}
+
 {% block content %}
+<style>
+	.pricing-header {
+		background: linear-gradient(135deg, #212529 0%, #343a40 100%);
+		padding: 80px 0 60px;
+		color: white;
+	}
 
-<!-- Page Title Start -->
-<section class="page-title title-bg10">
-	<div class="d-table">
-		<div class="d-table-cell">
-			<h2>Subscriptions</h2>
-			<ul>
-				<li><a href="{% url 'employer_index' %}">Home</a></li>
-				<li>Subscriptions</li>
-			</ul>
+	.pricing-card {
+		background: white;
+		border-radius: 20px;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+		padding: 40px;
+		height: 100%;
+		position: relative;
+		transition: transform 0.3s ease;
+		border: 2px solid transparent;
+	}
+
+	.pricing-card:hover {
+		transform: translateY(-5px);
+	}
+
+	.pricing-card.featured {
+		border-color: #198754;
+		box-shadow: 0 15px 40px rgba(25, 135, 84, 0.1);
+	}
+
+	.popular-badge {
+		position: absolute;
+		top: 20px;
+		right: 20px;
+		background: #198754;
+		color: white;
+		padding: 5px 15px;
+		border-radius: 50px;
+		font-size: 0.8rem;
+		font-weight: 600;
+		text-transform: uppercase;
+	}
+
+	.price-amount {
+		font-size: 3.5rem;
+		font-weight: 800;
+		color: #212529;
+		margin: 20px 0;
+	}
+
+	.price-currency {
+		font-size: 1.5rem;
+		vertical-align: super;
+		margin-right: 5px;
+	}
+
+	.price-period {
+		font-size: 1rem;
+		color: #adb5bd;
+		font-weight: 400;
+	}
+
+	.feature-list {
+		list-style: none;
+		padding: 0;
+		margin: 30px 0;
+		text-align: left;
+	}
+
+	.feature-list li {
+		margin-bottom: 15px;
+		color: #6c757d;
+		display: flex;
+		align-items: center;
+	}
+
+	.feature-list li i {
+		color: #198754;
+		margin-right: 12px;
+		font-size: 1.2rem;
+	}
+
+	.btn-plan {
+		padding: 15px;
+		border-radius: 10px;
+		font-weight: 700;
+		width: 100%;
+		transition: all 0.3s;
+	}
+
+	.btn-plan-outline {
+		border: 2px solid #212529;
+		color: #212529;
+	}
+
+	.btn-plan-outline:hover {
+		background: #212529;
+		color: white;
+	}
+
+	.btn-plan-primary {
+		background: #198754;
+		color: white;
+		border: 2px solid #198754;
+		box-shadow: 0 5px 15px rgba(25, 135, 84, 0.3);
+	}
+
+	.btn-plan-primary:hover {
+		background: #146c43;
+		border-color: #146c43;
+		transform: translateY(-2px);
+	}
+</style>
+
+<!-- Header -->
+<div class="pricing-header text-center">
+	<h2 class="fw-bold mb-3 display-5">Choose Your Plan</h2>
+	<p class="lead opacity-75">Unlock powerful tools to find the perfect candidates faster.</p>
+</div>
+
+<div class="container pb-5" style="margin-top: -40px;">
+	<!-- Pricing Cards -->
+	<div class="row g-4 justify-content-center mb-5">
+		<!-- Free Plan -->
+		<div class="col-lg-4 col-md-6">
+			<div class="pricing-card">
+				<h5 class="fw-bold text-muted text-uppercase mb-3">Starter</h5>
+				<div class="price-amount"><span class="price-currency">$</span>0<span class="price-period">/mo</span>
+				</div>
+				<p class="text-muted small">Perfect for small businesses just getting started.</p>
+
+				<ul class="feature-list">
+					<li><i class="bi bi-check-circle-fill"></i> Post up to 2 jobs/month</li>
+					<li><i class="bi bi-check-circle-fill"></i> Basic listing visibility</li>
+					<li><i class="bi bi-check-circle-fill"></i> Candidate management</li>
+				</ul>
+
+				<button class="btn btn-plan btn-secondary opacity-50 pe-none mt-auto">Current Plan</button>
+			</div>
+		</div>
+
+		<!-- Sponsor Plan -->
+		<div class="col-lg-4 col-md-6">
+			<div class="pricing-card featured">
+				<span class="popular-badge">Most Popular</span>
+				<h5 class="fw-bold text-success text-uppercase mb-3">Sponsor</h5>
+				<div class="price-amount"><span class="price-currency">$</span>199<span class="price-period">/mo</span>
+				</div>
+				<p class="text-muted small">Boost your reach and find candidates 2x faster.</p>
+
+				<ul class="feature-list">
+					<li><i class="bi bi-check-circle-fill"></i> Priority placement in listings</li>
+					<li><i class="bi bi-check-circle-fill"></i> Boosted reach for all jobs</li>
+					<li><i class="bi bi-check-circle-fill"></i> Email + Mobile alerts to candidates</li>
+					<li><i class="bi bi-check-circle-fill"></i> Analytics Dashboard</li>
+				</ul>
+
+				<a href="{% url 'payment_page' 'sponsor' %}" class="btn btn-plan btn-plan-primary mt-auto">Upgrade to
+					Sponsor</a>
+			</div>
+		</div>
+
+		<!-- Premium Plan -->
+		<div class="col-lg-4 col-md-6">
+			<div class="pricing-card">
+				<h5 class="fw-bold text-dark text-uppercase mb-3">Premium</h5>
+				<div class="price-amount"><span class="price-currency">$</span>299<span class="price-period">/mo</span>
+				</div>
+				<p class="text-muted small">Maximum visibility for high-volume hiring.</p>
+
+				<ul class="feature-list">
+					<li><i class="bi bi-check-circle-fill"></i> Unlimited job postings</li>
+					<li><i class="bi bi-check-circle-fill"></i> Top-tier placement & branding</li>
+					<li><i class="bi bi-check-circle-fill"></i> Dedicated support manager</li>
+					<li><i class="bi bi-check-circle-fill"></i> Access to resume database</li>
+				</ul>
+
+				<a href="{% url 'payment_page' 'premium' %}" class="btn btn-plan btn-plan-outline mt-auto">Go
+					Premium</a>
+			</div>
 		</div>
 	</div>
-	<div class="lines">
-		<div class="line"></div>
-		<div class="line"></div>
-		<div class="line"></div>
-	</div>
-</section>
-<!-- Page Title End -->
 
-<!-- Subscription History Section -->
-<section class="pt-100 pb-70">
-	<div class="container">
-		<div class="section-title text-center">
-			<h2>Your Subscriptions</h2>
-			<p>View your active and past subscription plans.</p>
-		</div>
-		<div class="row justify-content-center mb-5">
-			<div class="col-lg-10">
+	<!-- History Table -->
+	<div class="row justify-content-center">
+		<div class="col-lg-10">
+			<div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+				<div class="card-header bg-white py-3 px-4 border-0">
+					<h5 class="fw-bold mb-0">Subscription History</h5>
+				</div>
 				<div class="table-responsive">
-					<table class="table table-bordered table-striped text-center">
-						<thead class="table-dark">
+					<table class="table table-hover align-middle mb-0">
+						<thead class="bg-light">
 							<tr>
-								<th>Plan Name</th>
+								<th class="ps-4">Plan Name</th>
 								<th>Start Date</th>
 								<th>End Date</th>
 								<th>Price</th>
-								<th>Features</th>
+								<th class="pe-4 text-end">Status</th>
 							</tr>
 						</thead>
 						<tbody>
 							{% for plan in plans %}
 							<tr>
-								<td><span class="badge bg-primary">{{ plan.plan_name|title }}</span></td>
-								<td>{{ plan.start_date }}</td>
-								<td>{{ plan.end_date }}</td>
-								<td>${{ plan.price }}</td>
-								<td>{{ plan.features|truncatechars:50 }}</td>
+								<td class="ps-4 fw-bold text-dark">{{ plan.plan_name|title }}</td>
+								<td class="text-muted small">{{ plan.start_date }}</td>
+								<td class="text-muted small">{{ plan.end_date }}</td>
+								<td class="fw-bold">${{ plan.price }}</td>
+								<td class="pe-4 text-end">
+									<span class="badge bg-success-subtle text-success rounded-pill px-3">Active</span>
+								</td>
 							</tr>
 							{% empty %}
 							<tr>
-								<td colspan="5" class="text-center">No subscription history found.</td>
+								<td colspan="5" class="text-center py-5 text-muted">
+									<i class="bi bi-receipt mb-2 d-block" style="font-size: 2rem;"></i>
+									No subscription history found.
+								</td>
 							</tr>
 							{% endfor %}
 						</tbody>
@@ -61,88 +225,5 @@
 			</div>
 		</div>
 	</div>
-</section>
-
-<!-- Pricing Section Start -->
-<section class="pricing-section pb-70">
-	<div class="container">
-		<div class="section-title text-center">
-			<h2>Upgrade Your Plan</h2>
-			<p>Choose a plan to control posting limits, visibility, and candidate reach.</p>
-		</div>
-
-		<div class="row justify-content-center">
-			<!-- Free Plan -->
-			<div class="col-lg-4 col-sm-6">
-				<div class="price-card">
-					<div class="price-top">
-						<h3>Free</h3>
-						<i class='bx bx-user'></i>
-						<h2>0<sub>/Month</sub></h2>
-					</div>
-
-					<div class="price-feature">
-						<ul>
-							<li><i class='bx bx-check'></i> Post up to 2 jobs/month</li>
-							<li><i class='bx bx-check'></i> Basic listing visibility</li>
-							<li><i class='bx bx-check'></i> Manage candidates in dashboard</li>
-						</ul>
-					</div>
-
-					<div class="price-btn">
-						<a href="#" class="default-btn disabled"
-							style="background-color: #ccc; cursor: default;">Current Standard</a>
-					</div>
-				</div>
-			</div>
-
-			<!-- Sponsor Plan -->
-			<div class="col-lg-4 col-sm-6">
-				<div class="price-card mt-12">
-					<div class="price-top">
-						<h3>Sponsor</h3>
-						<i class='bx bx-user'></i>
-						<h2>199<sub>/Month</sub></h2>
-					</div>
-
-					<div class="price-feature">
-						<ul>
-							<li><i class='bx bx-check'></i> Priority placement in listings</li>
-							<li><i class='bx bx-check'></i> Boosted reach for jobs</li>
-							<li><i class='bx bx-check'></i> Email + mobile job alerts</li>
-						</ul>
-					</div>
-
-					<div class="price-btn">
-						<a href="{% url 'payment_page' 'sponsor' %}" class="default-btn">Choose Sponsor</a>
-					</div>
-				</div>
-			</div>
-
-			<!-- Premium Plan -->
-			<div class="col-lg-4 col-sm-6">
-				<div class="price-card">
-					<div class="price-top">
-						<h3>Premium</h3>
-						<i class='bx bx-user'></i>
-						<h2>299<sub>/Month</sub></h2>
-					</div>
-
-					<div class="price-feature">
-						<ul>
-							<li><i class='bx bx-check'></i> Job ads live for 6 weeks</li>
-							<li><i class='bx bx-check'></i> Premium placement & visibility</li>
-							<li><i class='bx bx-check'></i> Email + mobile job alerts</li>
-						</ul>
-					</div>
-
-					<div class="price-btn">
-						<a href="{% url 'payment_page' 'premium' %}" class="default-btn">Choose Premium</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-<!-- Pricing Section End -->
+</div>
 {% endblock %}

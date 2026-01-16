@@ -13,10 +13,8 @@ class Application(models.Model):
         ('accepted', 'Accepted'),
     ], default='pending')
     interview_date = models.DateTimeField(blank=True, null=True)
-    interview_mode = models.CharField(max_length=50, choices=[('Online', 'Online'), ('Offline', 'Offline')], blank=True, null=True)
-    interview_location = models.TextField(blank=True, null=True, help_text="Meeting Link or Physical Address")
     
     def __str__(self):
-        return f"{self.student.student_name} - {self.job.job_title}"
+        return f"{self.student_id.student_name} - {self.job_id.job_title}"
     
    

@@ -1,6 +1,7 @@
-﻿{% extends 'employer/base.html' %}
+{% extends 'employer/base.html' %}
 {% load static %}
 {% block content %}
+
 <!-- Page Title Start -->
 <section class="page-title title-bg5">
     <div class="d-table">
@@ -31,9 +32,10 @@
 
         <div class="row justify-content-center">
             <div class="col-lg-12">
+
                 {% if applications %}
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover" style="font-size: 16px; min-width: 900px;">
+                    <table class="table table-bordered table-hover" style="font-size:16px; min-width:900px;">
                         <thead class="table-light">
                             <tr>
                                 <th>#</th>
@@ -41,14 +43,13 @@
                                 <th>Student Name</th>
                                 <th>Email</th>
                                 <th>Phone</th>
-                                <th>Academic Status</th>
-                                <th>Skills</th>
                                 <th>Applied Date</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
+
                             {% for application in applications %}
                             <tr>
                                 <td>{{ forloop.counter }}</td>
@@ -56,108 +57,84 @@
                                 <td>{{ application.student.student_name }}</td>
                                 <td>{{ application.student.email }}</td>
                                 <td>{{ application.student.phone_number }}</td>
-                                <td>{{ application.student.academic_status|default:"N/A" }}</td>
-                                <td>{{ application.student.skills|default:"N/A"|truncatewords:10 }}</td>
                                 <td>{{ application.applied_date|date:"d M Y, h:i A" }}</td>
                                 <td>
-                                    <span class="badge
-                                                {% if application.status == 'pending' %}bg-warning text-dark
-                                                {% elif application.status == 'reviewed' %}bg-info text-white
-                                                {% elif application.status == 'shortlisted' %}bg-success text-white
-                                                {% elif application.status == 'accepted' %}bg-success text-white
-                                                {% elif application.status == 'rejected' %}bg-danger text-white
-                                                {% endif %}
-                                            ">
+                                    <span class="badge 
+                                        {% if application.status == 'pending' %} bg-warning text-dark
+                                        {% elif application.status == 'reviewed' %} bg-info text-white
+                                        {% elif application.status == 'shortlisted' %} bg-primary text-white
+                                        {% elif application.status == 'accepted' %} bg-success text-white
+                                        {% elif application.status == 'rejected' %} bg-danger text-white
+                                        {% endif %}
+                                    ">
                                         {{ application.get_status_display }}
                                     </span>
                                 </td>
                                 <td>
-                                    <div class="btn-group" role="group" aria-label="Actions">
-                                        <form action="{% url 'approve_application' application.id %}" method="post"
-                                            style="display:inline;">
-                                            {% csrf_token %}
-                                            <button type="submit" class="btn btn-sm btn-success" {% if
-                                                application.status=='accepted' %}disabled{% endif %}>Approve</button>
-                                        </form>
-                                        <form action="{% url 'reject_application' application.id %}" method="post"
-                                            style="display:inline; margin-left:6px;"
-                                            onsubmit="confirmReject(event, this)">
-                                            {% csrf_token %}
-                                            <button type="submit" class="btn btn-sm btn-danger" {% if
-                                                application.status=='rejected' %}disabled{% endif %}>Reject</button>
-                                        </form>
-
-
-                                    </div>
+                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#appModal{{ application.id }}">
+                                        View Details
+                                    </button>
                                 </td>
                             </tr>
-
-                            <!-- Modal for Application Details -->
-                            <div class="modal fade" id="appModal{{ application.id }}" tabindex="-1" role="dialog"
-                                aria-labelledby="appModalLabel{{ application.id }}" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="appModalLabel{{ application.id }}">{{
-                                                application.student.student_name }} - {{ application.job.job_title }}
-                                            </h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p><strong>Student Name:</strong> {{ application.student.student_name }}</p>
-                                            <p><strong>Email:</strong> {{ application.student.email }}</p>
-                                            <p><strong>Phone:</strong> {{ application.student.phone_number }}</p>
-                                            <p><strong>Academic Status:</strong> {{
-                                                application.student.academic_status|default:"N/A" }}</p>
-                                            <p><strong>Skills:</strong> {{ application.student.skills|default:"N/A" }}
-                                            </p>
-                                            <p><strong>Applied Date:</strong> {{ application.applied_date|date:"d M Y,
-                                                h:i A" }}</p>
-                                            <p><strong>Current Status:</strong> {{ application.get_status_display }}</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Close</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                             {% endfor %}
+
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Modals OUTSIDE the table -->
+                {% for application in applications %}
+                <div class="modal fade" id="appModal{{ application.id }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title">
+                                    {{ application.student.student_name }} - {{ application.job.job_title }}
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <div class="modal-body">
+                                <p><strong>Student Name:</strong> {{ application.student.student_name }}</p>
+                                <p><strong>Email:</strong> {{ application.student.email }}</p>
+                                <p><strong>Phone:</strong> {{ application.student.phone_number }}</p>
+                                <p><strong>Academic Status:</strong> {{
+                                    application.student.academic_status|default:"N/A" }}</p>
+                                <p><strong>Skills:</strong> {{ application.student.skills|default:"N/A" }}</p>
+                                <p><strong>Applied Date:</strong> {{ application.applied_date|date:"d M Y, h:i A" }}</p>
+                                <p><strong>Current Status:</strong> {{ application.get_status_display }}</p>
+                            </div>
+
+                            <div class="modal-footer">
+                                {% if application.status != 'accepted' and application.status != 'rejected' %}
+                                <a href="{% url 'update_status' application.id 'shortlisted' %}"
+                                    class="btn btn-info text-white">Shortlist</a>
+                                <a href="{% url 'update_status' application.id 'accepted' %}"
+                                    class="btn btn-success">Accept</a>
+                                <a href="{% url 'update_status' application.id 'rejected' %}"
+                                    class="btn btn-danger">Reject</a>
+                                {% endif %}
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
                 {% else %}
                 <div class="alert alert-info text-center">
                     <h4>No Applications Yet</h4>
-                    <p>You haven't received any applications yet. Keep your job postings active to attract more
-                        candidates.</p>
+                    <p>You haven't received any applications yet.</p>
                     <a href="{% url 'addjob' %}" class="btn btn-primary">Post a New Job</a>
                 </div>
                 {% endif %}
+
             </div>
         </div>
     </div>
 </section>
 
-<script>
-    function confirmReject(event, form) {
-        event.preventDefault();
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "Do you want to reject this candidate?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, Reject it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                form.submit();
-            }
-        })
-    }
-</script>
 {% endblock %}

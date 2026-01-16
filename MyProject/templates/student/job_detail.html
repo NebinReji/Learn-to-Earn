@@ -1,72 +1,236 @@
 {% extends 'student/base.html' %}
 {% load static %}
+
 {% block content %}
-<!-- Page Title Start -->
-<section class="page-title title-bg5">
-    <div class="d-table">
-        <div class="d-table-cell">
-            <h2>{{ job.job_title }}</h2>
-            <ul>
-                <li><a href="{% url 'student_index' %}">Home</a></li>
-                <li><a href="{% url 'student_view_jobs' %}">Jobs</a></li>
-                <li>Details</li>
-            </ul>
+<style>
+    .job-header-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        padding: 40px;
+        margin-bottom: 30px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .job-header-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 6px;
+        height: 100%;
+        background: #0d6efd;
+    }
+
+    .company-logo-large {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .job-meta-item {
+        display: flex;
+        align-items: center;
+        margin-right: 25px;
+        margin-bottom: 10px;
+        color: #6c757d;
+        font-size: 0.95rem;
+    }
+
+    .job-meta-item i {
+        font-size: 1.2rem;
+        color: #0d6efd;
+        margin-right: 8px;
+    }
+
+    .job-content-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        padding: 40px;
+        height: 100%;
+    }
+
+    .sidebar-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        padding: 25px;
+        margin-bottom: 25px;
+    }
+
+    .btn-apply {
+        padding: 15px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-apply:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(25, 135, 84, 0.3);
+    }
+
+    .badge-soft {
+        padding: 8px 15px;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 0.85rem;
+    }
+
+    .section-title {
+        font-weight: 700;
+        color: #212529;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #f8f9fa;
+        display: inline-block;
+    }
+</style>
+
+<div class="container py-5" style="margin-top: 80px;">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'student_index' %}" class="text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'student_view_jobs' %}" class="text-decoration-none">Jobs</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">{{ job.job_title }}</li>
+        </ol>
+    </nav>
+
+    {% if messages %}
+    <div class="row mb-4">
+        <div class="col-12">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm border-0" role="alert">
+                <i class="bi bi-info-circle-fill me-2"></i>{{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
         </div>
     </div>
-    <div class="lines">
-        <div class="line"></div>
-        <div class="line"></div>
-        <div class="line"></div>
-    </div>
-</section>
-<!-- Page Title End -->
+    {% endif %}
 
-<section class="job-section pt-100 pb-70">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <div class="job-details">
-                    <div class="job-details-header d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3>{{ job.job_title }}</h3>
-                            <ul>
-                                <li><i class='bx bx-briefcase'></i> {{ job.work_mode }}</li>
-                                <li><i class='bx bx-location-plus'></i> {{ job.location }}</li>
-                                <li><i class='bx bx-money'></i> {{ job.salary_range }}</li>
-                                <li><i class='bx bx-calendar'></i> Posted: {{ job.posted_date|date:"d M Y" }}</li>
-                                <li><i class='bx bx-calendar'></i> Expires: {{ job.expiry_date|date:"d M Y" }}</li>
-                            </ul>
-                        </div>
-                    </div>
+    <!-- Header Section -->
+    <div class="job-header-card d-flex flex-column flex-md-row align-items-start gap-4">
+        <div class="flex-shrink-0">
+            {% if job.employer.logo %}
+            <img src="{{ job.employer.logo.url }}" alt="{{ job.employer.company_name }}" class="company-logo-large">
+            {% else %}
+            <div class="company-logo-large bg-light d-flex align-items-center justify-content-center text-secondary">
+                <i class="bi bi-building fs-1"></i>
+            </div>
+            {% endif %}
+        </div>
+        <div class="flex-grow-1">
+            <h2 class="fw-bold mb-2">{{ job.job_title }}</h2>
+            <p class="text-muted fw-bold mb-3 d-flex align-items-center">
+                <span class="text-primary me-2">{{ job.employer.company_name }}</span>
+                {% if job.is_active %}
+                <span class="badge bg-success-subtle text-success rounded-pill small">Active Hiring</span>
+                {% else %}
+                <span class="badge bg-danger-subtle text-danger rounded-pill small">Closed</span>
+                {% endif %}
+            </p>
 
-                    <div class="job-details-desc">
-                        {% if application %}
-                        <div class="alert alert-info">
-                            <h4>Application Status: <strong>{{ application.status|title }}</strong></h4>
-
-                            {% if application.interview_date %}
-                            <hr>
-                            <h5><i class='bx bx-calendar-event'></i> Interview Scheduled!</h5>
-                            <p><strong>Date:</strong> {{ application.interview_date }}</p>
-                            <p><strong>Mode:</strong> {{ application.interview_mode }}</p>
-                            <p><strong>Details:</strong> {{ application.interview_location }}</p>
-                            {% endif %}
-                        </div>
-                        {% endif %}
-
-                        <h3>Job Description</h3>
-                        <p>{{ job.job_description }}</p>
-                    </div>
-
-                    <div class="mt-4">
-                        <a href="{% url 'apply_job' job.id %}" class="btn btn-success" style="margin-right: 10px;">
-                            Apply Now
-                        </a>
-                        <a href="{% url 'student_view_jobs' %}" class="btn btn-secondary">Back to Jobs</a>
-                    </div>
+            <div class="d-flex flex-wrap">
+                <div class="job-meta-item">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    {{ job.location|default:"Remote" }}
+                </div>
+                <div class="job-meta-item">
+                    <i class="bi bi-briefcase-fill"></i>
+                    {{ job.get_work_mode_display|default:job.work_mode }}
+                </div>
+                <div class="job-meta-item">
+                    <i class="bi bi-cash-stack"></i>
+                    {{ job.salary_range }}
+                </div>
+                <div class="job-meta-item">
+                    <i class="bi bi-clock-history"></i>
+                    {{ job.posted_date|timesince }} ago
                 </div>
             </div>
         </div>
+        <div class="d-none d-lg-block text-end">
+            <a href="{% url 'apply_job' job.id %}" class="btn btn-success btn-lg btn-apply shadow-sm px-5">
+                Apply Now <i class="bi bi-arrow-right ms-2"></i>
+            </a>
+            <div class="mt-2 text-muted small">
+                Expires on: {{ job.expiry_date|date:"M d, Y" }}
+            </div>
+        </div>
     </div>
-</section>
+
+    <div class="row g-4">
+        <!-- Main Description -->
+        <div class="col-lg-8">
+            <div class="job-content-card">
+                <section class="mb-5">
+                    <h5 class="section-title">Job Description</h5>
+                    <div class="text-muted" style="line-height: 1.8;">
+                        {{ job.job_description|linebreaks }}
+                    </div>
+                </section>
+
+                <section class="mb-5">
+                    <h5 class="section-title">Key Responsibilities & Requirements</h5>
+                    <div class="text-muted">
+                        <!-- Assuming description might contain formatted text or lists, if not, static text -->
+                        <p>No specific responsibilities listed. Please refer to the job description above.</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Sidebar Info -->
+        <div class="col-lg-4">
+            <!-- Mobile Apply Button (Visible only on smaller screens) -->
+            <div class="d-lg-none mb-4">
+                <a href="{% url 'apply_job' job.id %}" class="btn btn-success btn-apply w-100 shadow-sm">
+                    Apply Now <i class="bi bi-arrow-right ms-2"></i>
+                </a>
+            </div>
+
+            <div class="sidebar-card">
+                <h5 class="fw-bold mb-4">Job Overview</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-3 d-flex justify-content-between align-items-center border-bottom pb-2">
+                        <span class="text-muted"><i class="bi bi-calendar-check me-2"></i>Posted Date</span>
+                        <span class="fw-semibold">{{ job.posted_date|date:"M d, Y" }}</span>
+                    </li>
+                    <li class="mb-3 d-flex justify-content-between align-items-center border-bottom pb-2">
+                        <span class="text-muted"><i class="bi bi-hourglass-split me-2"></i>Deadline</span>
+                        <span class="fw-semibold text-danger">{{ job.expiry_date|date:"M d, Y" }}</span>
+                    </li>
+                    <li class="mb-3 d-flex justify-content-between align-items-center">
+                        <span class="text-muted"><i class="bi bi-people me-2"></i>Vacancies</span>
+                        <span class="fw-semibold">{{ job.vacancies|default:"N/A" }}</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-card text-center">
+                <h6 class="fw-bold mb-3">About the Company</h6>
+                {% if job.employer.logo %}
+                <img src="{{ job.employer.logo.url }}" alt="Logo" class="rounded mb-3"
+                    style="width: 60px; height: 60px; object-fit: cover;">
+                {% endif %}
+                <h5 class="fw-bold">{{ job.employer.company_name }}</h5>
+                {% if job.employer.website %}
+                <a href="{{ job.employer.website }}" target="_blank"
+                    class="btn btn-outline-primary btn-sm rounded-pill mt-2">
+                    <i class="bi bi-link-45deg me-1"></i> Visit Website
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

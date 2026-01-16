@@ -1,0 +1,86 @@
+{% extends 'student/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="page-title title-bg5">
+    <div class="d-table">
+        <div class="d-table-cell">
+            <h2>My Applications</h2>
+            <ul>
+                <li><a href="{% url 'student_index' %}">Home</a></li>
+                <li>My Applications</li>
+            </ul>
+        </div>
+    </div>
+    <div class="lines">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+</section>
+
+<section class="user-dashboard ptb-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h3>Application Status</h3>
+                    <p>Track the progress of your job applications</p>
+                </div>
+
+                {% if applications %}
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Job Title</th>
+                                <th>Company</th>
+                                <th>Applied Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for app in applications %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'student_job_detail' app.job.id %}" class="fw-bold text-dark">
+                                        {{ app.job.job_title }}
+                                    </a>
+                                </td>
+                                <td>{{ app.job.employer.company_name }}</td>
+                                <td>{{ app.applied_date|date:"M d, Y" }}</td>
+                                <td>
+                                    <span class="badge 
+                                        {% if app.status == 'pending' %}bg-warning text-dark
+                                        {% elif app.status == 'reviewed' %}bg-info text-white
+                                        {% elif app.status == 'shortlisted' %}bg-primary
+                                        {% elif app.status == 'accepted' %}bg-success
+                                        {% elif app.status == 'rejected' %}bg-danger
+                                        {% endif %} rounded-pill px-3">
+                                        {{ app.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="{% url 'student_job_detail' app.job.id %}"
+                                        class="btn btn-outline-primary btn-sm">
+                                        View Job
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info text-center">
+                    <h4>No Applications Yet</h4>
+                    <p>You haven't applied to any jobs yet. Browse available jobs and start applying!</p>
+                    <a href="{% url 'student_view_jobs' %}" class="btn btn-primary mt-2">Browse Jobs</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

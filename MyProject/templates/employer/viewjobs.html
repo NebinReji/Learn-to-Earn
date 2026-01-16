@@ -23,104 +23,116 @@
 <!-- Page Title End -->
 
 <!-- Jobs Section Start -->
-<section class="job-section jobs-grid-section pt-100 pb-70">
+<!-- Jobs Section Start -->
+<section class="job-section jobs-grid-section pt-100 pb-70 bg-light">
 	<div class="container">
-		<div class="section-title text-center">
-			<h2>Your Posted Jobs</h2>
-			<p>Manage and view all your job postings</p>
+		<div class="d-flex justify-content-between align-items-center mb-5">
+			<div class="section-title text-start m-0">
+				<h2 class="mb-1">Your Posted Jobs</h2>
+				<p class="mb-0 text-muted">Manage your active listings</p>
+			</div>
+			<a href="{% url 'addjob' %}" class="btn btn-primary px-4 rounded-pill">
+				<i class='bx bx-plus me-1'></i> Post New Job
+			</a>
 		</div>
 
-		<div class="row justify-content-center">
+		<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
 			{% if jobs %}
 			{% for job in jobs %}
-			<div class="col-md-8">
-				<div class="job-card">
-					<div class="row align-items-center justify-content-between">
-						<div class="col-lg-8">
-							<div class="job-info">
-								<h3>{{ job.job_title }}</h3>
-								<ul>
-									<li>
-										<i class='bx bx-location-plus'></i>
-										{{ job.location }}
-									</li>
-									<li>
-										<i class='bx bx-briefcase'></i>
-										{{ job.work_mode }}
-									</li>
-									<li>
-										<i class='bx bx-money'></i>
-										{{ job.salary_range }}
-									</li>
-									<li>
-										<i class='bx bx-calendar'></i>
-										Posted: {{ job.posted_date|date:"d M Y" }}
-									</li>
-									<li>
-										<i class='bx bx-calendar'></i>
-										Expires: {{ job.expiry_date|date:"d M Y" }}
-									</li>
-								</ul>
-								<p style="margin-top: 10px; color: #666;">{{ job.job_description|truncatewords:20 }}</p>
+			<div class="col">
+				<div class="card h-100 border-0 shadow-sm job-card-pro">
+					<div class="card-body p-4">
+						<div class="d-flex justify-content-between mb-3">
+							<span
+								class="badge bg-light text-primary border border-primary fw-normal px-3 py-2 rounded-pill">
+								{{ job.get_job_type_display }}
+							</span>
+							<span class="badge bg-light text-dark border fw-normal px-3 py-2 rounded-pill">
+								{{ job.get_part_time_category_display }}
+							</span>
+						</div>
+
+						<h4 class="card-title fw-bold text-dark mb-3">
+							<a href="#" class="text-decoration-none text-dark">{{ job.job_title }}</a>
+						</h4>
+
+						<div class="job-meta mb-4">
+							<div class="d-flex align-items-center text-secondary mb-2">
+								<i class='bx bx-map me-2 fs-5'></i>
+								<span class="fw-medium">
+									{% if job.job_type == 'online' %}Remote{% else %}{{ job.location|default:"On-site"
+									}}{% endif %}
+								</span>
+							</div>
+							<div class="d-flex align-items-center text-secondary mb-2">
+								<i class='bx bx-time-five me-2 fs-5'></i>
+								<span>{{ job.shift_timing }}</span>
+							</div>
+							<div class="d-flex align-items-center text-success">
+								<i class='bx bx-rupee me-2 fs-5'></i>
+								<span class="fw-bold">{{ job.hourly_pay }}/hr</span>
 							</div>
 						</div>
 
-						<div class="col-lg-4">
-							<div class="job-save" style="text-align: center;">
-								<a href="{% url 'editjob' job.id %}" class="btn btn-primary btn-sm"
-									style="margin-bottom: 5px; display: block;">
-									<i class='bx bx-edit'></i> Edit
-								</a>
-								<a href="{% url 'deletejob' job.id %}" class="btn btn-danger btn-sm"
-									onclick="confirmDelete(event, this.href)" style="display: block;">
-									<i class='bx bx-trash'></i> Delete
-								</a>
-							</div>
+						<p class="text-muted small mb-0">{{ job.job_description|truncatewords:20 }}</p>
+					</div>
+					<div class="card-footer bg-white border-top p-3 d-flex justify-content-between align-items-center">
+						<small class="text-muted">
+							<i class='bx bx-calendar-check me-1'></i>
+							Posted {{ job.posted_date|date:"M d" }}
+						</small>
+						<div class="action-buttons z-index-fix">
+							<a href="{% url 'editjob' job.id %}"
+								class="btn btn-outline-primary btn-sm me-1 rounded-circle p-2 lh-1" title="Edit">
+								<i class='bx bx-pencil'></i>
+							</a>
+							<a href="{% url 'deletejob' job.id %}"
+								class="btn btn-outline-danger btn-sm rounded-circle p-2 lh-1"
+								onclick="return confirm('Delete this job?')" title="Delete">
+								<i class='bx bx-trash'></i>
+							</a>
 						</div>
 					</div>
 				</div>
 			</div>
 			{% endfor %}
 			{% else %}
-			<div class="col-md-8">
-				<div class="alert alert-info text-center">
-					<h4>No jobs posted yet</h4>
-					<p>Create your first job posting to get started</p>
-					<a href="{% url 'addjob' %}" class="btn btn-primary">Post a Job</a>
+			<div class="col-12">
+				<div class="text-center py-5 bg-white rounded shadow-sm">
+					<div class="mb-3">
+						<div
+							class="d-inline-flex align-items-center justify-content-center bg-light rounded-circle p-4">
+							<i class='bx bx-briefcase text-secondary' style="font-size: 3rem;"></i>
+						</div>
+					</div>
+					<h3 class="fw-bold text-dark">No Jobs Posted Yet</h3>
+					<p class="text-secondary mb-4">Start building your team by posting your first job opening.</p>
+					<a href="{% url 'addjob' %}" class="btn btn-primary px-4 py-2">Create Job Post</a>
 				</div>
 			</div>
 			{% endif %}
 		</div>
-
-		{% if jobs %}
-		<div class="row justify-content-center mt-4">
-			<div class="col-md-8 text-center">
-				<a href="{% url 'addjob' %}" class="btn btn-success">
-					<i class='bx bx-plus'></i> Post New Job
-				</a>
-			</div>
-		</div>
-		{% endif %}
 	</div>
 </section>
+
+<style>
+	.job-card-pro {
+		transition: all 0.3s ease;
+		border-top: 4px solid transparent;
+	}
+
+	.job-card-pro:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+		border-top-color: #fd1616;
+		/* Theme primary color */
+	}
+
+	.z-index-fix {
+		position: relative;
+		z-index: 2;
+	}
+</style>
 <!-- Jobs Section End -->
 
-<script>
-	function confirmDelete(event, url) {
-		event.preventDefault();
-		Swal.fire({
-			title: 'Are you sure?',
-			text: "You won't be able to revert this!",
-			icon: 'warning',
-			showCancelButton: true,
-			confirmButtonColor: '#d33',
-			cancelButtonColor: '#3085d6',
-			confirmButtonText: 'Yes, delete it!'
-		}).then((result) => {
-			if (result.isConfirmed) {
-				window.location.href = url;
-			}
-		})
-	}
-</script>
 {% endblock %}

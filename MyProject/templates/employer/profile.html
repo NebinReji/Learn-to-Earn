@@ -1,103 +1,214 @@
 {% extends 'employer/base.html' %}
 {% load static %}
-{% block content %}
 
-<!-- Page Title -->
-<section class="page-title title-bg4">
-    <div class="d-table">
-        <div class="d-table-cell">
-            <h2>Company Profile</h2>
-            <ul>
-                <li><a href="{% url 'employer_index' %}">Home</a></li>
-                <li>Profile</li>
-            </ul>
+{% block content %}
+<style>
+    .profile-header-card {
+        background: white;
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        border-top: 5px solid #198754;
+    }
+
+    .profile-avatar-container {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto;
+        border: 1px solid #dee2e6;
+        border-radius: 12px;
+        overflow: hidden;
+        background: white;
+        padding: 5px;
+    }
+
+    .profile-avatar {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .form-control-lg,
+    .form-select-lg {
+        border-radius: 10px;
+        font-size: 0.95rem;
+        border: 1px solid #dee2e6;
+        padding: 12px 20px;
+    }
+
+    .form-control-lg:focus,
+    .form-select-lg:focus {
+        border-color: #198754;
+        box-shadow: 0 0 0 4px rgba(25, 135, 84, 0.1);
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #495057;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .btn-save {
+        padding: 12px 30px;
+        border-radius: 10px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(25, 135, 84, 0.3);
+    }
+</style>
+
+<div class="container py-5" style="margin-top: 80px;">
+    {% if messages %}
+    <div class="row mb-4">
+        <div class="col-12">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm border-0" role="alert">
+                <i class="bi bi-info-circle-fill me-2"></i>{{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
         </div>
     </div>
-</section>
+    {% endif %}
 
-<!-- Profile Section -->
-<section class="ptb-100">
-    <div class="container">
-        <div class="row">
-            <!-- Sidebar / Profile Card -->
-            <div class="col-lg-4">
-                <div class="account-profile-card">
-                    <div class="text-center">
-                        {% if employer.company_logo %}
-                        <img src="{{ employer.company_logo.url }}" alt="Company Logo"
-                            class="img-fluid rounded-circle mb-3"
-                            style="width: 150px; height: 150px; object-fit: cover;">
-                        {% else %}
-                        <div
-                            style="width: 150px; height: 150px; background: #eee; border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 40px; color: #888;">
-                            {{ employer.company_name|slice:":1" }}
-                        </div>
-                        {% endif %}
-                        <h3>{{ employer.company_name }}</h3>
-                        <p class="text-muted">{{ employer.contact_person }}</p>
+    <div class="row g-4">
+        <!-- Sidebar - Company Summary -->
+        <div class="col-lg-4">
+            <div class="card profile-header-card shadow-sm mb-4 text-center p-4">
+                <div class="profile-avatar-container mb-3 shadow-sm">
+                    {% if employer.profile_picture %}
+                    <img src="{{ employer.profile_picture.url }}" alt="Logo" class="profile-avatar">
+                    {% else %}
+                    <img src="https://ui-avatars.com/api/?name={{ employer.company_name }}&background=random&color=fff&size=200"
+                        alt="Logo" class="profile-avatar">
+                    {% endif %}
+                </div>
+                <h4 class="fw-bold mb-1 text-dark">{{ employer.company_name }}</h4>
+                <p class="mb-2 text-muted small">{{ employer.industry }}</p>
+                <div class="d-flex justify-content-center gap-2 mb-3">
+                    <span class="badge bg-light text-dark border rounded-pill px-3 py-2"><i
+                            class="bi bi-geo-alt-fill me-1 text-danger"></i> {{ employer.district.name }}</span>
+                </div>
+
+                <hr class="text-muted opacity-25 my-3">
+
+                <div class="text-start">
+                    <div class="d-flex align-items-center mb-2 text-muted small">
+                        <i class="bi bi-person-fill me-3 text-success"></i> Contact: {{ employer.contact_person }}
                     </div>
-                    <div class="profile-info-list" style="margin-top: 20px;">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><strong>Email:</strong> {{ employer.email }}</li>
-                            <li class="list-group-item"><strong>Phone:</strong> {{ employer.phone }}</li>
-                            <li class="list-group-item"><strong>District:</strong> {{ employer.district }}</li>
-                            {% if employer.website %}
-                            <li class="list-group-item"><strong>Website:</strong> <a href="{{ employer.website }}"
-                                    target="_blank">{{ employer.website }}</a></li>
-                            {% endif %}
-                        </ul>
+                    <div class="d-flex align-items-center mb-2 text-muted small">
+                        <i class="bi bi-telephone-fill me-3 text-success"></i> {{ employer.phone }}
                     </div>
+                    <div class="d-flex align-items-center mb-2 text-muted small">
+                        <i class="bi bi-envelope-fill me-3 text-success"></i> {{ user.email }}
+                    </div>
+                    {% if employer.website %}
+                    <div class="d-grid mt-3">
+                        <a href="{{ employer.website }}" target="_blank"
+                            class="btn btn-outline-success btn-sm rounded-pill">
+                            <i class="bi bi-link-45deg me-2"></i> Visit Website
+                        </a>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
+        </div>
 
-            <!-- Edit Form -->
-            <div class="col-lg-8">
-                <div class="job-post-form-wrapper">
-                    <h3>Edit Company Details</h3>
-                    <form method="post" enctype="multipart/form-data">
+        <!-- Main Content - Edit Form -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-header bg-white border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0 text-success">Company Settings</h5>
+                    <button type="submit" form="profileForm" class="btn btn-success btn-save btn-sm">
+                        <i class="bi bi-check-lg me-2"></i> Save Changes
+                    </button>
+                </div>
+                <div class="card-body p-4">
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger shadow-sm border-0 mb-4">{{ form.non_field_errors }}</div>
+                    {% endif %}
+
+                    <form method="post" enctype="multipart/form-data" id="profileForm">
                         {% csrf_token %}
-                        {% if messages %}
-                        {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                        {% endfor %}
-                        {% endif %}
 
-                        {{ form.as_p }}
+                        <h6 class="text-muted fw-bold mb-3 small text-uppercase letter-spacing-1">Basic Information</h6>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">Company Name</label>
+                                {{ form.company_name }}
+                                <div class="text-danger small">{{ form.company_name.errors }}</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Contact Person</label>
+                                {{ form.contact_person }}
+                                <div class="text-danger small">{{ form.contact_person.errors }}</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Phone</label>
+                                {{ form.phone }}
+                                <div class="text-danger small">{{ form.phone.errors }}</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Company Logo (Upload New)</label>
+                                {{ form.profile_picture }}
+                                <div class="text-danger small">{{ form.profile_picture.errors }}</div>
+                            </div>
+                        </div>
 
-                        <div class="text-center mt-4">
-                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                        <hr class="my-4 text-muted opacity-25">
+
+                        <h6 class="text-muted fw-bold mb-3 small text-uppercase letter-spacing-1">Location & Profile
+                        </h6>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">Industry</label>
+                                {{ form.industry }}
+                                <div class="text-danger small">{{ form.industry.errors }}</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Area / Location</label>
+                                {{ form.area }}
+                                <div class="text-danger small">{{ form.area.errors }}</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Website</label>
+                                {{ form.website }}
+                                <div class="text-danger small">{{ form.website.errors }}</div>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Full Address</label>
+                                {{ form.address }}
+                                <div class="text-danger small">{{ form.address.errors }}</div>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Description</label>
+                                {{ form.description }}
+                                <div class="text-danger small">{{ form.description.errors }}</div>
+                            </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-</section>
+</div>
 
-<style>
-    .account-profile-card {
-        padding: 30px;
-        background: #fff;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-        border-radius: 8px;
-    }
-
-    .job-post-form-wrapper {
-        padding: 30px;
-        background: #fff;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-        border-radius: 8px;
-    }
-
-    input,
-    select,
-    textarea {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-    }
-</style>
-
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var inputs = document.querySelectorAll('input[type="text"], input[type="file"], select, textarea');
+        inputs.forEach(function (input) {
+            if (input.tagName === 'SELECT') {
+                input.classList.add('form-select', 'form-select-lg');
+            } else {
+                input.classList.add('form-control', 'form-control-lg');
+            }
+        });
+    });
+</script>
 {% endblock %}

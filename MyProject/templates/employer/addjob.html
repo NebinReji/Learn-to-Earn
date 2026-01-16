@@ -2,15 +2,15 @@
 {% load static %}
 {% block content %}
 <!-- Page Title Start -->
-<section class="page-title title-bg3">
+<section class="page-title title-bg5">
     <div class="d-table">
         <div class="d-table-cell">
-            <h2>Add Job</h2>
+            <h2>Post a Job</h2>
             <ul>
                 <li>
                     <a href="{% url 'employer_index' %}">Home</a>
                 </li>
-                <li>Add Job</li>
+                <li>Post a Job</li>
             </ul>
         </div>
     </div>
@@ -22,132 +22,93 @@
 </section>
 <!-- Page Title End -->
 
-<!-- Add Job Section Start -->
-<div class="job-post ptb-100">
+<!-- Post Job Section Start -->
+<div class="user-form-area pt-100 pb-70">
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 col-md-10">
-                <div class="job-post-form-wrapper">
-                    <h2 class="form-title">Fill Up Your Job Information</h2>
-                    
-                    <!-- Display Messages -->
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="margin-bottom: 25px; border-radius: 5px; border: none;">
-                                {{ message }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
+        <div class="row align-items-center justify-content-center">
+            <div class="col-lg-8">
+                <div class="user-content">
+                    <div class="top text-center mb-4">
+                        <h2>Job Details</h2>
+                        <p>Fill out the form below to post a new part-time job.</p>
+                    </div>
 
-                    <form method="post" class="job-post-from" novalidate>
+                    <form method="post" class="card p-4 shadow-sm border-0">
                         {% csrf_token %}
-                        
-                        <!-- Display non-field errors -->
+
                         {% if form.non_field_errors %}
-                            <div class="alert alert-danger" style="margin-bottom: 25px; border-radius: 5px; border: none;">
-                                {{ form.non_field_errors }}
-                            </div>
+                        <div class="alert alert-danger">{{ form.non_field_errors }}</div>
                         {% endif %}
 
-                        <div class="row g-4">
-                            <!-- Job Title -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="{{ form.job_title.id_for_label }}" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">Job Title <span style="color: #e74c3c;">*</span></label>
-                                    {{ form.job_title }}
-                                    {% if form.job_title.errors %}
-                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ form.job_title.errors }}</small>
-                                    {% endif %}
-                                </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label fw-bold">Job Title</label>
+                                {{ form.job_title }}
+                                <div class="text-danger small">{{ form.job_title.errors }}</div>
                             </div>
 
-                            <!-- Location -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="{{ form.location.id_for_label }}" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">Location <span style="color: #e74c3c;">*</span></label>
-                                    {{ form.location }}
-                                    {% if form.location.errors %}
-                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ form.location.errors }}</small>
-                                    {% endif %}
-                                </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label fw-bold">Job Description</label>
+                                {{ form.job_description }}
+                                <div class="text-danger small">{{ form.job_description.errors }}</div>
                             </div>
 
-                            <!-- Work Mode (Job Type) -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="{{ form.work_mode.id_for_label }}" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">Job Type <span style="color: #e74c3c;">*</span></label>
-                                    {{ form.work_mode }}
-                                    {% if form.work_mode.errors %}
-                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ form.work_mode.errors }}</small>
-                                    {% endif %}
-                                </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold d-block">Job Type</label>
+                                {{ form.job_type }}
+                                <div class="text-danger small">{{ form.job_type.errors }}</div>
                             </div>
 
-                            <!-- Salary Range -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="{{ form.salary_range.id_for_label }}" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">Salary Range (Optional)</label>
-                                    {{ form.salary_range }}
-                                    {% if form.salary_range.errors %}
-                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ form.salary_range.errors }}</small>
-                                    {% endif %}
-                                </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold d-block">Part-Time Category</label>
+                                {{ form.part_time_category }}
+                                <div class="text-danger small">{{ form.part_time_category.errors }}</div>
                             </div>
 
-                            <!-- Working Hours -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="{{ form.working_hours.id_for_label }}" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">Working Hours <span style="color: #e74c3c;">*</span></label>
-                                    {{ form.working_hours }}
-                                    {% if form.working_hours.errors %}
-                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ form.working_hours.errors }}</small>
-                                    {% endif %}
-                                </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Shift Timing</label>
+                                {{ form.shift_timing }}
+                                <div class="text-danger small">{{ form.shift_timing.errors }}</div>
                             </div>
 
-                            <!-- Skills Required -->
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="{{ form.skills_required.id_for_label }}" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">Skills Required <span style="color: #e74c3c;">*</span></label>
-                                    {{ form.skills_required }}
-                                    <small style="color: #666; font-size: 12px; display: block; margin-top: 5px;">Enter required skills separated by commas (e.g., Python, JavaScript, MySQL)</small>
-                                    {% if form.skills_required.errors %}
-                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ form.skills_required.errors }}</small>
-                                    {% endif %}
-                                </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Working Days</label>
+                                {{ form.working_days }}
+                                <small class="text-muted d-block mt-1"></small>
+                                <div class="text-danger small">{{ form.working_days.errors }}</div>
                             </div>
 
-                            <!-- Expiry Date -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="{{ form.expiry_date.id_for_label }}" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">Job Posting Expiry Date <span style="color: #e74c3c;">*</span></label>
-                                    {{ form.expiry_date }}
-                                    {% if form.expiry_date.errors %}
-                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ form.expiry_date.errors }}</small>
-                                    {% endif %}
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Hourly Pay</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.hourly_pay }}
                                 </div>
+                                <div class="text-danger small">{{ form.hourly_pay.errors }}</div>
                             </div>
 
-                            <!-- Job Description -->
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="{{ form.job_description.id_for_label }}" style="font-weight: 600; color: #333; margin-bottom: 10px; display: block;">Job Description <span style="color: #e74c3c;">*</span></label>
-                                    {{ form.job_description }}
-                                    {% if form.job_description.errors %}
-                                        <small class="text-danger d-block mt-2" style="font-size: 13px;">{{ form.job_description.errors }}</small>
-                                    {% endif %}
-                                </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Salary Range (Just for Info - Monthly)</label>
+                                {{ form.salary_range }}
+                                <div class="text-danger small">{{ form.salary_range.errors }}</div>
                             </div>
 
-                            <!-- Submit Button -->
-                            <div class="col-md-12 text-center">
-                                <div class="form-group">
-                                    <button type="submit" class="post-btn">
-                                        <i class='bx bxs-briefcase' style="margin-right: 8px;"></i>Post Job
-                                    </button>
-                                </div>
+                            <div class="col-md-6 mb-3" id="location-container">
+                                <label class="form-label fw-bold">Location</label>
+                                {{ form.location }}
+                                <div class="text-danger small">{{ form.location.errors }}</div>
                             </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Application Deadline</label>
+                                {{ form.expiry_date }}
+                                <div class="text-danger small">{{ form.expiry_date.errors }}</div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <a href="{% url 'employer_index' %}" class="btn btn-secondary me-2">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Post Job</button>
                         </div>
                     </form>
                 </div>
@@ -155,201 +116,28 @@
         </div>
     </div>
 </div>
-<!-- Add Job Section End -->
+<!-- Post Job Section End -->
 
-<style>
-    /* Form Wrapper */
-    .job-post-form-wrapper {
-        background: #fff;
-        padding: 40px;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-    }
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const jobTypeSelect = document.getElementById('id_job_type');
+        const locationContainer = document.getElementById('location-container');
+        const locationInput = document.querySelector('#location-container input');
 
-    .form-title {
-        font-size: 24px;
-        font-weight: 700;
-        color: #333;
-        margin-bottom: 35px;
-        text-align: center;
-    }
-
-    /* Form Group Styling */
-    .job-post-from .form-group {
-        margin-bottom: 0;
-    }
-
-    .job-post-from label {
-        display: block;
-        margin-bottom: 10px;
-        font-weight: 600;
-        color: #333;
-        font-size: 14px;
-    }
-
-    /* Input Field Styling */
-    .job-post-from input[type="text"],
-    .job-post-from input[type="email"],
-    .job-post-from input[type="date"],
-    .job-post-from input[type="tel"],
-    .job-post-from input[type="number"],
-    .job-post-from textarea,
-    .job-post-from select {
-        width: 100%;
-        padding: 13px 16px;
-        border: 1.5px solid #e0e0e0;
-        border-radius: 5px;
-        font-size: 14px;
-        font-family: inherit;
-        transition: all 0.3s ease;
-        background-color: #fafafa;
-        box-sizing: border-box;
-        color: #333;
-    }
-
-    .job-post-from input::placeholder,
-    .job-post-from textarea::placeholder,
-    .job-post-from select {
-        color: #999;
-    }
-
-    .job-post-from input[type="text"]:focus,
-    .job-post-from input[type="email"]:focus,
-    .job-post-from input[type="date"]:focus,
-    .job-post-from input[type="tel"]:focus,
-    .job-post-from input[type="number"]:focus,
-    .job-post-from textarea:focus,
-    .job-post-from select:focus {
-        outline: none;
-        border-color: #007bff;
-        background-color: #fff;
-        box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.08);
-    }
-
-    .job-post-from textarea {
-        resize: vertical;
-        min-height: 140px;
-        font-family: inherit;
-    }
-
-    .job-post-from select {
-        cursor: pointer;
-    }
-
-    /* Button Styling */
-    .post-btn {
-        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-        color: white;
-        border: none;
-        padding: 14px 50px;
-        font-size: 16px;
-        font-weight: 600;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .post-btn:hover {
-        background: linear-gradient(135deg, #0056b3 0%, #003d82 100%);
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);
-        color: white;
-        text-decoration: none;
-    }
-
-    .post-btn:active {
-        transform: translateY(-1px);
-    }
-
-    /* Alert Messages */
-    .alert {
-        border-radius: 5px !important;
-        border: none !important;
-        padding: 15px 20px !important;
-        font-size: 14px;
-    }
-
-    .alert-danger {
-        background-color: #fff5f5 !important;
-        color: #c53030 !important;
-        border-left: 4px solid #e74c3c !important;
-    }
-
-    .alert-success {
-        background-color: #f0fdf4 !important;
-        color: #15803d !important;
-        border-left: 4px solid #22c55e !important;
-    }
-
-    .alert-info {
-        background-color: #f0f7ff !important;
-        color: #0056b3 !important;
-        border-left: 4px solid #007bff !important;
-    }
-
-    /* Row Gap */
-    .row.g-4 > * {
-        padding-right: calc(var(--bs-gutter-x) * 0.5);
-        padding-left: calc(var(--bs-gutter-x) * 0.5);
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .job-post-form-wrapper {
-            padding: 30px 20px;
+        function toggleLocation() {
+            if (jobTypeSelect.value === 'online') {
+                locationContainer.style.display = 'none';
+                if (locationInput) locationInput.value = ''; // Optional: clear value
+            } else {
+                locationContainer.style.display = 'block';
+            }
         }
 
-        .form-title {
-            font-size: 20px;
-            margin-bottom: 25px;
+        if (jobTypeSelect) {
+            jobTypeSelect.addEventListener('change', toggleLocation);
+            // Run on load to set initial state
+            toggleLocation();
         }
-
-        .job-post-from input,
-        .job-post-from textarea,
-        .job-post-from select {
-            padding: 11px 13px;
-            font-size: 13px;
-        }
-
-        .job-post-from label {
-            font-size: 13px;
-        }
-
-        .post-btn {
-            padding: 12px 35px;
-            font-size: 15px;
-            width: 100%;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .job-post-form-wrapper {
-            padding: 20px 15px;
-        }
-
-        .form-title {
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
-
-        .job-post-from input,
-        .job-post-from textarea,
-        .job-post-from select {
-            padding: 10px 12px;
-            font-size: 12px;
-        }
-
-        .post-btn {
-            padding: 11px 30px;
-            font-size: 14px;
-            width: 100%;
-        }
-    }
-</style>
+    });
+</script>
 {% endblock %}
