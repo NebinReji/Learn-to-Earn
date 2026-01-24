@@ -1,7 +1,5 @@
 from django.db import models
 from MyApp.models import District
-
-# Create your models here.
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils import timezone
 
@@ -43,13 +41,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
-
-
-
-
-
-
-
     
 class Employer(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="employer_profile",null=True)
@@ -78,18 +69,36 @@ class student(models.Model):
     email = models.EmailField()
     phone_number = models.CharField(max_length=15)
     district = models.ForeignKey(District, on_delete=models.SET_NULL, null=True, blank=True)
-    academic_status = models.CharField(max_length=100)
-    skills = models.TextField()
+    academic_status = models.CharField(max_length=100, choices=[
+        ('diploma', 'Diploma'),
+        ('undergraduate', 'Undergraduate'),
+        ('postgraduate', 'Postgraduate'),
+        ('passout', 'Pass-out'),
+    ], default='undergraduate')
+    institution_name = models.CharField(max_length=200, blank=True, null=True)
+    course_name = models.CharField(max_length=200, blank=True, null=True)
+    
+    skills = models.TextField(blank=True, null=True)
     
     # New Fields for Part-Time Matching
-    availability = models.CharField(max_length=200, default="Flexible", help_text="e.g., Weekends, After 5 PM")
-    preferred_roles = models.CharField(max_length=200, blank=True, help_text="e.g., Sales, Data Entry")
-    id_card = models.FileField(upload_to='id_cards/')
+    AVAILABILITY_CHOICES = [
+        ('weekdays_evening', 'Weekdays (Evening)'),
+        ('weekends', 'Weekends'),
+        ('flexible', 'Flexible'),
+        ('10_15_hrs', '10-15 hrs/week'),
+    ]
+    availability = models.CharField(max_length=50, choices=AVAILABILITY_CHOICES, default="flexible")
+    preferred_roles = models.CharField(max_length=500, blank=True, help_text="Multi-select: Web Developer, Tutor, etc.")
+    id_card = models.FileField(upload_to='id_cards/', blank=True, null=True)
     
     # Profile Enhancements
     resume = models.FileField(upload_to='resumes/', blank=True, null=True)
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
+    
+    
+    verification_status = models.BooleanField(default=False)
+    date_of_birth = models.DateField(blank=True, null=True)
 
     def __str__(self):
         return self.student_name    
@@ -103,3 +112,23 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"Notification for {self.user.email} - {self.message}"
+
+class Feedback(models.Model):
+    sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='sent_feedback')
+    recipient = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True, related_name='received_feedback')
+    subject = models.CharField(max_length=200)
+    message = models.TextField()
+    status = models.CharField(max_length=20, default='new')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Feedback from {self.sender.name}"
+
+class Report(models.Model):
+    generated_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    report_type = models.CharField(max_length=100)
+    file_path = models.FileField(upload_to='reports/')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.report_type} - {self.created_at}"

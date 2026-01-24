@@ -6,7 +6,16 @@ urlpatterns = [
     path('jobs/', views.view_jobs, name='student_view_jobs'),
     path('jobs/<int:job_id>/', views.job_detail, name='student_job_detail'),
     path('jobs/<int:job_id>/apply/', views.apply_job, name='apply_job'),
+    path('complete-profile/', views.complete_profile, name='complete_profile'),
     path('profile/', views.profile, name='student_profile'),
     path('notifications/', views.notifications, name='student_notifications'),
     path('my-applications/', views.my_applications, name='student_my_applications'),
+    
+    # Skills & Services
+    path('add-skill/', views.add_skill, name='add_skill'),
+    path('my-skills/', views.my_skills, name='my_skills'),
+    path('services/', views.service_list, name='service_list'),
+    path('services/<int:service_id>/', views.service_detail, name='service_detail'),
+    path('edit-skill/<int:service_id>/', views.edit_skill, name='edit_skill'),
+    path('manage-booking/<int:booking_id>/<str:action>/', views.manage_booking, name='manage_booking'),
 ]

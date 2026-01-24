@@ -6,7 +6,20 @@ from student.models import Application
 
 
 def index(request):
-    return render(request, 'employer/index.html')
+    try:
+        employer = Employer.objects.get(user_id=request.user.id)
+        jobs_count = employer.job_postings.count()
+        total_applications_count = Application.objects.filter(job__employer=employer).count()
+        recent_applications = Application.objects.filter(job__employer=employer).select_related('student__user', 'job').order_by('-id')[:5]
+
+        context = {
+            'jobs_count': jobs_count,
+            'total_applications_count': total_applications_count,
+            'recent_applications': recent_applications,
+        }
+        return render(request, 'employer/index.html', context)
+    except Employer.DoesNotExist:
+        return render(request, 'employer/index.html')
 
 
 def addjob(request):
@@ -113,9 +126,47 @@ def update_status(request, application_id, status):
         message = f"Great news! Your application for {application.job.job_title} has been ACCEPTED by {application.job.employer.company_name}."
     elif status == 'rejected':
         message = f"Update on your application: {application.job.employer.company_name} has decided not to proceed with your application for {application.job.job_title}."
+    elif status == 'completed':
+        message = f"Congratulations! Your job {application.job.job_title} has been marked as COMPLETED by {application.job.employer.company_name}. Please check your application status and leave a review."
     
     if message:
         Notification.objects.create(user=application.student.user, message=message, link='/student/my-applications/')
 
     return redirect('view_applications')
 
+
+from student.forms import FeedbackForm
+from student.models import Feedback
+
+def review_student(request, application_id):
+    application = get_object_or_404(Application, id=application_id)
+    
+    # Verify employer owns the job
+    if application.job.employer.user != request.user:
+        messages.error(request, "Unauthorized")
+        return redirect('view_applications')
+        
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            feedback = form.save(commit=False)
+            feedback.application = application
+            feedback.reviewer_role = 'employer'
+            feedback.save()
+            messages.success(request, "Feedback submitted successfully!")
+            return redirect('view_applications')
+    else:
+        form = FeedbackForm()
+    
+    return render(request, 'employer/review_student.html', {'form': form, 'application': application})
+
+    return render(request, 'employer/review_student.html', {'form': form, 'application': application})
+
+
+def subscriptions(request):
+    plan_type = request.GET.get('plan', 'monthly')  # Default to monthly if not specified
+    plans = [] # Placeholder for actual DB plans if needed
+    return render(request, 'employer/subscriptions.html', {'plan_type': plan_type, 'plans': plans})
+
+def payment_page(request, plan_type):
+    return render(request, 'employer/payment.html', {'plan_type': plan_type})

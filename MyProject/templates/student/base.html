@@ -5,110 +5,87 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="{% static 'student/assets/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'student/assets/css/owl.carousel.min.css' %}">
-    <link rel="stylesheet" href="{% static 'student/assets/css/owl.theme.default.min.css' %}">
-    <link rel="stylesheet" href="{% static 'student/assets/css/boxicons.min.css' %}">
-    <link rel="stylesheet" href="{% static 'student/assets/fonts/flaticon/flaticon.css' %}">
-    <link rel="stylesheet" href="{% static 'student/assets/css/nice-select.css' %}">
-    <link rel="stylesheet" href="{% static 'student/assets/css/meanmenu.css' %}">
-    <link rel="stylesheet" href="{% static 'student/assets/css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'student/assets/css/dark.css' %}">
-    <link rel="stylesheet" href="{% static 'student/assets/css/responsive.css' %}">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'guest/assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'guest/assets/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'guest/assets/css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'guest/assets/css/boxicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'guest/assets/fonts/flaticon/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'guest/assets/css/nice-select.css' %}">
+    <link rel="stylesheet" href="{% static 'guest/assets/css/meanmenu.css' %}">
+    <link rel="stylesheet" href="{% static 'guest/assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'guest/assets/css/dark.css' %}">
+    <link rel="stylesheet" href="{% static 'guest/assets/css/responsive.css' %}">
+
     <title>Student Portal - Learn to Earn</title>
     <link rel="icon" type="image/png" href="{% static 'student/assets/img/favicon.png' %}">
+
+    <style>
+        :root {
+            --primary-dark: #1A202E;
+            --primary-red: #FF2B2B;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        .loader-content {
+            position: fixed;
+            inset: 0;
+            background: #0f172a;
+            z-index: 99999;
+        }
+
+        .navbar-area {
+            background-color: var(--primary-dark);
+        }
+
+        .footer-area {
+            background-color: var(--primary-dark);
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
 </head>
 
 <body>
-    <div class="loader-content">
+
+    <!-- LOADER -->
+    <div class="loader-content" id="page-loader">
         <div class="d-table">
             <div class="d-table-cell">
                 <div class="sk-circle">
-                    <div class="sk-circle1 sk-child"></div>
-                    <div class="sk-circle2 sk-child"></div>
-                    <div class="sk-circle3 sk-child"></div>
-                    <div class="sk-circle4 sk-child"></div>
-                    <div class="sk-circle5 sk-child"></div>
-                    <div class="sk-circle6 sk-child"></div>
-                    <div class="sk-circle7 sk-child"></div>
-                    <div class="sk-circle8 sk-child"></div>
-                    <div class="sk-circle9 sk-child"></div>
-                    <div class="sk-circle10 sk-child"></div>
-                    <div class="sk-circle11 sk-child"></div>
-                    <div class="sk-circle12 sk-child"></div>
+                    {% for i in "123456789012" %}
+                    <div class="sk-circle{{ forloop.counter }} sk-child"></div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- NAVBAR -->
     <div class="navbar-area">
-        <div class="mobile-nav">
-            <a href="{% url 'student_index' %}" class="logo">
-                <img src="{% static 'student/assets/img/logo.png' %}" alt="logo">
-            </a>
-        </div>
-
         <div class="main-nav">
             <div class="container">
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <a class="navbar-brand" href="{% url 'student_index' %}">
-                        <img src="{% static 'student/assets/img/logo.png' %}" alt="logo">
+                        <h3 style="color:#fff;font-weight:800;margin:0;">L2E Student</h3>
                     </a>
-                    <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
+
+                    <div class="collapse navbar-collapse mean-menu">
                         <ul class="navbar-nav m-auto">
-                            <li class="nav-item">
-                                <a href="{% url 'student_index' %}" class="nav-link">Home</a>
+                            <li class="nav-item"><a href="{% url 'student_index' %}" class="nav-link">Dashboard</a></li>
+                            <li class="nav-item"><a href="{% url 'student_view_jobs' %}" class="nav-link">Find Jobs</a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{% url 'student_view_jobs' %}" class="nav-link">Find Jobs</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{% url 'student_my_applications' %}" class="nav-link">My Applications</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{% url 'student_profile' %}" class="nav-link">Profile</a>
-                            </li>
+                            <li class="nav-item"><a href="{% url 'my_skills' %}" class="nav-link">Offer Skills</a></li>
+                            <li class="nav-item"><a href="{% url 'student_my_applications' %}" class="nav-link">My
+                                    Applications</a></li>
+                            <li class="nav-item"><a href="{% url 'student_profile' %}" class="nav-link">Profile</a></li>
                         </ul>
 
-                        <div class="other-option d-flex align-items-center">
-                            <!-- Notification Dropdown -->
-                            <div class="dropdown me-3">
-                                <a class="nav-link position-relative text-dark" href="#" id="notificationDropdown"
-                                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class='bx bx-bell' style="font-size: 1.5rem;"></i>
-                                    {% if notifications %}
-                                    <span
-                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                                        style="font-size: 0.6rem;">
-                                        {{ notifications.count }}
-                                    </span>
-                                    {% endif %}
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end shadow border-0"
-                                    aria-labelledby="notificationDropdown"
-                                    style="min-width: 320px; max-height: 400px; overflow-y: auto;">
-                                    <li>
-                                        <h6 class="dropdown-header border-bottom py-2">Notifications</h6>
-                                    </li>
-                                    {% if notifications %}
-                                    {% for notif in notifications %}
-                                    <li>
-                                        <a class="dropdown-item py-3 border-bottom" href="{{ notif.link|default:'#' }}">
-                                            <p class="mb-1 text-wrap small">{{ notif.message }}</p>
-                                            <small class="text-muted" style="font-size: 0.75rem;">{{
-                                                notif.timestamp|timesince }} ago</small>
-                                        </a>
-                                    </li>
-                                    {% endfor %}
-                                    {% else %}
-                                    <li>
-                                        <div class="dropdown-item text-center py-3 text-muted small">No new
-                                            notifications</div>
-                                    </li>
-                                    {% endif %}
-                                </ul>
-                            </div>
-
+                        <div class="other-option">
                             <a href="{% url 'logout' %}" class="signin-btn">Log Out</a>
                         </div>
                     </div>
@@ -117,74 +94,35 @@
         </div>
     </div>
 
-    {% block content %}
-    {% endblock %}
+    {% block content %}{% endblock %}
 
+    <!-- FOOTER -->
     <footer class="footer-area pt-100 pb-70">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-3 col-sm-6">
-                    <div class="footer-widget">
-                        <div class="footer-logo">
-                            <a href="{% url 'student_index' %}">
-                                <img src="{% static 'guest/assets/img/logo.png' %}" alt="logo">
-                            </a>
-                        </div>
-                        <p>Your gateway to part-time opportunities.</p>
-                    </div>
-                </div>
-                <!-- Simplified Footer -->
-            </div>
+        <div class="container text-center">
+            <p style="color:#cbd5e1;margin:0;">© 2026 Learn To Earn. Empowering Students.</p>
         </div>
     </footer>
-    <div class="copyright-text text-center">
-        <p>Learn to Earn - Student Portal</p>
-    </div>
 
-    <div class="top-btn">
-        <i class='bx bx-chevrons-up bx-fade-up'></i>
-    </div>
-
+    <!-- JS -->
     <script src="{% static 'student/assets/js/jquery.min.js' %}"></script>
     <script src="{% static 'student/assets/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'student/assets/js/owl.carousel.min.js' %}"></script>
-    <script src="{% static 'student/assets/js/jquery.nice-select.min.js' %}"></script>
-    <script src="{% static 'student/assets/js/jquery.magnific-popup.min.js' %}"></script>
-    <script src="{% static 'student/assets/js/jquery.ajaxchimp.min.js' %}"></script>
-    <script src="{% static 'student/assets/js/form-validator.min.js' %}"></script>
-    <script src="{% static 'student/assets/js/contact-form-script.js' %}"></script>
     <script src="{% static 'student/assets/js/meanmenu.js' %}"></script>
     <script src="{% static 'student/assets/js/custom.js' %}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    {% if messages %}
-    <div id="django-messages-data" style="display:none;" data-messages='[
-        {% for message in messages %}
-            {"text": "{{ message|escapejs }}", "tags": "{{ message.tags }}"}{% if not forloop.last %},{% endif %}
-        {% endfor %}
-    ]'></div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var messagesDiv = document.getElementById('django-messages-data');
-            if (messagesDiv) {
-                var messages = JSON.parse(messagesDiv.getAttribute('data-messages'));
-                messages.forEach(function (msg) {
-                    var iconType = 'info';
-                    if (msg.tags.includes('error')) iconType = 'error';
-                    else if (msg.tags.includes('success')) iconType = 'success';
-                    else if (msg.tags.includes('warning')) iconType = 'warning';
 
-                    Swal.fire({
-                        text: msg.text,
-                        icon: iconType,
-                        confirmButtonText: 'OK',
-                        timer: 3000,
-                        timerProgressBar: true
-                    });
-                });
+    <!-- 🔥 LOADER FIX -->
+    <script>
+        window.addEventListener('load', function () {
+            const loader = document.getElementById('page-loader');
+            if (loader) {
+                loader.style.opacity = '0';
+                loader.style.pointerEvents = 'none';
+                setTimeout(() => loader.remove(), 500);
             }
         });
     </script>
-    {% endif %}
+
+    {% block extra_js %}{% endblock %}
 </body>
 
 </html>

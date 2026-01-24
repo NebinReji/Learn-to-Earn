@@ -146,7 +146,7 @@
                 </div>
                 <div class="job-meta-item">
                     <i class="bi bi-briefcase-fill"></i>
-                    {{ job.get_work_mode_display|default:job.work_mode }}
+                    {{ job.get_job_type_display|default:job.job_type }}
                 </div>
                 <div class="job-meta-item">
                     <i class="bi bi-cash-stack"></i>
@@ -159,9 +159,15 @@
             </div>
         </div>
         <div class="d-none d-lg-block text-end">
+            {% if is_applied %}
+            <button class="btn btn-secondary btn-lg btn-apply shadow-sm px-5" disabled>
+                Applied <i class="bi bi-check-circle-fill ms-2"></i>
+            </button>
+            {% else %}
             <a href="{% url 'apply_job' job.id %}" class="btn btn-success btn-lg btn-apply shadow-sm px-5">
                 Apply Now <i class="bi bi-arrow-right ms-2"></i>
             </a>
+            {% endif %}
             <div class="mt-2 text-muted small">
                 Expires on: {{ job.expiry_date|date:"M d, Y" }}
             </div>
@@ -193,9 +199,15 @@
         <div class="col-lg-4">
             <!-- Mobile Apply Button (Visible only on smaller screens) -->
             <div class="d-lg-none mb-4">
+                {% if is_applied %}
+                <button class="btn btn-secondary btn-apply w-100 shadow-sm" disabled>
+                    Applied <i class="bi bi-check-circle-fill ms-2"></i>
+                </button>
+                {% else %}
                 <a href="{% url 'apply_job' job.id %}" class="btn btn-success btn-apply w-100 shadow-sm">
                     Apply Now <i class="bi bi-arrow-right ms-2"></i>
                 </a>
+                {% endif %}
             </div>
 
             <div class="sidebar-card">

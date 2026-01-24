@@ -4,8 +4,15 @@ from guest.forms import EmployerForm, EmployerSignupForm, LoginForm, SignupForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 
+from employer.models import Jobposting
+from student.models import Feedback, SkillService
+# Force reload
+
 def guest_index(request):
-    return render(request, 'guest/index.html')
+    jobs = Jobposting.objects.all().order_by('-posted_date')[:5]
+    reviews = Feedback.objects.filter(rating__gte=4).order_by('-created_at')[:5]
+    services = SkillService.objects.filter(is_active=True).order_by('-created_at')[:6]
+    return render(request, 'guest/index.html', {'jobs': jobs, 'reviews': reviews, 'services': services})
 
 def addemployer(request):
     if request.method == 'POST':

@@ -1,357 +1,229 @@
 {% extends 'guest/base.html' %}
 {% load static %}
-
 {% block content %}
-<style>
-    .signup-section {
-        min-height: 100vh;
-        background: #f8f9fa;
-        padding: 40px 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .signup-card {
-        background: #fff;
-        border-radius: 20px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
-        overflow: hidden;
-        max-width: 1100px;
-        width: 100%;
-        margin: 20px;
-        position: relative;
-    }
-
-    .signup-header {
-        background: white;
-        padding: 40px 40px 20px;
-        text-align: center;
-    }
-
-    .nav-pills-custom {
-        display: inline-flex;
-        background: #f1f3f5;
-        padding: 5px;
-        border-radius: 50px;
-        margin-bottom: 20px;
-    }
-
-    .nav-pills-custom .nav-link {
-        border-radius: 50px;
-        padding: 10px 30px;
-        font-weight: 600;
-        color: #495057;
-        border: none;
-        transition: all 0.3s;
-    }
-
-    .nav-pills-custom .nav-link.active {
-        background: #0d6efd;
-        color: white;
-        box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3);
-    }
-
-    .nav-pills-custom .nav-link#employer-tab.active {
-        background: #198754;
-        box-shadow: 0 4px 10px rgba(25, 135, 84, 0.3);
-    }
-
-    .form-wrapper {
-        padding: 20px 50px 50px;
-    }
-
-    .form-control-lg,
-    .form-select-lg {
-        border-radius: 10px;
-        font-size: 0.95rem;
-        border: 1px solid #dee2e6;
-        padding: 12px 20px;
-    }
-
-    .form-control-lg:focus,
-    .form-select-lg:focus {
-        border-color: #0d6efd;
-        box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1);
-    }
-
-    .btn-register {
-        padding: 14px;
-        border-radius: 10px;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        transition: all 0.3s ease;
-    }
-
-    .btn-register:hover {
-        transform: translateY(-2px);
-    }
-
-    .section-label {
-        color: #adb5bd;
-        font-size: 0.8rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 15px;
-        margin-top: 10px;
-        display: block;
-    }
-</style>
-
-<div class="signup-section">
-    <div class="signup-card">
-        <div class="signup-header">
-            <h2 class="fw-bold mb-2">Create Account</h2>
-            <p class="text-muted mb-4">Join us today! Choose your role to get started.</p>
-
-            <ul class="nav nav-pills-custom" id="signupTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="student-tab" data-bs-toggle="tab" data-bs-target="#student"
-                        type="button" role="tab">
-                        <i class="bi bi-mortarboard-fill me-2"></i> Student
-                    </button>
+<!-- Page Title Start -->
+<section class="page-title title-bg5">
+    <div class="d-table">
+        <div class="d-table-cell">
+            <h2>Sign Up</h2>
+            <ul>
+                <li>
+                    <a href="index.html">Home</a>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="employer-tab" data-bs-toggle="tab" data-bs-target="#employer"
-                        type="button" role="tab">
-                        <i class="bi bi-briefcase-fill me-2"></i> Employer
-                    </button>
-                </li>
+                <li>Sign Up</li>
             </ul>
         </div>
+    </div>
+    <div class="lines">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+</section>
+<!-- Page Title End -->
 
-        <div class="tab-content" id="signupTabContent">
-            <!-- Student Tab -->
-            <div class="tab-pane fade show active" id="student" role="tabpanel">
-                <div class="form-wrapper">
-                    {% if student_form.errors %}
-                    <div class="alert alert-danger shadow-sm border-0 mb-4">
-                        <i class="bi bi-exclamation-triangle-fill me-2"></i> Please correct the errors below.
+<!-- Sign Up Section Start -->
+<div class="user-form-area pt-100 pb-70">
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-lg-12">
+                <div class="user-content">
+                    <div class="top text-center mb-4">
+                        <h2>Register Now</h2>
+                        <p>Create your account as a Student or Employer</p>
+                    </div>
+
+                    <!-- Display Messages -->
+                    {% if messages %}
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
+                            {% endfor %}
+                        </div>
                     </div>
                     {% endif %}
 
-                    <form method="post" enctype="multipart/form-data" novalidate>
-                        {% csrf_token %}
-                        <span class="section-label">Personal Information</span>
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-6">
-                                <label class="form-label ms-1 small fw-bold text-muted">Full Name</label>
-                                {{ student_form.name }}
-                                <div class="text-danger small mt-1">{{ student_form.name.errors }}</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label ms-1 small fw-bold text-muted">Email Address</label>
-                                {{ student_form.email }}
-                                <div class="text-danger small mt-1">{{ student_form.email.errors }}</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label ms-1 small fw-bold text-muted">Phone Number</label>
-                                {{ student_form.phone_number }}
-                                <div class="text-danger small mt-1">{{ student_form.phone_number.errors }}</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label ms-1 small fw-bold text-muted">Date of Birth</label>
-                                {{ student_form.dob }}
-                                <div class="text-danger small mt-1">{{ student_form.dob.errors }}</div>
-                            </div>
-                        </div>
-
-                        <span class="section-label">Professional Profile</span>
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-12">
-                                <label class="form-label ms-1 small fw-bold text-muted">Skills</label>
-                                {{ student_form.skills }}
-                                <div class="text-danger small mt-1">{{ student_form.skills.errors }}</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label ms-1 small fw-bold text-muted">Availability</label>
-                                {{ student_form.availability }}
-                                <div class="text-danger small mt-1">{{ student_form.availability.errors }}</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label ms-1 small fw-bold text-muted">Preferred Roles</label>
-                                {{ student_form.preferred_roles }}
-                                <div class="text-danger small mt-1">{{ student_form.preferred_roles.errors }}</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label ms-1 small fw-bold text-muted">District</label>
-                                {{ student_form.district }}
-                                <div class="text-danger small mt-1">{{ student_form.district.errors }}</div>
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <label class="form-label ms-1 small fw-bold text-muted">Bio</label>
-                                {{ student_form.bio }}
-                                <div class="text-danger small mt-1">{{ student_form.bio.errors }}</div>
-                            </div>
-                        </div>
-
-                        <span class="section-label">Documents & Media</span>
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-12">
-                                <label class="form-label ms-1 small fw-bold text-muted">ID Card (Required)</label>
-                                {{ student_form.id_card }}
-                                <div class="text-danger small mt-1">{{ student_form.id_card.errors }}</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label ms-1 small fw-bold text-muted">Profile Picture</label>
-                                {{ student_form.profile_picture }}
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label ms-1 small fw-bold text-muted">Resume</label>
-                                {{ student_form.resume }}
-                            </div>
-                        </div>
-
-                        <span class="section-label">Security</span>
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-6">
-                                <label class="form-label ms-1 small fw-bold text-muted">Password</label>
-                                {{ student_form.password1 }}
-                                <div class="text-danger small mt-1">{{ student_form.password1.errors }}</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label ms-1 small fw-bold text-muted">Confirm Password</label>
-                                {{ student_form.password2 }}
-                                <div class="text-danger small mt-1">{{ student_form.password2.errors }}</div>
-                            </div>
-                        </div>
-
-                        <div class="text-center mt-5">
-                            <button type="submit" name="student-submit"
-                                class="btn btn-primary btn-register btn-lg w-50 shadow-sm">
-                                Complete Student Registration
+                    <!-- Tabs -->
+                    <ul class="nav nav-tabs justify-content-center mb-4 border-0" id="signupTab" role="tablist">
+                        <li class="nav-item m-2" role="presentation">
+                            <button class="btn btn-outline-primary active btn-lg px-5 py-2" id="student-tab"
+                                data-bs-toggle="tab" data-bs-target="#student" type="button" role="tab"
+                                aria-controls="student" aria-selected="true" style="border-radius: 30px;">
+                                <i class='bx bxs-graduation'></i> Student
                             </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+                        </li>
+                        <li class="nav-item m-2" role="presentation">
+                            <button class="btn btn-outline-success btn-lg px-5 py-2" id="employer-tab"
+                                data-bs-toggle="tab" data-bs-target="#employer" type="button" role="tab"
+                                aria-controls="employer" aria-selected="false" style="border-radius: 30px;">
+                                <i class='bx bxs-briefcase-alt-2'></i> Employer
+                            </button>
+                        </li>
+                    </ul>
 
-            <!-- Employer Tab -->
-            <div class="tab-pane fade" id="employer" role="tabpanel">
-                <div class="form-wrapper">
-                    {% if employer_form.errors %}
-                    <div class="alert alert-danger shadow-sm border-0 mb-4">
-                        <i class="bi bi-exclamation-triangle-fill me-2"></i> Please correct the errors below.
+                    <div class="tab-content pt-4" id="signupTabContent">
+                        <!-- Student Tab -->
+                        <div class="tab-pane fade show active" id="student" role="tabpanel"
+                            aria-labelledby="student-tab">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8">
+                                    <form method="post" enctype="multipart/form-data" novalidate
+                                        class="card p-4 shadow-sm border-0">
+                                        {% csrf_token %}
+
+                                        {% if student_form.non_field_errors %}
+                                        <div class="alert alert-danger">{{ student_form.non_field_errors }}</div>
+                                        {% endif %}
+
+                                        <h4 class="mb-4 text-primary">Student Details</h4>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label>Full Name</label>
+                                                {{ student_form.name }}
+                                                <div class="text-danger small">{{ student_form.name.errors }}</div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label>Email Address</label>
+                                                {{ student_form.email }}
+                                                <div class="text-danger small">{{ student_form.email.errors }}</div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label>Phone Number</label>
+                                                {{ student_form.phone_number }}
+                                                <div class="text-danger small">{{ student_form.phone_number.errors }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label>Date of Birth</label>
+                                                {{ student_form.dob }}
+                                                <div class="text-danger small">{{ student_form.dob.errors }}</div>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label>District</label>
+                                                {{ student_form.district }}
+                                                <div class="text-danger small">{{ student_form.district.errors }}</div>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label>Password</label>
+                                                {{ student_form.password1 }}
+                                                <div class="text-danger small">{{ student_form.password1.errors }}</div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label>Confirm Password</label>
+                                                {{ student_form.password2 }}
+                                                <div class="text-danger small">{{ student_form.password2.errors }}</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-center mt-4">
+                                            <button type="submit" name="student-submit"
+                                                class="btn btn-primary btn-lg w-50">Register Now</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Employer Tab -->
+                        <div class="tab-pane fade" id="employer" role="tabpanel" aria-labelledby="employer-tab">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8">
+                                    <form method="post" novalidate class="card p-4 shadow-sm border-0">
+                                        {% csrf_token %}
+
+                                        {% if employer_form.non_field_errors %}
+                                        <div class="alert alert-danger">{{ employer_form.non_field_errors }}</div>
+                                        {% endif %}
+
+                                        <h4 class="mb-4 text-success">Employer Details</h4>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label>Company Name</label>
+                                                {{ employer_form.company_name }}
+                                                <div class="text-danger small">{{ employer_form.company_name.errors }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label>Contact Person</label>
+                                                {{ employer_form.contact_person }}
+                                                <div class="text-danger small">{{ employer_form.contact_person.errors }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label>Email Address</label>
+                                                {{ employer_form.email }}
+                                                <div class="text-danger small">{{ employer_form.email.errors }}</div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label>Phone Number</label>
+                                                {{ employer_form.phone }}
+                                                <div class="text-danger small">{{ employer_form.phone.errors }}</div>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label>Area / Location</label>
+                                                {{ employer_form.area }}
+                                                <div class="text-danger small">{{ employer_form.area.errors }}</div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label>Industry</label>
+                                                {{ employer_form.industry }}
+                                                <div class="text-danger small">{{ employer_form.industry.errors }}</div>
+                                            </div>
+
+                                            <div class="col-md-12 mb-3">
+                                                <label>Address</label>
+                                                {{ employer_form.address }}
+                                                <div class="text-danger small">{{ employer_form.address.errors }}</div>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label>Password</label>
+                                                {{ employer_form.password1 }}
+                                                <div class="text-danger small">{{ employer_form.password1.errors }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label>Confirm Password</label>
+                                                {{ employer_form.password2 }}
+                                                <div class="text-danger small">{{ employer_form.password2.errors }}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-center mt-4">
+                                            <button type="submit" name="employer-submit"
+                                                class="btn btn-success btn-lg w-50">Register Employer</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    {% endif %}
 
-                    <form method="post" enctype="multipart/form-data" novalidate>
-                        {% csrf_token %}
-                        <span class="section-label text-success">Company Information</span>
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-6">
-                                <label class="form-label ms-1 small fw-bold text-muted">Company Name</label>
-                                {{ employer_form.company_name }}
-                                <div class="text-danger small mt-1">{{ employer_form.company_name.errors }}</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label ms-1 small fw-bold text-muted">Contact Person</label>
-                                {{ employer_form.contact_person }}
-                                <div class="text-danger small mt-1">{{ employer_form.contact_person.errors }}</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label ms-1 small fw-bold text-muted">Email Address</label>
-                                {{ employer_form.email }}
-                                <div class="text-danger small mt-1">{{ employer_form.email.errors }}</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label ms-1 small fw-bold text-muted">Phone Number</label>
-                                {{ employer_form.phone }}
-                                <div class="text-danger small mt-1">{{ employer_form.phone.errors }}</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label ms-1 small fw-bold text-muted">Website</label>
-                                {{ employer_form.website }}
-                                <div class="text-danger small mt-1">{{ employer_form.website.errors }}</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label ms-1 small fw-bold text-muted">District</label>
-                                {{ employer_form.district }}
-                                <div class="text-danger small mt-1">{{ employer_form.district.errors }}</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label ms-1 small fw-bold text-muted">Area / Location</label>
-                                {{ employer_form.area }}
-                                <div class="text-danger small mt-1">{{ employer_form.area.errors }}</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label ms-1 small fw-bold text-muted">Industry</label>
-                                {{ employer_form.industry }}
-                                <div class="text-danger small mt-1">{{ employer_form.industry.errors }}</div>
-                            </div>
-                            <div class="col-md-12">
-                                <label class="form-label ms-1 small fw-bold text-muted">Address</label>
-                                {{ employer_form.address }}
-                                <div class="text-danger small mt-1">{{ employer_form.address.errors }}</div>
-                            </div>
-                            <div class="col-md-12">
-                                <label class="form-label ms-1 small fw-bold text-muted">Description</label>
-                                {{ employer_form.description }}
-                                <div class="text-danger small mt-1">{{ employer_form.description.errors }}</div>
-                            </div>
-                        </div>
-
-                        <span class="section-label text-success">Branding</span>
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-6">
-                                <label class="form-label ms-1 small fw-bold text-muted">Company Logo</label>
-                                {{ employer_form.company_logo }}
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label ms-1 small fw-bold text-muted">Profile Picture</label>
-                                {{ employer_form.profile_picture }}
-                            </div>
-                        </div>
-
-                        <span class="section-label text-success">Security</span>
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-6">
-                                <label class="form-label ms-1 small fw-bold text-muted">Password</label>
-                                {{ employer_form.password1 }}
-                                <div class="text-danger small mt-1">{{ employer_form.password1.errors }}</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label ms-1 small fw-bold text-muted">Confirm Password</label>
-                                {{ employer_form.password2 }}
-                                <div class="text-danger small mt-1">{{ employer_form.password2.errors }}</div>
-                            </div>
-                        </div>
-
-                        <div class="text-center mt-5">
-                            <button type="submit" name="employer-submit"
-                                class="btn btn-success btn-register btn-lg w-50 shadow-sm">
-                                Register as Employer
-                            </button>
-                        </div>
-                    </form>
                 </div>
             </div>
-        </div>
-
-        <div class="text-center pb-5">
-            <p class="text-muted small">Already have an account? <a href="{% url 'login' %}"
-                    class="fw-bold text-decoration-none">Log In</a></p>
         </div>
     </div>
 </div>
+<!-- Sign Up Section End -->
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // Add Bootstrap classes to all input fields
-        var forms = document.querySelectorAll('form');
-        forms.forEach(function (form) {
-            var inputs = form.querySelectorAll('input, select, textarea');
-            inputs.forEach(function (input) {
-                if (input.type !== 'checkbox' && input.type !== 'radio' && input.type !== 'submit') {
-                    if (input.tagName === 'SELECT') {
-                        input.classList.add('form-select', 'form-select-lg');
-                    } else {
-                        input.classList.add('form-control', 'form-control-lg');
-                    }
-                }
-            });
-        });
+        if (window.location.hash === "#employer") {
+            var employerTab = new bootstrap.Tab(document.querySelector('#employer-tab'));
+            employerTab.show();
+        }
     });
 </script>
+
 {% endblock %}

@@ -36,73 +36,6 @@ class SignupForm(forms.Form):
         widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter phone number"})
     )
 
-    dob = forms.DateField(
-        label="Date of Birth",
-        required=False,
-        widget=forms.DateInput(attrs={"type": "date", "class": "form-control"})
-    )
-
-    place = forms.CharField(
-        label="Place",
-        required=False,
-        widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "City / Town"})
-    )
-
-    academic_status = forms.CharField(
-        label="Academic Status",
-        required=False,
-        widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "e.g., Undergraduate, Final year"})
-    )
-
-    availability = forms.CharField(
-        label="Availability",
-        required=False,
-        widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "e.g., Weekends, After 5 PM"})
-    )
-
-    preferred_roles = forms.CharField(
-        label="Preferred Roles",
-        required=False,
-        widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "e.g., Sales, Data Entry"})
-    )
-
-    skills = forms.CharField(
-        label="Skills",
-        required=False,
-        widget=forms.Textarea(attrs={"rows": 3, "class": "form-control", "placeholder": "List key skills"})
-    )
-
-    district = forms.ModelChoiceField(
-        queryset=District.objects.all(),
-        label="District",
-        required=False,
-        widget=forms.Select(attrs={"class": "form-control"})
-    )
-
-    id_card = forms.FileField(
-        label="ID Card (optional)",
-        required=False,
-        widget=forms.ClearableFileInput(attrs={"class": "form-control"})
-    )
-
-    profile_picture = forms.ImageField(
-        label="Profile Picture (optional)",
-        required=False,
-        widget=forms.ClearableFileInput(attrs={"class": "form-control"})
-    )
-
-    resume = forms.FileField(
-        label="Resume (optional)",
-        required=False,
-        widget=forms.ClearableFileInput(attrs={"class": "form-control"})
-    )
-
-    bio = forms.CharField(
-        label="Bio",
-        required=False,
-        widget=forms.Textarea(attrs={"class": "form-control", "rows": 3, "placeholder": "Short bio..."})
-    )
-
     password1 = forms.CharField(
         label="Password",
         widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Enter password"})
@@ -111,6 +44,19 @@ class SignupForm(forms.Form):
     password2 = forms.CharField(
         label="Confirm Password",
         widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Confirm password"})
+    )
+
+    dob = forms.DateField(
+        label="Date of Birth",
+        required=True,
+        widget=forms.DateInput(attrs={"type": "date", "class": "form-control"})
+    )
+
+    district = forms.ModelChoiceField(
+        queryset=District.objects.all(),
+        label="District",
+        required=True,
+        widget=forms.Select(attrs={"class": "form-control"})
     )
 
     # ---------------- VALIDATIONS ----------------
@@ -148,7 +94,7 @@ class SignupForm(forms.Form):
             password=self.cleaned_data["password1"],
             role='student'
         )
-        user.is_active = True
+        user.is_active = True  # Step 1 Complete, Login Allowed for Step 2
         user.save()
 
         student.objects.create(
@@ -156,15 +102,14 @@ class SignupForm(forms.Form):
             student_name=self.cleaned_data["name"],
             email=self.cleaned_data["email"],
             phone_number=self.cleaned_data["phone_number"],
+            date_of_birth=self.cleaned_data["dob"],
             district=self.cleaned_data.get("district"),
-            academic_status=self.cleaned_data.get("academic_status", ""),
-            availability=self.cleaned_data.get("availability", ""),
-            preferred_roles=self.cleaned_data.get("preferred_roles", ""),
-            skills=self.cleaned_data.get("skills", ""),
-            id_card=self.cleaned_data.get("id_card") or "",
-            profile_picture=self.cleaned_data.get("profile_picture"),
-            resume=self.cleaned_data.get("resume"),
-            bio=self.cleaned_data.get("bio", ""),
+            # Provide defaults for Step 2 fields to satisfy DB integrity
+            bio="",
+            skills="",
+            preferred_roles="",
+            availability="flexible",
+            academic_status="undergraduate",
         )
 
         return user
@@ -182,12 +127,17 @@ class EmployerSignupForm(forms.ModelForm):
         widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Confirm password"})
     )
 
+    terms_agreement = forms.BooleanField(
+        label="I agree to the Terms and Conditions",
+        required=True,
+        error_messages={'required': 'You must agree to the terms to register.'}
+    )
+
     class Meta:
         model = Employer
         fields = [
             "company_name",
             "contact_person",
-            "phone",
             "email",
             "phone",
             "website",
@@ -197,7 +147,6 @@ class EmployerSignupForm(forms.ModelForm):
             "address",
             "description",
             "company_logo",
-            "profile_picture",
         ]
         widgets = {
             "company_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter company name"}),
@@ -218,7 +167,6 @@ class EmployerSignupForm(forms.ModelForm):
         self.fields['website'].required = False
         self.fields['description'].required = False
         self.fields['company_logo'].required = False
-        self.fields['profile_picture'].required = False
         self.fields['district'].required = False
 
     # ---------- VALIDATION ----------
@@ -246,11 +194,11 @@ class EmployerSignupForm(forms.ModelForm):
             password=self.cleaned_data["password1"],
             role='employer'
         )
-        user.is_active = True
+        user.is_active = False # Pending Admin Approval
         user.save()
 
-        # Auto-verify employer for immediate access
-        employer.verification_status = True
+        # Set verification status to False
+        employer.verification_status = False
 
         employer.user = user
 
