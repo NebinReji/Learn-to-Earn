@@ -92,17 +92,8 @@ def view_students(request):
 def approve_student(request, student_id):
     try:
         stud = student.objects.get(id=student_id)
-<<<<<<< HEAD
-        
-        # Verify student profile
         stud.verification_status = True
         stud.save()
-
-        # Activate user account
-=======
-        stud.verification_status = True
-        stud.save()
->>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
         if stud.user:
             stud.user.is_active = True
             stud.user.save()
@@ -114,11 +105,8 @@ def approve_student(request, student_id):
 def reject_student(request, student_id):
     try:
         stud = student.objects.get(id=student_id)
-<<<<<<< HEAD
-=======
         stud.verification_status = False
         stud.save()
->>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
         if stud.user:
             stud.user.is_active = False # Deactivate user on rejection? Yes, strict.
             stud.user.save()

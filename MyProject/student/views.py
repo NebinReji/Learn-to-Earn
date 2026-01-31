@@ -3,16 +3,12 @@ from django.contrib import messages
 from employer.models import Jobposting
 from guest.models import student
 from student.models import Application, SkillService
-<<<<<<< HEAD
 from student.forms import StudentProfileForm, StudentProfileSetupForm
 
 
 def index(request):
     try:
         stud = student.objects.get(user_id=request.user.id)
-<<<<<<< HEAD
-=======
->>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
         applications_count = Application.objects.filter(student=stud).count()
         my_skills_count = SkillService.objects.filter(student=stud).count()
         
@@ -27,7 +23,6 @@ def index(request):
         available_skills = SkillService.objects.exclude(student=stud).select_related('student').order_by('-id')[:4]
         recent_applications = Application.objects.filter(student=stud).select_related('job', 'job__employer').order_by('-applied_date')[:5]
         
-<<<<<<< HEAD
         # Get list of applied job IDs
         applied_job_ids = Application.objects.filter(student=stud).values_list('job_id', flat=True)
 
@@ -42,15 +37,12 @@ def index(request):
             'recent_jobs': recent_jobs,
             'available_skills': available_skills,
             'recent_applications': recent_applications,
-<<<<<<< HEAD
             'applied_job_ids': applied_job_ids,
             'recent_notifications': recent_notifications,
         }
         return render(request, 'student/index.html', context)
     except student.DoesNotExist:
         return render(request, 'student/index.html')
-<<<<<<< HEAD
-=======
 
 
 def complete_profile(request):
@@ -69,7 +61,6 @@ def complete_profile(request):
         form = StudentProfileForm(instance=stud)
     
     return render(request, 'student/complete_profile.html', {'form': form})
->>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
 
 
 def view_jobs(request):
@@ -89,8 +80,7 @@ def view_jobs(request):
 
 def job_detail(request, job_id):
     job = get_object_or_404(Jobposting.objects.select_related('employer'), id=job_id)
-    
-<<<<<<< HEAD
+
     has_applied = False
     if request.user.is_authenticated:
         try:
