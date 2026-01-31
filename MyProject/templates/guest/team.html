@@ -1,0 +1,86 @@
+{% extends 'guest/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Page Title -->
+<section class="page-title title-bg6">
+    <div class="d-table">
+        <div class="d-table-cell">
+            <h2>Our Team</h2>
+            <ul>
+                <li>
+                    <a href="{% url 'guest_index' %}">Home</a>
+                </li>
+                <li>Team</li>
+            </ul>
+        </div>
+    </div>
+    <div class="lines">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section class="team-section pt-100 pb-70">
+    <div class="container">
+        <div class="section-title text-center">
+            <h2>Meet The Minds Behind LearnToEarn</h2>
+            <p>A group of passionate individuals committed to changing the way students work.</p>
+        </div>
+
+        <div class="row pt-45">
+            <!-- Team Member 1 -->
+            <div class="col-lg-4 col-md-6" data-aos="fade-up">
+                <div class="team-card">
+                    <img src="https://placehold.co/400x500?text=Team+Member" class="team-img" alt="Team Member">
+                    <div class="team-info">
+                        <h3>Alex Morgan</h3>
+                        <span>Founder & CEO</span>
+                        <div class="team-social mt-3">
+                            <a href="#"><i class='bx bxl-linkedin'></i></a>
+                            <a href="#"><i class='bx bxl-twitter'></i></a>
+                            <a href="#"><i class='bx bxl-facebook'></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 2 -->
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="team-card">
+                    <img src="https://placehold.co/400x500?text=Team+Member" class="team-img" alt="Team Member">
+                    <div class="team-info">
+                        <h3>Sarah Jenkins</h3>
+                        <span>CTO</span>
+                        <div class="team-social mt-3">
+                            <a href="#"><i class='bx bxl-linkedin'></i></a>
+                            <a href="#"><i class='bx bxl-twitter'></i></a>
+                            <a href="#"><i class='bx bxl-facebook'></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 3 -->
+            <div class="col-lg-4 col-md-6 offset-md-3 offset-lg-0" data-aos="fade-up" data-aos-delay="200">
+                <div class="team-card">
+                    <img src="https://placehold.co/400x500?text=Team+Member" class="team-img" alt="Team Member">
+                    <div class="team-info">
+                        <h3>Michael Ross</h3>
+                        <span>Head of Operations</span>
+                        <div class="team-social mt-3">
+                            <a href="#"><i class='bx bxl-linkedin'></i></a>
+                            <a href="#"><i class='bx bxl-twitter'></i></a>
+                            <a href="#"><i class='bx bxl-facebook'></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

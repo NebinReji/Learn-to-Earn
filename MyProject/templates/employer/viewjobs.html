@@ -60,8 +60,11 @@
 							<div class="d-flex align-items-center text-secondary mb-2">
 								<i class='bx bx-map me-2 fs-5'></i>
 								<span class="fw-medium">
-									{% if job.job_type == 'online' %}Remote{% else %}{{ job.location|default:"On-site"
-									}}{% endif %}
+									{% if job.job_type == 'online' %}
+									Remote
+									{% else %}
+									{{ job.location|default:"On-site" }}
+									{% endif %}
 								</span>
 							</div>
 							<div class="d-flex align-items-center text-secondary mb-2">

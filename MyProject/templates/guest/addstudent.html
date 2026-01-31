@@ -1,24 +1,82 @@
 {% extends 'guest/base.html' %}
 {% load static %}
 {% block content %}
+
+<!-- Page Title Start -->
+<section class="page-title title-bg6">
+    <div class="d-table">
+        <div class="d-table-cell">
+            <h2>Student Registration</h2>
+            <ul>
+                <li>
+                    <a href="{% url 'guest_index' %}">Home</a>
+                </li>
+                <li>Student Registration</li>
+            </ul>
+        </div>
+    </div>
+    <div class="lines">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+</section>
+<!-- Page Title End -->
+
 <div class="container" style="margin-top: 80px; margin-bottom: 80px;">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <div class="card shadow">
-                <div class="card-header" style="background-color: #1a73e8; color: white;">
-                    <h3 class="mb-0">Student Registration</h3>
+            <div class="card shadow border-0 rounded-3">
+                <div class="card-header text-white p-4" style="background-color: var(--primary-dark);">
+                    <h3 class="mb-0 fw-bold"><i class='bx bxs-graduation me-2'></i>Student Registration</h3>
                 </div>
-                <div class="card-body p-4">
-                    <form method="post" enctype="multipart/form-data">
+                <div class="card-body p-4 p-md-5">
+                    <form method="post" enctype="multipart/form-data" id="studentForm">
                         {% csrf_token %}
-                        {{ form.as_p }}
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                            <a href="{% url 'guest_index' %}" class="btn btn-secondary me-md-2">Cancel</a>
-                            <button type="submit" class="btn btn-primary">Submit Registration</button>
+
+                        <div class="row">
+                            {% for field in form %}
+                            <div class="col-12 mb-3">
+                                <label for="{{ field.id_for_label }}" class="form-label fw-bold text-dark">{{
+                                    field.label }}</label>
+                                {{ field }}
+                                {% if field.help_text %}
+                                <div class="form-text text-muted">{{ field.help_text }}</div>
+                                {% endif %}
+                                {% for error in field.errors %}
+                                <div class="text-danger small mt-1"><i class='bx bx-error-circle'></i> {{ error }}</div>
+                                {% endfor %}
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mt-4">
+                            <a href="{% url 'guest_index' %}" class="btn btn-outline-secondary px-4">
+                                <i class='bx bx-arrow-back me-1'></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-danger px-5 py-2 fw-bold"
+                                style="background-color: var(--primary-red); border: none;">
+                                Register Now <i class='bx bx-right-arrow-alt ms-1'></i>
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
+
+            <script>
+                // Auto-apply Bootstrap classes to Django form fields
+                document.addEventListener('DOMContentLoaded', function () {
+                    const inputs = document.querySelectorAll('#studentForm input, #studentForm select, #studentForm textarea');
+                    inputs.forEach(input => {
+                        if (input.type === 'checkbox') {
+                            input.classList.add('form-check-input');
+                        } else {
+                            input.classList.add('form-control');
+                            input.classList.add('p-3'); // Add comfortable padding
+                        }
+                    });
+                });
+            </script>
         </div>
     </div>
 </div>

@@ -1,0 +1,51 @@
+{% extends 'student/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="job-style-two pt-100 pb-70">
+    <div class="container">
+        <div class="section-title text-center">
+            <h2>Find Student Talent & Services</h2>
+            <p>From Tuitions to Technical Support, find the help you need.</p>
+        </div>
+
+        <div class="row">
+            {% if services %}
+            {% for service in services %}
+            <div class="col-lg-4 col-md-6">
+                <div class="job-card-two shadow-sm border-0 h-100">
+                    <div class="p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <span class="badge bg-light text-primary border">{{ service.get_category_display }}</span>
+                            <h5 class="text-success mb-0 fw-bold">₹{{ service.price }}</h5>
+                        </div>
+
+                        <h3>
+                            <a href="{% url 'service_detail' service.id %}">{{ service.title }}</a>
+                        </h3>
+
+                        <div class="d-flex align-items-center mb-3">
+                            <!-- Placeholder for user avatar if available, else generic icon -->
+                            <i class='bx bxs-user-circle fs-4 me-2 text-muted'></i>
+                            <span class="text-muted small">by {{ service.student.student_name }}</span>
+                        </div>
+
+                        <p>{{ service.description|truncatechars:100 }}</p>
+                    </div>
+
+                    <div class="card-footer bg-white border-top p-3 text-center">
+                        <a href="{% url 'service_detail' service.id %}"
+                            class="btn btn-outline-primary w-100 rounded-pill">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="col-12 text-center">
+                <div class="alert alert-info">No services found at the moment. Check back later!</div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

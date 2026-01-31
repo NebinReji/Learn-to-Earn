@@ -1,0 +1,174 @@
+{% extends 'student/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .setup-card {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    .form-control-lg,
+    .form-select-lg {
+        border-radius: 10px;
+        font-size: 0.95rem;
+        border: 1px solid #dee2e6;
+        padding: 12px 20px;
+    }
+
+    .form-control-lg:focus,
+    .form-select-lg:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1);
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #495057;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+</style>
+
+<div class="container py-5" style="margin-top: 80px;">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card setup-card border-0 shadow-lg">
+                <div class="card-header bg-primary text-white py-4 px-5 text-center">
+                    <h3 class="fw-bold mb-1">Complete Your Profile</h3>
+                    <p class="mb-0 opacity-75">Let's get your student account ready for employers!</p>
+                </div>
+                <div class="card-body p-5">
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-4" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger shadow-sm border-0 mb-4">{{ form.non_field_errors }}</div>
+                    {% endif %}
+
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <h5 class="text-primary fw-bold mb-3 small text-uppercase">Basic Information</h5>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">District *</label>
+                                {{ form.district }}
+                                <div class="text-danger small">{{ form.district.errors }}</div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Academic Status</label>
+                                {{ form.academic_status }}
+                                <div class="text-danger small">{{ form.academic_status.errors }}</div>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Upload Profile Picture</label>
+                                {{ form.profile_picture }}
+                                <div class="text-danger small">{{ form.profile_picture.errors }}</div>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Short Bio</label>
+                                {{ form.bio }}
+                                <div class="text-danger small">{{ form.bio.errors }}</div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4 text-muted opacity-25">
+
+                        <h5 class="text-primary fw-bold mb-3 small text-uppercase">Job Preferences</h5>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">Availability</label>
+                                {{ form.availability }}
+                                <div class="text-secondary small">e.g., Weekends, After 5PM</div>
+                                <div class="text-danger small">{{ form.availability.errors }}</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Preferred Roles</label>
+                                {{ form.preferred_roles }}
+                                <div class="text-secondary small">e.g., Sales, Data Entry</div>
+                                <div class="text-danger small">{{ form.preferred_roles.errors }}</div>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Skills</label>
+                                {{ form.skills }}
+                                <div class="text-secondary small">List your key skills comma separated</div>
+                                <div class="text-danger small">{{ form.skills.errors }}</div>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Resume (Optional)</label>
+                                {{ form.resume }}
+                                <div class="text-danger small">{{ form.resume.errors }}</div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid mt-5">
+                            <button type="submit" class="btn btn-primary btn-lg py-3 rounded-pill fw-bold">
+                                Complete Setup <i class="bi bi-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Force inputs to use Bootstrap classes
+        var inputs = document.querySelectorAll('input[type="text"], input[type="file"], select, textarea');
+        inputs.forEach(function (input) {
+            if (input.tagName === 'SELECT') {
+                input.classList.add('form-select', 'form-select-lg');
+            } else {
+                input.classList.add('form-control', 'form-control-lg');
+            }
+        });
+
+        // Aggressively destroy Nice Select after a delay to ensure custom.js has run
+        function nukeNiceSelect() {
+            if (typeof $ !== 'undefined' && $.fn.niceSelect) {
+                $('select').niceSelect('destroy');
+            }
+
+            // Vanilla JS fallback to remove the UI wrapper
+            document.querySelectorAll('.nice-select').forEach(el => el.remove());
+
+            // Force display on the original select
+            document.querySelectorAll('select').forEach(select => {
+                select.style.display = 'block';
+                select.style.width = '100%';
+                select.style.opacity = '1';
+                select.style.height = 'auto';
+                select.style.visibility = 'visible';
+            });
+        }
+
+        // Run immediately, then after short delays to catch async inits
+        nukeNiceSelect();
+        setTimeout(nukeNiceSelect, 300);
+        setTimeout(nukeNiceSelect, 800);
+    });
+</script>
+<style>
+    /* Super strong override */
+    select {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        width: 100% !important;
+    }
+
+    .nice-select {
+        display: none !important;
+    }
+</style>
+{% endblock %}

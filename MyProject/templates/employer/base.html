@@ -5,18 +5,70 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="{% static 'employer/assets/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'employer/assets/css/owl.carousel.min.css' %}">
-    <link rel="stylesheet" href="{% static 'employer/assets/css/owl.theme.default.min.css' %}">
-    <link rel="stylesheet" href="{% static 'employer/assets/css/boxicons.min.css' %}">
-    <link rel="stylesheet" href="{% static 'employer/assets/fonts/flaticon/flaticon.css' %}">
-    <link rel="stylesheet" href="{% static 'employer/assets/css/nice-select.css' %}">
-    <link rel="stylesheet" href="{% static 'employer/assets/css/meanmenu.css' %}">
-    <link rel="stylesheet" href="{% static 'employer/assets/css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'employer/assets/css/dark.css' %}">
-    <link rel="stylesheet" href="{% static 'employer/assets/css/responsive.css' %}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'guest/assets/css/bootstrap.min.css' %}">
+    <!-- Owl Carousel CSS -->
+    <link rel="stylesheet" href="{% static 'guest/assets/css/owl.carousel.min.css' %}">
+    <!-- Owl Carousel Theme Default CSS -->
+    <link rel="stylesheet" href="{% static 'guest/assets/css/owl.theme.default.min.css' %}">
+    <!-- Box Icon CSS-->
+    <link rel="stylesheet" href="{% static 'guest/assets/css/boxicons.min.css' %}">
+    <!-- Flaticon CSS-->
+    <link rel="stylesheet" href="{% static 'guest/assets/fonts/flaticon/flaticon.css' %}">
+    <!-- Nice Select CSS -->
+    <link rel="stylesheet" href="{% static 'guest/assets/css/nice-select.css' %}">
+    <!-- Meanmenu CSS -->
+    <link rel="stylesheet" href="{% static 'guest/assets/css/meanmenu.css' %}">
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="{% static 'guest/assets/css/style.css' %}">
+    <!-- Dark CSS -->
+    <link rel="stylesheet" href="{% static 'guest/assets/css/dark.css' %}">
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="{% static 'guest/assets/css/responsive.css' %}">
     <title>Employer Portal - Learn to Earn</title>
     <link rel="icon" type="image/png" href="{% static 'employer/assets/img/favicon.png' %}">
+
+    <style>
+        :root {
+            --primary-dark: #1A202E;
+            --primary-red: #FF2B2B;
+            --text-light: #ffffff;
+        }
+
+        .navbar-area {
+            background-color: var(--primary-dark);
+        }
+
+        .navbar-light .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+            font-weight: 500;
+        }
+
+        .navbar-light .navbar-nav .nav-link:hover,
+        .navbar-light .navbar-nav .nav-link.active {
+            color: var(--primary-red) !important;
+        }
+
+        .signin-btn {
+            background-color: var(--primary-red) !important;
+            color: #fff !important;
+            border: none;
+        }
+
+        .footer-area {
+            background-color: var(--primary-dark) !important;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-widget p {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .mean-container .mean-bar {
+            background-color: var(--primary-dark);
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
 </head>
 
 <body>
@@ -60,16 +112,24 @@
                                 <a href="{% url 'employer_index' %}" class="nav-link">Home</a>
                             </li>
                             <li class="nav-item">
+                                <a href="{% url 'employer_service_list' %}" class="nav-link">Find Talent</a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="{% url 'addjob' %}" class="nav-link">Post a Job</a>
                             </li>
                             <li class="nav-item">
                                 <a href="{% url 'viewjobs' %}" class="nav-link">Manage Jobs</a>
                             </li>
                             <li class="nav-item">
+                                <a href="{% url 'subscriptions' %}" class="nav-link">Subscription</a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="{% url 'view_applications' %}" class="nav-link">Applications</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{% url 'employer_profile' %}" class="nav-link">Profile</a>
+                                <a href="{% url 'employer_profile' %}" class="nav-link">
+                                    <i class='bx bxs-user-circle'></i> Profile
+                                </a>
                             </li>
                         </ul>
 
@@ -79,11 +139,11 @@
                                 <a class="nav-link position-relative text-dark" href="#" id="notificationDropdown"
                                     role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class='bx bx-bell' style="font-size: 1.5rem;"></i>
-                                    {% if notifications %}
+                                    {% if unread_notifications %}
                                     <span
                                         class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
                                         style="font-size: 0.6rem;">
-                                        {{ notifications.count }}
+                                        {{ unread_notifications_count }}
                                     </span>
                                     {% endif %}
                                 </a>
@@ -93,8 +153,8 @@
                                     <li>
                                         <h6 class="dropdown-header border-bottom py-2">Notifications</h6>
                                     </li>
-                                    {% if notifications %}
-                                    {% for notif in notifications %}
+                                    {% if unread_notifications %}
+                                    {% for notif in unread_notifications %}
                                     <li>
                                         <a class="dropdown-item py-3 border-bottom" href="{{ notif.link|default:'#' }}">
                                             <p class="mb-1 text-wrap small">{{ notif.message }}</p>
@@ -120,6 +180,20 @@
         </div>
     </div>
 
+    {% if request.user.employer_profile %}
+        {% if not request.user.employer_profile.is_profile_complete %}
+        <div class="alert alert-danger text-center mb-0 rounded-0 fw-bold" role="alert">
+            <i class='bx bx-error-circle'></i> Your company profile is incomplete. Please add your district to continue.
+            <a href="{% url 'employer_profile_setup' %}" class="alert-link">Complete Setup</a>
+        </div>
+        {% elif request.user.employer_profile.verification_status is False %}
+        <div class="alert alert-warning text-center mb-0 rounded-0 fw-bold" role="alert">
+            <i class='bx bx-time'></i> Your company profile is pending verification. You can post jobs once verified.
+            <a href="{% url 'employer_profile' %}" class="alert-link">View Profile</a>
+        </div>
+        {% endif %}
+    {% endif %}
+
     {% block content %}
     {% endblock %}
 
@@ -130,10 +204,61 @@
                     <div class="footer-widget">
                         <div class="footer-logo">
                             <a href="{% url 'employer_index' %}">
-                                <img src="{% static 'guest/assets/img/logo.png' %}" alt="logo">
+                                <img src="{% static 'employer/assets/img/logo.png' %}" alt="logo">
                             </a>
                         </div>
-                        <p>Find the best potential talent.</p>
+                        <p>LearnToEarn bridges the gap between students looking for flexible work and employers needing
+                            talent.</p>
+                        <div class="footer-social">
+                            <a href="#" target="_blank"><i class='bx bxl-facebook'></i></a>
+                            <a href="#" target="_blank"><i class='bx bxl-twitter'></i></a>
+                            <a href="#" target="_blank"><i class='bx bxl-pinterest-alt'></i></a>
+                            <a href="#" target="_blank"><i class='bx bxl-linkedin'></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-sm-6">
+                    <div class="footer-widget pl-60">
+                        <h3>For Employer</h3>
+                        <ul>
+                            <li><a href="{% url 'employer_service_list' %}"><i
+                                        class='bx bx-chevrons-right bx-tada'></i>Browse
+                                    Talent</a></li>
+                            <li><a href="{% url 'employer_profile' %}"><i
+                                        class='bx bx-chevrons-right bx-tada'></i>Account</a></li>
+                            <li><a href="{% url 'viewjobs' %}"><i class='bx bx-chevrons-right bx-tada'></i>Manage
+                                    Jobs</a></li>
+                            <li><a href="{% url 'addjob' %}"><i class='bx bx-chevrons-right bx-tada'></i>Post Job</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-sm-6">
+                    <div class="footer-widget pl-60">
+                        <h3>Quick Links</h3>
+                        <ul>
+                            <li><a href="{% url 'employer_index' %}"><i
+                                        class='bx bx-chevrons-right bx-tada'></i>Home</a></li>
+                            <li><a href="#"><i class='bx bx-chevrons-right bx-tada'></i>About</a></li>
+                            <li><a href="#"><i class='bx bx-chevrons-right bx-tada'></i>FAQ</a></li>
+                            <li><a href="#"><i class='bx bx-chevrons-right bx-tada'></i>Privacy</a></li>
+                            <li><a href="#"><i class='bx bx-chevrons-right bx-tada'></i>Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-sm-6">
+                    <div class="footer-widget footer-info">
+                        <h3>Information</h3>
+                        <ul>
+                            <li><span><i class='bx bxs-phone'></i>Phone:</span><a href="tel:882569756">+101 984 754</a>
+                            </li>
+                            <li><span><i class='bx bxs-envelope'></i>Email:</span><a
+                                    href="mailto:info@learntoearn.com">info@learntoearn.com</a></li>
+                            <li><span><i class='bx bx-location-plus'></i>Address:</span>123, Denver, USA</li>
+                        </ul>
                     </div>
                 </div>
             </div>

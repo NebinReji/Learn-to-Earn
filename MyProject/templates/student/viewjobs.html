@@ -52,8 +52,11 @@
                             <div class="d-flex align-items-center text-secondary mb-2">
                                 <i class='bx bx-map me-2 fs-5'></i>
                                 <span class="fw-medium">
-                                    {% if job.job_type == 'online' %}Remote{% else %}{{ job.location|default:"On-site"
-                                    }}{% endif %}
+                                    {% if job.job_type == 'online' %}
+                                    Remote
+                                    {% else %}
+                                    {{ job.location|default:"On-site" }}
+                                    {% endif %}
                                 </span>
                             </div>
                             <div class="d-flex align-items-center text-secondary mb-2">
@@ -75,9 +78,15 @@
                             Posted {{ job.posted_date|date:"M d" }}
                         </small>
                         <div class="action-buttons">
+                            {% if job.id in applied_job_ids %}
+                            <button class="btn btn-secondary btn-sm rounded-pill px-3" disabled>
+                                <i class='bx bx-check-circle me-1'></i> Applied
+                            </button>
+                            {% else %}
                             <a href="{% url 'apply_job' job.id %}" class="btn btn-primary btn-sm rounded-pill px-3">
                                 Apply Now <i class='bx bx-right-arrow-alt ms-1'></i>
                             </a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

@@ -1,30 +1,50 @@
 {% extends "admin/base.html" %}
 {% load static %}
 {% block content %}
-            <!-- START CONTENT -->
-            <section id="main-content" class=" ">
-                <section class="wrapper main-wrapper" >
-                    <div class="col-lg-8 offset-lg-2">
-                        <section class="box ">
-                            <header class="panel_header">
-                                <h2 class="title text-center">Add District</h2>
-                            </header>
-                            <div class="content-body">
-                                <div class="row justify-content-center">
-                                    <div class="col-md-8">
-                                        <form method="post" action="{% url 'adddistrict' %}">
-                                            {% csrf_token %}
-                                            {{ form.as_p }}
-                                            <div class="text-center">
-                                                <button type="submit" class="btn btn-primary">Add District</button>
-                                            </div>
-                                        </form>
-                                    </div>
+<!-- START CONTENT -->
+<section id="main-content" class=" ">
+    <section class="wrapper main-wrapper">
+        <div class="col-lg-8 offset-lg-2">
+            <section class="box ">
+                <header class="panel_header">
+                    <h2 class="title text-center">Add District</h2>
+                </header>
+                <div class="content-body">
+                    <div class="row justify-content-center">
+                        <div class="col-md-10">
+                            <form method="post" action="{% url 'adddistrict' %}">
+                                {% csrf_token %}
+                                {% for field in form %}
+                                <div class="form-group mb-3">
+                                    <label class="form-label fw-bold">{{ field.label }}</label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                    <div class="text-danger small">{{ field.errors }}</div>
+                                    {% endif %}
                                 </div>
-                            </div>
-                        </section>
+                                {% endfor %}
+
+                                <div class="text-center mt-4">
+                                    <button type="submit" class="btn btn-primary btn-lg px-5">Add District</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                </section>
+
+                    <script>
+                        // Auto-apply Bootstrap classes
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const inputs = document.querySelectorAll('form input, form select, form textarea');
+                            inputs.forEach(input => {
+                                input.classList.add('form-control');
+                                input.style.padding = '10px';
+                            });
+                        });
+                    </script>
+                </div>
             </section>
-            <!-- END CONTENT -->
+        </div>
+    </section>
+</section>
+<!-- END CONTENT -->
 {% endblock %}

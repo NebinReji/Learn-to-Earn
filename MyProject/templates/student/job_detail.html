@@ -146,7 +146,7 @@
                 </div>
                 <div class="job-meta-item">
                     <i class="bi bi-briefcase-fill"></i>
-                    {{ job.get_work_mode_display|default:job.work_mode }}
+                    {{ job.get_job_type_display }}
                 </div>
                 <div class="job-meta-item">
                     <i class="bi bi-cash-stack"></i>
@@ -159,9 +159,15 @@
             </div>
         </div>
         <div class="d-none d-lg-block text-end">
+            {% if has_applied %}
+            <button class="btn btn-secondary btn-lg btn-apply shadow-sm px-5" disabled>
+                <i class="bi bi-check-circle-fill me-2"></i> Applied
+            </button>
+            {% else %}
             <a href="{% url 'apply_job' job.id %}" class="btn btn-success btn-lg btn-apply shadow-sm px-5">
                 Apply Now <i class="bi bi-arrow-right ms-2"></i>
             </a>
+            {% endif %}
             <div class="mt-2 text-muted small">
                 Expires on: {{ job.expiry_date|date:"M d, Y" }}
             </div>
@@ -193,44 +199,51 @@
         <div class="col-lg-4">
             <!-- Mobile Apply Button (Visible only on smaller screens) -->
             <div class="d-lg-none mb-4">
+                {% if has_applied %}
+                <button class="btn btn-secondary btn-apply w-100 shadow-sm" disabled>
+                    <i class="bi bi-check-circle-fill me-2"></i> Applied
+                </button>
+                {% else %}
                 <a href="{% url 'apply_job' job.id %}" class="btn btn-success btn-apply w-100 shadow-sm">
                     Apply Now <i class="bi bi-arrow-right ms-2"></i>
-                </a>
-            </div>
-
-            <div class="sidebar-card">
-                <h5 class="fw-bold mb-4">Job Overview</h5>
-                <ul class="list-unstyled">
-                    <li class="mb-3 d-flex justify-content-between align-items-center border-bottom pb-2">
-                        <span class="text-muted"><i class="bi bi-calendar-check me-2"></i>Posted Date</span>
-                        <span class="fw-semibold">{{ job.posted_date|date:"M d, Y" }}</span>
-                    </li>
-                    <li class="mb-3 d-flex justify-content-between align-items-center border-bottom pb-2">
-                        <span class="text-muted"><i class="bi bi-hourglass-split me-2"></i>Deadline</span>
-                        <span class="fw-semibold text-danger">{{ job.expiry_date|date:"M d, Y" }}</span>
-                    </li>
-                    <li class="mb-3 d-flex justify-content-between align-items-center">
-                        <span class="text-muted"><i class="bi bi-people me-2"></i>Vacancies</span>
-                        <span class="fw-semibold">{{ job.vacancies|default:"N/A" }}</span>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="sidebar-card text-center">
-                <h6 class="fw-bold mb-3">About the Company</h6>
-                {% if job.employer.logo %}
-                <img src="{{ job.employer.logo.url }}" alt="Logo" class="rounded mb-3"
-                    style="width: 60px; height: 60px; object-fit: cover;">
-                {% endif %}
-                <h5 class="fw-bold">{{ job.employer.company_name }}</h5>
-                {% if job.employer.website %}
-                <a href="{{ job.employer.website }}" target="_blank"
-                    class="btn btn-outline-primary btn-sm rounded-pill mt-2">
-                    <i class="bi bi-link-45deg me-1"></i> Visit Website
                 </a>
                 {% endif %}
             </div>
         </div>
+
+        <div class="sidebar-card">
+            <h5 class="fw-bold mb-4">Job Overview</h5>
+            <ul class="list-unstyled">
+                <li class="mb-3 d-flex justify-content-between align-items-center border-bottom pb-2">
+                    <span class="text-muted"><i class="bi bi-calendar-check me-2"></i>Posted Date</span>
+                    <span class="fw-semibold">{{ job.posted_date|date:"M d, Y" }}</span>
+                </li>
+                <li class="mb-3 d-flex justify-content-between align-items-center border-bottom pb-2">
+                    <span class="text-muted"><i class="bi bi-hourglass-split me-2"></i>Deadline</span>
+                    <span class="fw-semibold text-danger">{{ job.expiry_date|date:"M d, Y" }}</span>
+                </li>
+                <li class="mb-3 d-flex justify-content-between align-items-center">
+                    <span class="text-muted"><i class="bi bi-people me-2"></i>Vacancies</span>
+                    <span class="fw-semibold">{{ job.vacancies|default:"N/A" }}</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="sidebar-card text-center">
+            <h6 class="fw-bold mb-3">About the Company</h6>
+            {% if job.employer.logo %}
+            <img src="{{ job.employer.logo.url }}" alt="Logo" class="rounded mb-3"
+                style="width: 60px; height: 60px; object-fit: cover;">
+            {% endif %}
+            <h5 class="fw-bold">{{ job.employer.company_name }}</h5>
+            {% if job.employer.website %}
+            <a href="{{ job.employer.website }}" target="_blank"
+                class="btn btn-outline-primary btn-sm rounded-pill mt-2">
+                <i class="bi bi-link-45deg me-1"></i> Visit Website
+            </a>
+            {% endif %}
+        </div>
     </div>
+</div>
 </div>
 {% endblock %}

@@ -1,204 +1,100 @@
 {% extends 'guest/base.html' %}
 {% load static %}
-
 {% block content %}
-<style>
-    .login-section {
-        min-height: 100vh;
-        background: #f8f9fa;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .login-card {
-        background: #fff;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-        overflow: hidden;
-        max-width: 900px;
-        width: 100%;
-        margin: 20px;
-    }
-
-    .login-banner {
-        background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
-        color: white;
-        padding: 40px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        position: relative;
-    }
-
-    .login-banner::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url('https://img.freepik.com/free-vector/job-hunt-concept-illustration_114360-1435.jpg') center/cover;
-        opacity: 0.1;
-        mix-blend-mode: overlay;
-    }
-
-    .login-form-wrapper {
-        padding: 50px 40px;
-    }
-
-    .form-control-lg {
-        border-radius: 10px;
-        font-size: 0.95rem;
-        border: 1px solid #dee2e6;
-        padding: 12px 20px;
-    }
-
-    .form-control-lg:focus {
-        border-color: #0d6efd;
-        box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1);
-    }
-
-    .btn-login {
-        padding: 12px;
-        border-radius: 10px;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        transition: all 0.3s ease;
-    }
-
-    .btn-login:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
-    }
-
-    .social-btn {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid #e9ecef;
-        color: #6c757d;
-        transition: all 0.3s;
-    }
-
-    .social-btn:hover {
-        background: #f8f9fa;
-        color: #0d6efd;
-        border-color: #0d6efd;
-    }
-
-    .divider {
-        display: flex;
-        align-items: center;
-        text-align: center;
-        color: #adb5bd;
-        margin: 20px 0;
-    }
-
-    .divider::before,
-    .divider::after {
-        content: '';
-        flex: 1;
-        border-bottom: 1px solid #e9ecef;
-    }
-
-    .divider span {
-        padding: 0 10px;
-        font-size: 0.85rem;
-        font-weight: 500;
-    }
-</style>
-
-<div class="login-section">
-    <div class="login-card row g-0">
-        <!-- Banner Side -->
-        <div class="col-lg-5 login-banner d-none d-lg-flex text-center text-lg-start">
-            <h2 class="fw-bold mb-3">Learn to Earn</h2>
-            <p class="lead mb-4 op-75">Welcome back! Log in to access your dashboard, track applications, and manage
-                your career journey.</p>
-            <div class="mt-auto text-white-50 small">
-                &copy; 2024 Learn to Earn. All rights reserved.
-            </div>
+<!-- Page Title Start -->
+<section class="page-title title-bg6">
+    <div class="d-table">
+        <div class="d-table-cell">
+            <h2>Log In</h2>
+            <ul>
+                <li>
+                    <a href="index.html">Home</a>
+                </li>
+                <li>Log In</li>
+            </ul>
         </div>
+    </div>
+    <div class="lines">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+</section>
+<!-- Page Title End -->
 
-        <!-- Form Side -->
-        <div class="col-lg-7">
-            <div class="login-form-wrapper">
-                <div class="text-center mb-4">
-                    <h3 class="fw-bold text-dark">Sign In</h3>
-                    <p class="text-muted">Enter your credentials to continue</p>
-                </div>
+<!-- Login Section Start -->
+<div class="user-form-area pt-100 pb-70">
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-lg-6">
+                <div class="user-content">
+                    <div class="top text-center mb-4">
+                        <h2>Welcome Back</h2>
+                        <p>Login to your account</p>
+                    </div>
 
-                {% if messages %}
-                {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm border-0" role="alert">
-                    <i class="bi bi-info-circle-fill me-2"></i>{{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                {% endfor %}
-                {% endif %}
-
-                <form method="post" class="needs-validation" novalidate>
-                    {% csrf_token %}
-
-                    {% if form.non_field_errors %}
-                    <div class="alert alert-danger shadow-sm border-0">{{ form.non_field_errors }}</div>
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}
                     {% endif %}
 
-                    <div class="mb-3">
-                        <label class="form-label text-muted fw-semibold small">Email Address</label>
-                        {{ form.email }}
-                        {% if form.email.errors %}
-                        <div class="text-danger small mt-1 x-1">{{ form.email.errors }}</div>
-                        {% endif %}
-                    </div>
+                    <form method="post" class="card p-4 shadow-sm border-0">
+                        {% csrf_token %}
 
-                    <div class="mb-4">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <label class="form-label text-muted fw-semibold small">Password</label>
-                            <a href="#" class="text-decoration-none small text-primary fw-semibold">Forgot Password?</a>
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                        {% endif %}
+
+                        <div class="form-group mb-3">
+                            <label>Email Address</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                            <div class="text-danger small">{{ form.email.errors }}</div>
+                            {% endif %}
                         </div>
-                        {{ form.password }}
-                        {% if form.password.errors %}
-                        <div class="text-danger small mt-1">{{ form.password.errors }}</div>
-                        {% endif %}
-                    </div>
 
-                    <div class="d-grid mb-4">
-                        <button type="submit" class="btn btn-primary btn-login btn-lg">Log In</button>
-                    </div>
+                        <div class="form-group mb-3">
+                            <label>Password</label>
+                            {{ form.password }}
+                            {% if form.password.errors %}
+                            <div class="text-danger small">{{ form.password.errors }}</div>
+                            {% endif %}
+                        </div>
 
-                    <div class="divider">
-                        <span>OR CONTINUE WITH</span>
-                    </div>
+                        <div class="row align-items-center mb-3">
+                            <div class="col-lg-6 col-sm-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                                    <label class="form-check-label" for="rememberMe">Remember Me</label>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-6 text-end">
+                                <a href="#" class="forgot-password">Forgot Password?</a>
+                            </div>
+                        </div>
 
-                    <div class="text-center mb-4">
-                        <a href="#" class="social-btn me-2" title="Google"><i class="fab fa-google"></i></a>
-                        <a href="#" class="social-btn me-2" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" class="social-btn" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    </div>
+                        <button type="submit" class="btn btn-primary w-100 btn-lg">Log In</button>
 
-                    <div class="text-center">
-                        <p class="text-muted small">Don't have an account? <a href="{% url 'signup' %}"
-                                class="fw-bold text-primary text-decoration-none">Create Account</a></p>
+                        <div class="text-center mt-3">
+                            <p class="mb-0">Or Login With</p>
+                            <div class="mt-2">
+                                <a href="#" class="btn btn-outline-danger me-2"><i class='bx bxl-google'></i> Google</a>
+                                <a href="#" class="btn btn-outline-primary"><i class='bx bxl-linkedin'></i> LinkedIn</a>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="bottom-text text-center mt-4">
+                        <p>Don't have an account? <a href="{% url 'signup' %}">Sign up here</a></p>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-<script>
-    // Add Bootstrap classes to form fields dynamically if not set in forms.py
-    document.addEventListener("DOMContentLoaded", function () {
-        var inputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="password"]');
-        inputs.forEach(function (input) {
-            input.classList.add('form-control', 'form-control-lg');
-            input.placeholder = input.name === 'email' ? 'name@example.com' : '••••••••';
-        });
-    });
-</script>
+<!-- Login Section End -->
 {% endblock %}

@@ -1,6 +1,21 @@
 from django.db import models
 from guest.models import Employer
 
+class Subscription(models.Model):
+    employer = models.ForeignKey(Employer, on_delete=models.CASCADE, related_name='subscriptions')
+    PLAN_CHOICES = [
+        ('basic', 'Basic Plan'),
+        ('premium', 'Premium Plan'),
+        ('enterprise', 'Enterprise Plan'),
+    ]
+    plan_name = models.CharField(max_length=50, choices=PLAN_CHOICES, default='basic')
+    start_date = models.DateField(auto_now_add=True)
+    end_date = models.DateField()
+    amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.employer.company_name} - {self.plan_name}"
 
 class Jobposting(models.Model):
     employer = models.ForeignKey(Employer, on_delete=models.CASCADE, related_name='job_postings')
@@ -31,7 +46,6 @@ class Jobposting(models.Model):
     
     posted_date = models.DateField(auto_now_add=True)
     expiry_date = models.DateField()
-    # salary_range kept for backward compatibility or total package transparency
     salary_range = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):

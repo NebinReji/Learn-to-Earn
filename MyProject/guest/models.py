@@ -1,7 +1,5 @@
 from django.db import models
 from MyApp.models import District
-
-# Create your models here.
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils import timezone
 
@@ -43,13 +41,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
-
-
-
-
-
-
-
     
 class Employer(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="employer_profile",null=True)
@@ -58,9 +49,9 @@ class Employer(models.Model):
     phone = models.CharField(max_length=15)
     email = models.EmailField()
     district = models.ForeignKey(District, on_delete=models.SET_NULL, null=True, blank=True)
-    area = models.CharField(max_length=100, help_text="e.g., Kaloor, Kochi")
-    industry = models.CharField(max_length=100, default="General", help_text="e.g., Retail, Education")
-    address = models.TextField()
+    area = models.CharField(max_length=100, blank=True, null=True, help_text="e.g., Kaloor, Kochi")
+    industry = models.CharField(max_length=100, default="General", blank=True, null=True, help_text="e.g., Retail, Education")
+    address = models.TextField(blank=True, null=True)
     verification_status = models.BooleanField(default=False)
     
     # New Fields
@@ -72,27 +63,35 @@ class Employer(models.Model):
     def __str__(self):
         return self.company_name
 
+    def is_profile_complete(self):
+        return bool(self.district)
+
 class student(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="student_profile",null=True)
     student_name = models.CharField(max_length=200)
     email = models.EmailField()
     phone_number = models.CharField(max_length=15)
     district = models.ForeignKey(District, on_delete=models.SET_NULL, null=True, blank=True)
-    academic_status = models.CharField(max_length=100)
-    skills = models.TextField()
+    academic_status = models.CharField(max_length=100, blank=True, null=True)
+    skills = models.TextField(blank=True, null=True)
     
     # New Fields for Part-Time Matching
-    availability = models.CharField(max_length=200, default="Flexible", help_text="e.g., Weekends, After 5 PM")
-    preferred_roles = models.CharField(max_length=200, blank=True, help_text="e.g., Sales, Data Entry")
-    id_card = models.FileField(upload_to='id_cards/')
+    availability = models.CharField(max_length=200, default="Flexible", blank=True, null=True, help_text="e.g., Weekends, After 5 PM")
+    preferred_roles = models.CharField(max_length=200, blank=True, null=True, help_text="e.g., Sales, Data Entry")
+    id_card = models.FileField(upload_to='id_cards/', blank=True, null=True)
     
     # Profile Enhancements
     resume = models.FileField(upload_to='resumes/', blank=True, null=True)
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
+    
+    verification_status = models.BooleanField(default=False)
 
     def __str__(self):
         return self.student_name    
+
+    def is_profile_complete(self):
+        return bool(self.district and self.student_name and self.phone_number)
 
 class Notification(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='notifications')
@@ -103,3 +102,23 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"Notification for {self.user.email} - {self.message}"
+
+class Feedback(models.Model):
+    sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='sent_feedback')
+    recipient = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True, related_name='received_feedback')
+    subject = models.CharField(max_length=200)
+    message = models.TextField()
+    status = models.CharField(max_length=20, default='new')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Feedback from {self.sender.name}"
+
+class Report(models.Model):
+    generated_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    report_type = models.CharField(max_length=100)
+    file_path = models.FileField(upload_to='reports/')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.report_type} - {self.created_at}"

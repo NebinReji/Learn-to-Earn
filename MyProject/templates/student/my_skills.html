@@ -1,0 +1,123 @@
+{% extends 'student/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="section-padding pt-100 pb-70">
+    <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <h2>My Skills & Services</h2>
+            <a href="{% url 'add_skill' %}" class="btn btn-primary">
+                <i class='bx bx-plus'></i> Add New Skill
+            </a>
+        </div>
+
+        <!-- Active Services Tab -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h4 class="mb-3 text-primary">Your Listed Services</h4>
+                {% if services %}
+                <div class="row">
+                    {% for service in services %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card h-100 shadow-sm border-0">
+                            <div class="card-body">
+                                <span class="badge bg-secondary mb-2">{{ service.get_category_display }}</span>
+                                <h5 class="card-title">{{ service.title }}</h5>
+                                <h6 class="text-success fw-bold">₹{{ service.price }}</h6>
+                                <p class="card-text text-muted small">{{ service.description|truncatechars:80 }}</p>
+                            </div>
+                            <div class="card-footer bg-white border-0 d-flex justify-content-between">
+                                <small class="text-muted">
+                                    {% if service.is_verified %}
+                                    <i class='bx bxs-check-circle text-success'></i> Verified
+                                    {% else %}
+                                    <i class='bx bxs-time-five text-warning'></i> Pending Verification
+                                    {% endif %}
+                                </small>
+                                <a href="{% url 'edit_skill' service.id %}"
+                                    class="text-primary small text-decoration-none">Edit</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="alert alert-light text-center p-5">
+                    <p class="mb-3">You haven't listed any skills yet.</p>
+                    <a href="{% url 'add_skill' %}" class="btn btn-outline-primary btn-sm">List Your First Service</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- Booking Requests -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <h4 class="mb-3 text-success">Incoming Booking Requests</h4>
+                {% if bookings %}
+                <div class="table-responsive card shadow-sm border-0">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>Service</th>
+                                <th>Requester</th>
+                                <th>Contact</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in bookings %}
+                            <tr>
+                                <td class="fw-bold">{{ booking.service.title }}</td>
+                                <td>{{ booking.requester.name }}</td>
+                                <td>
+                                    <div class="small">
+                                        <i class='bx bx-envelope'></i> {{ booking.requester.email }}<br>
+                                        {% if booking.requester.employer_profile %}
+                                        <i class='bx bx-phone'></i> {{ booking.requester.employer_profile.phone }}
+                                        {% elif booking.requester.student_profile %}
+                                        <i class='bx bx-phone'></i> {{ booking.requester.student_profile.phone_number }}
+                                        {% endif %}
+                                    </div>
+                                </td>
+                                <td>{{ booking.booking_date|date:"M d, Y" }}</td>
+                                <td>
+                                    <span
+                                        class="badge bg-{% if booking.status == 'pending' %}warning{% elif booking.status == 'approved' %}info{% else %}success{% endif %}">
+                                        {{ booking.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if booking.status == 'pending' %}
+                                    <a href="{% url 'manage_booking' booking.id 'approve' %}"
+                                        class="btn btn-sm btn-success">Approve</a>
+                                    <a href="{% url 'manage_booking' booking.id 'reject' %}"
+                                        class="btn btn-sm btn-danger">Reject</a>
+                                    {% elif booking.status == 'approved' or booking.status == 'paid' %}
+                                    <a href="{% url 'manage_booking' booking.id 'complete' %}"
+                                        class="btn btn-sm btn-primary">Complete</a>
+                                    <a href="{% url 'manage_booking' booking.id 'revoke' %}"
+                                        class="btn btn-sm btn-dark">Revoke</a>
+                                    {% else %}
+                                    <span class="badge bg-secondary">Closed</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-muted small">No booking requests received yet.</div>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

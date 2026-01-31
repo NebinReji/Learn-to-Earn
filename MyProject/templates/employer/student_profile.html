@@ -1,0 +1,212 @@
+{% extends 'employer/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    .profile-header-card {
+        background: linear-gradient(135deg, #1A202E 0%, #2c3e50 100%);
+        color: white;
+        border-radius: 15px;
+        padding: 40px;
+        margin-bottom: 30px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .profile-img-large {
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        border: 5px solid rgba(255, 255, 255, 0.2);
+        object-fit: cover;
+    }
+
+    .info-card {
+        background: white;
+        border-radius: 12px;
+        border: 1px solid #f1f5f9;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        padding: 30px;
+        margin-bottom: 24px;
+        transition: transform 0.2s;
+    }
+
+    .info-card:hover {
+        transform: translateY(-2px);
+    }
+
+    .section-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1A202E;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #f1f5f9;
+    }
+
+    .skill-tag {
+        background: #f8fafc;
+        color: #475569;
+        padding: 8px 16px;
+        border-radius: 30px;
+        font-weight: 500;
+        display: inline-block;
+        margin-right: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #e2e8f0;
+    }
+
+    .detail-row {
+        display: flex;
+        margin-bottom: 15px;
+        align-items: center;
+    }
+
+    .detail-icon {
+        width: 40px;
+        height: 40px;
+        background: #f8fafc;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary-red);
+        font-size: 1.25rem;
+        margin-right: 15px;
+    }
+
+    .detail-content h6 {
+        margin: 0;
+        font-size: 0.85rem;
+        color: #64748b;
+    }
+
+    .detail-content p {
+        margin: 0;
+        font-weight: 600;
+        color: #1e293b;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-100 pb-70">
+    <div class="mb-4">
+        <a href="javascript:history.back()" class="text-decoration-none text-muted fw-bold">
+            <i class='bx bx-arrow-back'></i> Back to Applications
+        </a>
+    </div>
+
+    <!-- PROFILE HEADER -->
+    <div class="profile-header-card">
+        <div class="row align-items-center">
+            <div class="col-lg-2 text-center text-lg-start mb-3 mb-lg-0">
+                {% if student.profile_picture %}
+                <img src="{{ student.profile_picture.url }}" alt="{{ student.student_name }}" class="profile-img-large">
+                {% else %}
+                <div
+                    class="profile-img-large bg-white d-flex align-items-center justify-content-center mx-auto mx-lg-0">
+                    <i class='bx bxs-user-circle' style="font-size: 5rem; color: #cbd5e1;"></i>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-lg-7 text-center text-lg-start">
+                <h1 class="fw-bold mb-2">{{ student.student_name }}</h1>
+                <p class="mb-3 fs-5 opacity-75">{{ student.academic_status }}</p>
+                <div class="d-flex gap-2 justify-content-center justify-content-lg-start">
+                    <span class="badge bg-white text-dark px-3 py-2 rounded-pill"><i class='bx bx-map me-1'></i> {{
+                        student.district.name }}</span>
+                    <span class="badge bg-white text-dark px-3 py-2 rounded-pill"><i class='bx bx-time me-1'></i> {{
+                        student.availability }}</span>
+                </div>
+            </div>
+            <div class="col-lg-3 text-center text-lg-end mt-4 mt-lg-0">
+                {% if student.resume %}
+                <a href="{{ student.resume.url }}" target="_blank" class="btn btn-light btn-lg w-100 fw-bold shadow-sm">
+                    <i class='bx bx-download me-2'></i> Download Resume
+                </a>
+                {% else %}
+                <button class="btn btn-secondary btn-lg w-100 fw-bold" disabled>No Resume Uploaded</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- LEFT COLUMN: MAIN INFO -->
+        <div class="col-lg-8">
+            <!-- ABOUT -->
+            <div class="info-card">
+                <h3 class="section-title">About Candidate</h3>
+                <p class="text-muted" style="line-height: 1.7;">
+                    {{ student.bio|default:"No bio provided by the student."|linebreaks }}
+                </p>
+            </div>
+
+            <!-- SKILLS -->
+            <div class="info-card">
+                <h3 class="section-title">Skills & Expertise</h3>
+                <div class="mt-3">
+                    {% if student.skills %}
+                    {% for skill in student.skills.splitlines %}
+                    <!-- Fallback if plain text, though usually better split by comma in view or template tag -->
+                    <span class="skill-tag">{{ skill }}</span>
+                    {% empty %}
+                    <span class="skill-tag">{{ student.skills }}</span>
+                    {% endfor %}
+                    {% else %}
+                    <p class="text-muted">No specific skills listed.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- PREFERENCES -->
+            <div class="info-card">
+                <h3 class="section-title">Work Preferences</h3>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <small class="text-muted d-block mb-1">Preferred Roles</small>
+                        <span class="fw-bold">{{ student.preferred_roles|default:"Open to opportunities" }}</span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <small class="text-muted d-block mb-1">Availability</small>
+                        <span class="fw-bold">{{ student.availability }}</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: CONTACT & ACTIONS -->
+        <div class="col-lg-4">
+            <div class="info-card">
+                <h3 class="section-title">Contact Information</h3>
+
+                <div class="detail-row">
+                    <div class="detail-icon"><i class='bx bx-envelope'></i></div>
+                    <div class="detail-content">
+                        <h6>Email Address</h6>
+                        <p class="text-break">{{ student.email }}</p>
+                    </div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-icon"><i class='bx bx-phone'></i></div>
+                    <div class="detail-content">
+                        <h6>Phone Number</h6>
+                        <p>{{ student.phone_number }}</p>
+                    </div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-icon"><i class='bx bx-map-pin'></i></div>
+                    <div class="detail-content">
+                        <h6>Location</h6>
+                        <p>{{ student.district.name }}, {{ student.district.state.name }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

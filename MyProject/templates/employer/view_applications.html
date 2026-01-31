@@ -54,7 +54,12 @@
                             <tr>
                                 <td>{{ forloop.counter }}</td>
                                 <td>{{ application.job.job_title }}</td>
-                                <td>{{ application.student.student_name }}</td>
+                                <td>
+                                    <a href="{% url 'view_student_profile' application.student.id %}"
+                                        class="fw-bold text-dark text-decoration-none">
+                                        {{ application.student.student_name }}
+                                    </a>
+                                </td>
                                 <td>{{ application.student.email }}</td>
                                 <td>{{ application.student.phone_number }}</td>
                                 <td>{{ application.applied_date|date:"d M Y, h:i A" }}</td>
@@ -71,10 +76,10 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#appModal{{ application.id }}">
-                                        View Details
-                                    </button>
+                                    <a href="{% url 'view_student_profile' application.student.id %}"
+                                        class="btn btn-sm btn-primary">
+                                        View Profile
+                                    </a>
                                 </td>
                             </tr>
                             {% endfor %}

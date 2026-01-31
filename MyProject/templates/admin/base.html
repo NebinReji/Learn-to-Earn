@@ -3,35 +3,15 @@
 <html class=" ">
 
 <head>
-    <!-- 
-         * @Package: Ultra Admin - Responsive Theme
-         * @Subpackage: Bootstrap
-         * @Version: B4-1.3
-         * This file is part of Ultra Admin Theme.
-        -->
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <meta charset="utf-8" />
-    <title>Ultra Admin Bootstrap 4 : Dashboard</title>
+    <title>LearnToEarn Admin : Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta content="" name="description" />
-    <meta content="" name="author" />
 
-    <link rel="shortcut icon" href="{% static 'admin/assets/images/favicon.png' %}" type="image/x-icon" />
     <!-- Favicon -->
-    <link rel="apple-touch-icon-precomposed"
-        href="{% static 'admin/assets/images/apple-touch-icon-57-precomposed.png' %}">
-    <!-- For iPhone -->
-    <link rel="apple-touch-icon-precomposed" sizes="114x114"
-        href="{% static 'admin/assets/images/apple-touch-icon-114-precomposed.png' %}">
-    <!-- For iPhone 4 Retina display -->
-    <link rel="apple-touch-icon-precomposed" sizes="72x72"
-        href="{% static 'admin/assets/images/apple-touch-icon-72-precomposed.png' %}"> <!-- For iPad -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144"
-        href="{% static 'admin/assets/images/apple-touch-icon-144-precomposed.png' %}"> <!-- For iPad Retina display -->
+    <link rel="shortcut icon" href="{% static 'admin/assets/images/favicon.png' %}" type="image/x-icon" />
 
-
-
-    <!-- CORE CSS FRAMEWORK - START -->
+    <!-- CORE CSS FRAMEWORK -->
     <link href="{% static 'admin/assets/plugins/pace/pace-theme-flash.css' %}" rel="stylesheet" type="text/css"
         media="screen" />
     <link href="{% static 'admin/assets/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
@@ -39,9 +19,8 @@
     <link href="{% static 'admin/assets/css/animate.min.css' %}" rel="stylesheet" type="text/css" />
     <link href="{% static 'admin/assets/plugins/perfect-scrollbar/perfect-scrollbar.css' %}" rel="stylesheet"
         type="text/css" />
-    <!-- CORE CSS FRAMEWORK - END -->
 
-    <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START -->
+    <!-- PLUGINS CSS -->
     <link href="{% static 'admin/assets/plugins/morris-chart/css/morris.css' %}" rel="stylesheet" type="text/css"
         media="screen" />
     <link href="{% static 'admin/assets/plugins/jquery-ui/smoothness/jquery-ui.min.css' %}" rel="stylesheet"
@@ -49,33 +28,89 @@
     <link href="{% static 'admin/assets/plugins/jvectormap/jquery-jvectormap-2.0.1.css' %}" rel="stylesheet"
         type="text/css" media="screen" />
     <link href="{% static 'admin/assets/plugins/icheck/skins/minimal/white.css' %}" rel="stylesheet" type="text/css"
-        media="screen" /> <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END -->
+        media="screen" />
 
-
-    <!-- CORE CSS TEMPLATE - START -->
+    <!-- CORE CSS TEMPLATE -->
     <link href="{% static 'admin/assets/css/style.css' %}" rel="stylesheet" type="text/css" />
     <link href="{% static 'admin/assets/css/responsive.css' %}" rel="stylesheet" type="text/css" />
-    <!-- CORE CSS TEMPLATE - END -->
 
+    <style>
+        :root {
+            --primary-dark: #1A202E;
+            --primary-red: #FF2B2B;
+            --sidebar-bg: #141924;
+            --text-light: #ffffff;
+        }
+
+        .page-sidebar {
+            background-color: var(--sidebar-bg) !important;
+        }
+
+        .page-topbar {
+            background-color: var(--primary-dark) !important;
+        }
+
+        .wraplist li a .title,
+        .wraplist li a i {
+            color: #b0b8c5 !important;
+        }
+
+        .wraplist li.open>a,
+        .wraplist li:hover>a {
+            background-color: var(--primary-red) !important;
+            color: #fff !important;
+        }
+
+        .wraplist li.open>a i,
+        .wraplist li:hover>a i {
+            color: #fff !important;
+        }
+
+        .logo-area {
+            background-color: var(--primary-dark) !important;
+        }
+
+        /* Modern Card adjustments */
+        .db_box {
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: none;
+        }
+
+        /* Sidebar Fix */
+        .page-container {
+            display: flex;
+            flex-grow: 1;
+            /* Fills remaining height after topbar */
+            position: relative;
+        }
+
+        .page-sidebar {
+            min-height: 100%;
+            /* Stretches to fill container */
+            width: 260px;
+            /* Fixed width */
+            flex-shrink: 0;
+        }
+
+        #main-content {
+            flex-grow: 1;
+            /* Main content takes remaining width */
+            padding: 0;
+            width: calc(100% - 260px);
+        }
+    </style>
 </head>
-<!-- END HEAD -->
 
-<!-- BEGIN BODY -->
-
-<body class="d-flex flex-column min-vh-100"><!-- START TOPBAR -->
+<body class="d-flex flex-column min-vh-100">
+    <!-- START TOPBAR -->
     <div class='page-topbar '>
-        <div class='logo-area' style="position:relative; z-index:10; background: transparent;">
+        <div class='logo-area'>
             <a href="{% url 'admin_index' %}">
-                <div class="d-none d-md-block">
-                    <img src="{% static 'admin/assets/images/logo.png' %}" alt="Logo"
-                        style="max-height:80px; width:120px;" class="mx-auto d-block">
-                </div>
-                <div class="d-block d-md-none">
-                    <img src="{% static 'admin/assets/images/logo-folded.png' %}" alt="Logo Folded"
-                        style="max-height:50px; width:50px;" class="mx-auto d-block">
+                <div class="d-none d-md-block" style="padding: 15px; text-align: center;">
+                    <h3 style="color:#fff; margin:0; font-weight:bold; letter-spacing:1px;">L2E Admin</h3>
                 </div>
             </a>
-
         </div>
         <div class='quick-area'>
             <div class='float-left'>
@@ -85,268 +120,15 @@
                             <i class="fa fa-bars"></i>
                         </a>
                     </li>
-                    <li class="message-toggle-wrapper list-inline-item">
-                        <a href="#" data-toggle="dropdown" class="toggle">
-                            <i class="fa fa-envelope"></i>
-                            <span class="badge badge-pill badge-primary">7</span>
-                        </a>
-                        <ul class="dropdown-menu messages animated fadeIn">
-
-                            <li class="list dropdown-item">
-
-                                <ul class="dropdown-menu-list list-unstyled ps-scrollbar">
-                                    <li class="unread status-available">
-                                        <a href="javascript:;">
-                                            <div class="user-img">
-                                                <img src="{% static 'assets/data/profile/avatar-1.png' %}"
-                                                    alt="user-image" class="rounded-circle img-inline">
-                                            </div>
-                                            <div>
-                                                <span class="name">
-                                                    <strong>Clarine Vassar</strong>
-                                                    <span class="time small">- 15 mins ago</span>
-                                                    <span class="profile-status available float-right"></span>
-                                                </span>
-                                                <span class="desc small">
-                                                    Sometimes it takes a lifetime to win a battle.
-                                                </span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class=" status-away">
-                                        <a href="javascript:;">
-                                            <div class="user-img">
-                                                <img src="{% static 'assets/data/profile/avatar-2.png' %}"
-                                                    alt="user-image" class="rounded-circle img-inline">
-                                            </div>
-                                            <div>
-                                                <span class="name">
-                                                    <strong>Brooks Latshaw</strong>
-                                                    <span class="time small">- 45 mins ago</span>
-                                                    <span class="profile-status away float-right"></span>
-                                                </span>
-                                                <span class="desc small">
-                                                    Sometimes it takes a lifetime to win a battle.
-                                                </span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class=" status-busy">
-                                        <a href="javascript:;">
-                                            <div class="user-img">
-                                                <img src="{% static 'assets/data/profile/avatar-3.png' %}"
-                                                    alt="user-image" class="rounded-circle img-inline">
-                                            </div>
-                                            <div>
-                                                <span class="name">
-                                                    <strong>Clementina Brodeur</strong>
-                                                    <span class="time small">- 1 hour ago</span>
-                                                    <span class="profile-status busy float-right"></span>
-                                                </span>
-                                                <span class="desc small">
-                                                    Sometimes it takes a lifetime to win a battle.
-                                                </span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class=" status-offline">
-                                        <a href="javascript:;">
-                                            <div class="user-img">
-                                                <img src="{% static 'assets/data/profile/avatar-4.png' %}"
-                                                    alt="user-image" class="rounded-circle img-inline">
-                                            </div>
-                                            <div>
-                                                <span class="name">
-                                                    <strong>Carri Busey</strong>
-                                                    <span class="time small">- 5 hours ago</span>
-                                                    <span class="profile-status offline float-right"></span>
-                                                </span>
-                                                <span class="desc small">
-                                                    Sometimes it takes a lifetime to win a battle.
-                                                </span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class=" status-offline">
-                                        <a href="javascript:;">
-                                            <div class="user-img">
-                                                <img src="{% static 'assets/data/profile/avatar-5.png' %}"
-                                                    alt="user-image" class="rounded-circle img-inline">
-                                            </div>
-                                            <div>
-                                                <span class="name">
-                                                    <strong>Melissa Dock</strong>
-                                                    <span class="time small">- Yesterday</span>
-                                                    <span class="profile-status offline float-right"></span>
-                                                </span>
-                                                <span class="desc small">
-                                                    Sometimes it takes a lifetime to win a battle.
-                                                </span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class=" status-available">
-                                        <a href="javascript:;">
-                                            <div class="user-img">
-                                                <img src="{% static 'assets/data/profile/avatar-1.png' %}"
-                                                    alt="user-image" class="rounded-circle img-inline">
-                                            </div>
-                                            <div>
-                                                <span class="name">
-                                                    <strong>Verdell Rea</strong>
-                                                    <span class="time small">- 14th Mar</span>
-                                                    <span class="profile-status available float-right"></span>
-                                                </span>
-                                                <span class="desc small">
-                                                    Sometimes it takes a lifetime to win a battle.
-                                                </span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class=" status-busy">
-                                        <a href="javascript:;">
-                                            <div class="user-img">
-                                                <img src="{% static 'assets/data/profile/avatar-2.png' %}"
-                                                    alt="user-image" class="rounded-circle img-inline">
-                                            </div>
-                                            <div>
-                                                <span class="name">
-                                                    <strong>Linette Lheureux</strong>
-                                                    <span class="time small">- 16th Mar</span>
-                                                    <span class="profile-status busy float-right"></span>
-                                                </span>
-                                                <span class="desc small">
-                                                    Sometimes it takes a lifetime to win a battle.
-                                                </span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class=" status-away">
-                                        <a href="javascript:;">
-                                            <div class="user-img">
-                                                <img src="{% static 'assets/data/profile/avatar-3.png' %}"
-                                                    alt="user-image" class="rounded-circle img-inline">
-                                            </div>
-                                            <div>
-                                                <span class="name">
-                                                    <strong>Araceli Boatright</strong>
-                                                    <span class="time small">- 16th Mar</span>
-                                                    <span class="profile-status away float-right"></span>
-                                                </span>
-                                                <span class="desc small">
-                                                    Sometimes it takes a lifetime to win a battle.
-                                                </span>
-                                            </div>
-                                        </a>
-                                    </li>
-
-                                </ul>
-
-                            </li>
-
-                            <li class="external">
-                                <a href="javascript:;">
-                                    <span>Read All Messages</span>
-                                </a>
-                            </li>
-                        </ul>
-
-                    </li>
-                    <li class="notify-toggle-wrapper list-inline-item">
-                        <a href="#" data-toggle="dropdown" class="toggle">
-                            <i class="fa fa-bell"></i>
-                            {% if notifications %}
-                            <span class="badge badge-pill badge-orange">{{ notifications.count }}</span>
-                            {% endif %}
-                        </a>
-                        <ul class="dropdown-menu notifications animated fadeIn">
-                            <li class="total dropdown-item">
-                                <span class="small">
-                                    {% if notifications %}
-                                    You have <strong>{{ notifications.count }}</strong> new notifications.
-                                    <a href="javascript:;" class="float-right">Mark all as Read</a>
-                                    {% else %}
-                                    No new notifications.
-                                    {% endif %}
-                                </span>
-                            </li>
-                            <li class="list dropdown-item">
-
-                                <ul class="dropdown-menu-list list-unstyled ps-scrollbar">
-                                    {% for notif in notifications %}
-                                    <li class="unread available">
-                                        <a href="{{ notif.link|default:'#' }}">
-                                            <div class="notice-icon">
-                                                <i class="fa fa-info"></i>
-                                            </div>
-                                            <div>
-                                                <span class="name">
-                                                    <span class="time small">{{ notif.timestamp|timesince }} ago</span>
-                                                    {{ notif.message }}
-                                                </span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    {% empty %}
-                                    <li class="unread available">
-                                        <a href="javascript:;">
-                                            <div>
-                                                <span class="name">No new notifications</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    {% endfor %}
-                                </ul>
-
-                            </li>
-
-                            <li class="external dropdown-item">
-                                <a href="javascript:;">
-                                    <span>Read All Notifications</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="d-sm-none d-none searchform list-inline-item">
-                        <div class="input-group">
-                            <span class="input-group-addon input-focus">
-                                <i class="fa fa-search"></i>
-                            </span>
-                            <form action="search-page.html" method="post">
-                                <input type="text" class="form-control animated fadeIn" placeholder="Search & Enter">
-                                <input type='submit' value="">
-                            </form>
-                        </div>
-                    </li>
                 </ul>
             </div>
             <div class='float-right'>
                 <ul class="info-menu right-links list-inline list-unstyled">
                     <li class="profile list-inline-item">
                         <a href="#" data-toggle="dropdown" class="toggle">
-                            <img src="{% static 'assets/data/profile/profile.png' %}" alt="user-image"
-                                class="rounded-circle img-inline">
-                            <span>Jason Bourne <i class="fa fa-angle-down"></i></span>
+                            <span style="color:#fff;">Administrator <i class="fa fa-angle-down"></i></span>
                         </a>
                         <ul class="dropdown-menu profile animated fadeIn">
-                            <li class="dropdown-item">
-                                <a href="#settings">
-                                    <i class="fa fa-wrench"></i>
-                                    Settings
-                                </a>
-                            </li>
-                            <li class="dropdown-item">
-                                <a href="#profile">
-                                    <i class="fa fa-user"></i>
-                                    Profile
-                                </a>
-                            </li>
-                            <li class="dropdown-item">
-                                <a href="#help">
-                                    <i class="fa fa-info"></i>
-                                    Help
-                                </a>
-                            </li>
                             <li class="last dropdown-item">
                                 <a href="{% url 'logout' %}">
                                     <i class="fa fa-lock"></i>
@@ -355,453 +137,127 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="chat-toggle-wrapper list-inline-item">
-                        <a href="#" data-toggle="chatbar" class="toggle_chat">
-                            <i class="fa fa-comments"></i>
-                            <span class="badge badge-pill badge-warning">9</span>
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </li>
                 </ul>
             </div>
         </div>
-
     </div>
     <!-- END TOPBAR -->
+
     <!-- START CONTAINER -->
     <div class="page-container row-fluid">
 
         <!-- SIDEBAR - START -->
         <div class="page-sidebar ">
-
-            <!-- MAIN MENU - START -->
             <div class="page-sidebar-wrapper" id="main-menu-wrapper">
 
-                <!-- USER INFO - START -->
+                <!-- USER INFO -->
                 <div class="profile-info row">
-
                     <div class="profile-image col-lg-4 col-md-4 col-4">
-                        <a href="ui-profile.html">
-                            <img src="{% static 'assets/data/profile/profile.png' %}" class="img-fluid rounded-circle">
+                        <a href="#">
+                            <!-- Placeholder image or static asset -->
+                            <div
+                                style="width: 50px; height: 50px; background: #FF2B2B; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                                AD</div>
                         </a>
                     </div>
-
                     <div class="profile-details col-lg-8 col-md-8 col-8">
-
                         <h3>
-                            <a href="ui-profile.html">Jason Bourne</a>
-
-                            <!-- Available statuses: online, idle, busy, away and offline -->
+                            <a href="#">Admin</a>
                             <span class="profile-status online"></span>
                         </h3>
-
-                        <p class="profile-title">Web Developer</p>
-
+                        <p class="profile-title">Manager</p>
                     </div>
-
                 </div>
-                <!-- USER INFO - END -->
-
-
 
                 <ul class='wraplist'>
-
-
                     <li class="open">
                         <a href="{% url 'admin_index' %}">
                             <i class="fa fa-dashboard"></i>
                             <span class="title">Dashboard</span>
                         </a>
                     </li>
+
                     <li class="">
                         <a href="javascript:;">
-                            <i class="fa fa-suitcase"></i>
-                            <span class="title">Add Details</span>
+                            <i class="fa fa-database"></i>
+                            <span class="title">Masters</span>
                             <span class="arrow "></span>
                         </a>
                         <ul class="sub-menu">
-                            <li>
-                                <a class="" href="{% url 'adddistrict' %}">Add District</a>
-                            </li>
-
-                            <li>
-                                <a class="" href="{% url 'addcategory' %}">Add Category</a>
-                            </li>
-
-                            <li>
-                                <a class="" href="{% url 'viewsubcategory' %}">View Subcategory</a>
-                            </li>
-
-
+                            <li><a href="{% url 'adddistrict' %}">Add District</a></li>
+                            <li><a href="{% url 'viewdistrict' %}">View Districts</a></li>
+                            <li><a href="{% url 'addcategory' %}">Add Category</a></li>
+                            <li><a href="{% url 'viewcategory' %}">View Categories</a></li>
+                            <li><a href="{% url 'addsubcategory' %}">Add Subcategory</a></li>
+                            <li><a href="{% url 'viewsubcategory' %}">View Subcategories</a></li>
                         </ul>
                     </li>
+
                     <li class="">
                         <a href="javascript:;">
-                            <i class="fa fa-suitcase"></i>
-                            <span class="title">View Details</span>
+                            <i class="fa fa-check-square-o"></i>
+                            <span class="title">Verifications</span>
                             <span class="arrow "></span>
                         </a>
                         <ul class="sub-menu">
-
-                            <li>
-                                <a class="" href="{% url 'viewdistrict' %}">View District</a>
-                            </li>
-
-                            <li>
-                                <a class="" href="{% url 'viewcategory' %}">View Category</a>
-                            </li>
-
-                            <li>
-                                <a class="" href="{% url 'viewsubcategory' %}">View Subcategory</a>
-                            </li>
-
-
+                            <li><a href="{% url 'view_employers' %}">Employers</a></li>
+                            <li><a href="{% url 'view_students' %}">Students</a></li>
+                            <li><a href="{% url 'view_services' %}">Student Services</a></li>
                         </ul>
                     </li>
+
                     <li class="">
-                        <a href="{% url 'view_employers' %}">
-                            <i class="fa fa-building"></i>
-                            <span class="title">Employer Verification</span>
+                        <a href="{% url 'view_feedback' %}">
+                            <i class="fa fa-comments"></i>
+                            <span class="title">Feedback</span>
                         </a>
                     </li>
+
                     <li class="">
-                        <a href="{% url 'view_students' %}">
-                            <i class="fa fa-graduation-cap"></i>
-                            <span class="title">Student Verification</span>
+                        <a href="{% url 'generate_report' %}">
+                            <i class="fa fa-bar-chart"></i>
+                            <span class="title">Reports</span>
                         </a>
                     </li>
+
                     <li class="">
                         <a href="{% url 'logout' %}">
                             <i class="fa fa-sign-out"></i>
                             <span class="title">Logout</span>
                         </a>
                     </li>
-
-
-                </ul> -->
-
+                </ul>
             </div>
-            <!-- MAIN MENU - END -->
-
-
-
-            <div class="project-info">
-
-                <!-- <div class="block1">
-                    <div class="data">
-                        <span class='title'>New&nbsp;Orders</span>
-                        <span class='total'>2,345</span>
-                    </div>
-                    <div class="graph">
-                        <span class="sidebar_orders">...</span>
-                    </div>
-                </div>
-
-                <div class="block2">
-                    <div class="data">
-                        <span class='title'>Visitors</span>
-                        <span class='total'>345</span>
-                    </div>
-                    <div class="graph">
-                        <span class="sidebar_visitors">...</span>
-                    </div>
-                </div> -->
-
-            </div>
-
-
-
         </div>
         <!--  SIDEBAR - END -->
 
         {% block content %}{% endblock %}
 
-        <div class="page-chatapi hideit">
-
-            <div class="search-bar">
-                <input type="text" placeholder="Search" class="form-control">
-            </div>
-
-            <div class="chat-wrapper">
-                <h4 class="group-head">Groups</h4>
-                <ul class="group-list list-unstyled">
-                    <li class="group-row">
-                        <div class="group-status available">
-                            <i class="fa fa-circle"></i>
-                        </div>
-                        <div class="group-info">
-                            <h4><a href="#">Work</a></h4>
-                        </div>
-                    </li>
-                    <li class="group-row">
-                        <div class="group-status away">
-                            <i class="fa fa-circle"></i>
-                        </div>
-                        <div class="group-info">
-                            <h4><a href="#">Friends</a></h4>
-                        </div>
-                    </li>
-
-                </ul>
-
-
-                <h4 class="group-head">Favourites</h4>
-                <ul class="contact-list">
-
-                    <li class="user-row" id='chat_user_1' data-user-id='1'>
-                        <div class="user-img">
-                            <a href="#"><img src="{% static 'assets/data/profile/avatar-1.png' %}" alt=""></a>
-                        </div>
-                        <div class="user-info">
-                            <h4><a href="#">Clarine Vassar</a></h4>
-                            <span class="status available" data-status="available"> Available</span>
-                        </div>
-                        <div class="user-status available">
-                            <i class="fa fa-circle"></i>
-                        </div>
-                    </li>
-                    <li class="user-row" id='chat_user_2' data-user-id='2'>
-                        <div class="user-img">
-                            <a href="#"><img src="{% static 'assets/data/profile/avatar-2.png' %}" alt=""></a>
-                        </div>
-                        <div class="user-info">
-                            <h4><a href="#">Brooks Latshaw</a></h4>
-                            <span class="status away" data-status="away"> Away</span>
-                        </div>
-                        <div class="user-status away">
-                            <i class="fa fa-circle"></i>
-                        </div>
-                    </li>
-                    <li class="user-row" id='chat_user_3' data-user-id='3'>
-                        <div class="user-img">
-                            <a href="#"><img src="{% static 'assets/data/profile/avatar-3.png' %}" alt=""></a>
-                        </div>
-                        <div class="user-info">
-                            <h4><a href="#">Clementina Brodeur</a></h4>
-                            <span class="status busy" data-status="busy"> Busy</span>
-                        </div>
-                        <div class="user-status busy">
-                            <i class="fa fa-circle"></i>
-                        </div>
-                    </li>
-
-                </ul>
-
-
-                <h4 class="group-head">More Contacts</h4>
-                <ul class="contact-list">
-
-                    <li class="user-row" id='chat_user_4' data-user-id='4'>
-                        <div class="user-img">
-                            <a href="#"><img src="{% static 'assets/data/profile/avatar-4.png' %}" alt=""></a>
-                        </div>
-                        <div class="user-info">
-                            <h4><a href="#">Carri Busey</a></h4>
-                            <span class="status offline" data-status="offline"> Offline</span>
-                        </div>
-                        <div class="user-status offline">
-                            <i class="fa fa-circle"></i>
-                        </div>
-                    </li>
-                    <li class="user-row" id='chat_user_5' data-user-id='5'>
-                        <div class="user-img">
-                            <a href="#"><img src="{% static 'assets/data/profile/avatar-5.png' %}" alt=""></a>
-                        </div>
-                        <div class="user-info">
-                            <h4><a href="#">Melissa Dock</a></h4>
-                            <span class="status offline" data-status="offline"> Offline</span>
-                        </div>
-                        <div class="user-status offline">
-                            <i class="fa fa-circle"></i>
-                        </div>
-                    </li>
-                    <li class="user-row" id='chat_user_6' data-user-id='6'>
-                        <div class="user-img">
-                            <a href="#"><img src="{% static 'assets/data/profile/avatar-1.png' %}" alt=""></a>
-                        </div>
-                        <div class="user-info">
-                            <h4><a href="#">Verdell Rea</a></h4>
-                            <span class="status available" data-status="available"> Available</span>
-                        </div>
-                        <div class="user-status available">
-                            <i class="fa fa-circle"></i>
-                        </div>
-                    </li>
-                    <li class="user-row" id='chat_user_7' data-user-id='7'>
-                        <div class="user-img">
-                            <a href="#"><img src="{% static 'assets/data/profile/avatar-2.png' %}" alt=""></a>
-                        </div>
-                        <div class="user-info">
-                            <h4><a href="#">Linette Lheureux</a></h4>
-                            <span class="status busy" data-status="busy"> Busy</span>
-                        </div>
-                        <div class="user-status busy">
-                            <i class="fa fa-circle"></i>
-                        </div>
-                    </li>
-                    <li class="user-row" id='chat_user_8' data-user-id='8'>
-                        <div class="user-img">
-                            <a href="#"><img src="{% static 'assets/data/profile/avatar-3.png' %}" alt=""></a>
-                        </div>
-                        <div class="user-info">
-                            <h4><a href="#">Araceli Boatright</a></h4>
-                            <span class="status away" data-status="away"> Away</span>
-                        </div>
-                        <div class="user-status away">
-                            <i class="fa fa-circle"></i>
-                        </div>
-                    </li>
-                    <li class="user-row" id='chat_user_9' data-user-id='9'>
-                        <div class="user-img">
-                            <a href="#"><img src="{% static 'assets/data/profile/avatar-4.png' %}" alt=""></a>
-                        </div>
-                        <div class="user-info">
-                            <h4><a href="#">Clay Peskin</a></h4>
-                            <span class="status busy" data-status="busy"> Busy</span>
-                        </div>
-                        <div class="user-status busy">
-                            <i class="fa fa-circle"></i>
-                        </div>
-                    </li>
-                    <li class="user-row" id='chat_user_10' data-user-id='10'>
-                        <div class="user-img">
-                            <a href="#"><img src="{% static 'assets/data/profile/avatar-5.png' %}" alt=""></a>
-                        </div>
-                        <div class="user-info">
-                            <h4><a href="#">Loni Tindall</a></h4>
-                            <span class="status away" data-status="away"> Away</span>
-                        </div>
-                        <div class="user-status away">
-                            <i class="fa fa-circle"></i>
-                        </div>
-                    </li>
-                    <li class="user-row" id='chat_user_11' data-user-id='11'>
-                        <div class="user-img">
-                            <a href="#"><img src="{% static 'assets/data/profile/avatar-1.png' %}" alt=""></a>
-                        </div>
-                        <div class="user-info">
-                            <h4><a href="#">Tanisha Kimbro</a></h4>
-                            <span class="status idle" data-status="idle"> Idle</span>
-                        </div>
-                        <div class="user-status idle">
-                            <i class="fa fa-circle"></i>
-                        </div>
-                    </li>
-                    <li class="user-row" id='chat_user_12' data-user-id='12'>
-                        <div class="user-img">
-                            <a href="#"><img src="{% static 'assets/data/profile/avatar-2.png' %}" alt=""></a>
-                        </div>
-                        <div class="user-info">
-                            <h4><a href="#">Jovita Tisdale</a></h4>
-                            <span class="status idle" data-status="idle"> Idle</span>
-                        </div>
-                        <div class="user-status idle">
-                            <i class="fa fa-circle"></i>
-                        </div>
-                    </li>
-
-                </ul>
-            </div>
-
-        </div>
-
-
-        <div class="chatapi-windows ">
-
-
-        </div>
     </div>
     <!-- END CONTAINER -->
-    <!-- LOAD FILES AT PAGE END FOR FASTER LOADING -->
 
-
-    <!-- CORE JS FRAMEWORK - START -->
+    <!-- CORE JS FRAMEWORK -->
     <script src="{% static 'admin/assets/js/jquery-3.4.1.min.js' %}" type="text/javascript"></script>
     <script src="{% static 'admin/assets/js/popper.min.js' %}" type="text/javascript"></script>
-    <!-- <script src="{% static 'admin/assets/js/jquery.easing.min.js' %}" type="text/javascript"></script>  -->
     <script src="{% static 'admin/assets/plugins/bootstrap/js/bootstrap.min.js' %}" type="text/javascript"></script>
     <script src="{% static 'admin/assets/plugins/pace/pace.min.js' %}" type="text/javascript"></script>
-
     <script src="{% static 'admin/assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js' %}"
         type="text/javascript"></script>
     <script src="{% static 'admin/assets/plugins/viewport/viewportchecker.js' %}" type="text/javascript"></script>
-    <!-- CORE JS FRAMEWORK - END -->
 
-
-    <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START -->
-    <script src="{% static 'admin/assets/plugins/jquery-ui/smoothness/jquery-ui.min.js' %}"
-        type="text/javascript"></script>
+    <!-- PLUGINS JS -->
     <script src="{% static 'admin/assets/plugins/sparkline-chart/jquery.sparkline.min.js' %}"
-        type="text/javascript"></script>
-    <script src="{% static 'admin/assets/plugins/easypiechart/jquery.easypiechart.min.js' %}"
         type="text/javascript"></script>
     <script src="{% static 'admin/assets/plugins/morris-chart/js/raphael-min.js' %}" type="text/javascript"></script>
     <script src="{% static 'admin/assets/plugins/morris-chart/js/morris.min.js' %}" type="text/javascript"></script>
-    <script src="{% static 'admin/assets/plugins/jvectormap/jquery-jvectormap-2.0.1.min.js' %}"
-        type="text/javascript"></script>
-    <script src="{% static 'admin/assets/plugins/jvectormap/jquery-jvectormap-world-mill-en.js' %}"
-        type="text/javascript"></script>
     <script src="{% static 'admin/assets/plugins/gauge/gauge.min.js' %}" type="text/javascript"></script>
     <script src="{% static 'admin/assets/plugins/icheck/icheck.min.js' %}" type="text/javascript"></script>
+
+    <!-- APP JS -->
     <script src="{% static 'admin/assets/js/dashboard.js' %}" type="text/javascript"></script>
-    <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END -->
-
-    <!-- CORE TEMPLATE JS - START -->
     <script src="{% static 'admin/assets/js/scripts.js' %}" type="text/javascript"></script>
-
-    <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- END CORE TEMPLATE JS - END -->
 
-    <!-- Sidebar Graph - START -->
-    <script src="{% static 'admin/assets/plugins/sparkline-chart/jquery.sparkline.min.js' %}"
-        type="text/javascript"></script>
-    <script src="{% static 'admin/assets/js/chart-sparkline.js' %}" type="text/javascript"></script>
-    <!-- Sidebar Graph - END -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!-- General section box modal start -->
-    <div class="modal" id="section-settings" tabindex="-1" role="dialog" aria-labelledby="ultraModal-Label"
-        aria-hidden="true">
-        <div class="modal-dialog animated bounceInDown">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Section Settings</h4>
-                </div>
-                <div class="modal-body">
-
-                    Body goes here...
-
-                </div>
-                <div class="modal-footer">
-                    <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
-                    <button class="btn btn-success" type="button">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- modal end -->
-
-    <!-- FOOTER START -->
-    <footer class="footer bg-light text-center py-3 mt-auto" style="border-top:1px solid #eaeaea;">
-        <div class="container">
-            <span class="text-muted">&copy; {{ now|default:2025 }} BioBinConnect. All rights reserved.</span>
-        </div>
-    </footer>
-    <!-- FOOTER END -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     {% if messages %}
     <div id="django-messages-data" style="display:none;" data-messages='[
         {% for message in messages %}
@@ -823,8 +279,7 @@
                         text: msg.text,
                         icon: iconType,
                         confirmButtonText: 'OK',
-                        timer: 3000,
-                        timerProgressBar: true
+                        confirmButtonColor: '#FF2B2B'
                     });
                 });
             }
@@ -834,12 +289,3 @@
 </body>
 
 </html>
-
-
-
-
-
-<script type="text/javascript">
-
-
-</script>

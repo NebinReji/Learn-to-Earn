@@ -1,11 +1,27 @@
 from django.shortcuts import render, redirect
-from guest.models import Employer
+from guest.models import Employer, student
 from guest.forms import EmployerForm, EmployerSignupForm, LoginForm, SignupForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 
+from employer.models import Jobposting
+from student.models import Feedback, SkillService
+# Force reload
+
 def guest_index(request):
-    return render(request, 'guest/index.html')
+    jobs = Jobposting.objects.all().order_by('-posted_date')[:5]
+    reviews = Feedback.objects.filter(rating__gte=4).order_by('-created_at')[:5]
+    services = SkillService.objects.filter(is_active=True).order_by('-created_at')[:6]
+    return render(request, 'guest/index.html', {'jobs': jobs, 'reviews': reviews, 'services': services})
+
+def about(request):
+    return render(request, 'guest/about.html')
+
+def contact(request):
+    return render(request, 'guest/contact.html')
+
+def team(request):
+    return render(request, 'guest/team.html')
 
 def addemployer(request):
     if request.method == 'POST':
@@ -29,6 +45,7 @@ def addstudent(request):
     return render(request, 'guest/addstudent.html', {'form': form})
 
 
+
 def signup(request):
     student_form = SignupForm(prefix="student")
     employer_form = EmployerSignupForm(prefix="employer")
@@ -39,7 +56,7 @@ def signup(request):
             employer_form = EmployerSignupForm(prefix="employer")
             if student_form.is_valid():
                 student_form.save()
-                messages.success(request, "Student registration successful! Your account is pending admin approval.")
+                messages.success(request, "Student account created! Please login to complete your profile.")
                 return redirect('login')
             else:
                 messages.error(request, "Please correct the errors below.")
@@ -48,7 +65,7 @@ def signup(request):
             student_form = SignupForm(prefix="student")
             if employer_form.is_valid():
                 employer_form.save()
-                messages.success(request, "Employer registration successful! Your account is pending admin approval.")
+                messages.success(request, "Employer account created! Please login to complete your profile.")
                 return redirect('login')
             else:
                 messages.error(request, "Please correct the errors below.")
@@ -65,40 +82,40 @@ def login_view(request):
             email = form.cleaned_data["email"]
             password = form.cleaned_data["password"]
 
-            # authenticate using email (CustomUser has USERNAME_FIELD = "email")
             user = authenticate(request=request, username=email, password=password)
 
             if user is not None:
-                # Check if user account is active
                 if not user.is_active:
-                    if user.role == 'employer':
-                        messages.error(request, "Your employer account is pending admin approval. Please wait for verification.")
-                    elif user.role == 'student':
-                        messages.error(request, "Your student account is pending activation. Please contact support.")
-                    else:
-                        messages.error(request, "Your account is not active. Please contact support.")
-                    return render(request, "guest/login.html", {"form": form})
-                
-                # Check if employer is verified
-                if user.role == 'employer':
-                    try:
-                        employer = Employer.objects.get(user=user)
-                        if not employer.verification_status:
-                            messages.error(request, "Your account is pending admin approval. Please wait for verification.")
-                            return render(request, "guest/login.html", {"form": form})
-                    except Employer.DoesNotExist:
-                        messages.error(request, "Employer profile not found.")
-                        return render(request, "guest/login.html", {"form": form})
+                     messages.error(request, "Your account is not active. Please contact support.")
+                     return render(request, "guest/login.html", {"form": form})
                 
                 login(request, user)
                 messages.success(request, "Welcome Back!")
 
-                # Redirect based on user role
+                # Redirect based on user role and profile completion
                 if user.role == 'admin':
                     return redirect("admin_index")
                 elif user.role == 'employer':
+                    # Check if employer profile is complete (e.g., has district)
+                    try:
+                        employer = Employer.objects.get(user=user)
+                        if not employer.is_profile_complete():
+                             return redirect("employer_profile_setup")
+                        if not employer.verification_status:
+                             return redirect("employer_verification_pending")
+                    except Employer.DoesNotExist:
+                        pass # Should handle this better, but for now continue
                     return redirect("employer_index")
                 elif user.role == 'student':
+                    # Check if student profile is complete (e.g., has district)
+                    try:
+                         stud = student.objects.get(user=user)
+                         if not stud.is_profile_complete():
+                             return redirect("student_profile_setup")
+                         if not stud.verification_status:
+                             return redirect("student_verification_pending")
+                    except student.DoesNotExist:
+                        pass
                     return redirect("student_index")
                 else:
                     return redirect("guest_index")
@@ -109,6 +126,8 @@ def login_view(request):
         form = LoginForm()
 
     return render(request, "guest/login.html", {"form": form})
+
+
 
 def custom_logout(request):
     from django.contrib.auth import logout

@@ -19,8 +19,17 @@ urlpatterns = [
     path('employers/', views.view_employers, name='view_employers'),
     path('employers/approve/<int:employer_id>/', views.approve_employer, name='approve_employer'),
     path('employers/reject/<int:employer_id>/', views.reject_employer, name='reject_employer'),
+    # Feedback Management
+    path('feedback/', views.view_feedback, name='view_feedback'),
+    path('feedback/resolve/<int:feedback_id>/', views.resolve_feedback, name='resolve_feedback'),
+    # Report Generation
+    path('reports/', views.generate_report, name='generate_report'),
     # Student Verification
     path('students/', views.view_students, name='view_students'),
     path('students/approve/<int:student_id>/', views.approve_student, name='approve_student'),
     path('students/reject/<int:student_id>/', views.reject_student, name='reject_student'),
+    # Service Verification
+    path('services/', views.view_services, name='view_services'),
+    path('services/approve/<int:service_id>/', views.approve_service, name='approve_service'),
+    path('services/reject/<int:service_id>/', views.reject_service, name='reject_service'),
 ]

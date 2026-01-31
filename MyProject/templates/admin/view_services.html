@@ -1,0 +1,90 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<section id="main-content" class=" ">
+    <section class="wrapper main-wrapper">
+
+        <div class='col-xl-12 col-lg-12 col-md-12 col-12'>
+            <div class="page-title">
+                <div class="float-left">
+                    <h1 class="title">Verify Services</h1>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="col-xl-12">
+            <section class="box ">
+                <header class="panel_header">
+                    <h2 class="title float-left">Student Services List</h2>
+                </header>
+                <div class="content-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Student</th>
+                                            <th>Service Title</th>
+                                            <th>Category</th>
+                                            <th>Price</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for service in services %}
+                                        <tr>
+                                            <td>#{{ service.id }}</td>
+                                            <td>
+                                                <strong>{{ service.student.student_name }}</strong><br>
+                                                <small>{{ service.student.email }}</small>
+                                            </td>
+                                            <td>{{ service.title }}</td>
+                                            <td><span class="badge badge-info">{{ service.get_category_display }}</span>
+                                            </td>
+                                            <td>₹{{ service.price }}</td>
+                                            <td>
+                                                {% if service.verification_status == 'verified' %}
+                                                <span class="badge badge-success">Verified</span>
+                                                {% elif service.verification_status == 'rejected' %}
+                                                <span class="badge badge-danger">Rejected</span>
+                                                {% else %}
+                                                <span class="badge badge-warning">Pending</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if service.verification_status == 'pending' %}
+                                                <a href="{% url 'approve_service' service.id %}"
+                                                    class="btn btn-success btn-sm"
+                                                    onclick="return confirm('Are you sure you want to verify this service?');">
+                                                    <i class="fa fa-check"></i> Approve
+                                                </a>
+                                                <a href="{% url 'reject_service' service.id %}"
+                                                    class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('Are you sure you want to reject this service?');">
+                                                    <i class="fa fa-times"></i> Reject
+                                                </a>
+                                                {% else %}
+                                                <span class="text-muted">Action Taken</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="7" class="text-center">No services found.</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </section>
+</section>
+{% endblock %}

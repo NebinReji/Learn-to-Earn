@@ -1,0 +1,60 @@
+{% extends 'student/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="job-details-area pt-100 pb-70">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="job-details-item card p-4 border-0 shadow-sm mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="badge bg-primary">{{ service.get_category_display }}</span>
+                        <h3 class="text-success fw-bold">₹{{ service.price }} <small class="text-muted fs-6 fw-normal">/
+                                session</small></h3>
+                    </div>
+
+                    <h2 class="mb-3">{{ service.title }}</h2>
+
+                    <div class="d-flex align-items-center mb-4 p-3 bg-light rounded">
+                        <div class="me-3">
+                            <i class='bx bxs-user-circle display-4 text-primary'></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Offered by {{ service.student.student_name }}</h5>
+                            <small class="text-muted">Student at LearnToEarn</small>
+                        </div>
+                    </div>
+
+                    <h4 class="mb-3">Description</h4>
+                    <p class="lead text-muted">{{ service.description|linebreaks }}</p>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="job-details-widget card p-4 border-0 shadow-sm sticky-top" style="top: 100px; z-index: 1;">
+                    <h4 class="mb-4">Book This Service</h4>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Requirements / Message</label>
+                            <textarea name="requirements" class="form-control" rows="5"
+                                placeholder="Hi, I'm interested in this service. I need help with..."
+                                required></textarea>
+                            <div class="form-text">Describe what you need help with in detail.</div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-lg">Request Booking</button>
+                        </div>
+                    </form>
+
+                    <div class="mt-4 pt-3 border-top text-center text-muted small">
+                        <i class='bx bx-shield-quarter'></i> Secure Booking Process
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

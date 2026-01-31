@@ -1,5 +1,6 @@
 from django import forms
 from employer.models import Jobposting
+from MyApp.models import District
 
 
 class JobPostingForm(forms.ModelForm):
@@ -33,4 +34,26 @@ class EmployerProfileForm(forms.ModelForm):
             'address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'website': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'https://example.com'}),
             'profile_picture': forms.FileInput(attrs={'class': 'form-control'}),
+        }
+
+
+class EmployerProfileSetupForm(forms.ModelForm):
+    district = forms.ModelChoiceField(
+        queryset=District.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-select'}),
+        required=True
+    )
+
+    class Meta:
+        from guest.models import Employer
+        model = Employer
+        fields = ['website', 'district', 'area', 'industry', 'address', 'description', 'company_logo', 'profile_picture']
+        widgets = {
+            'website': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'https://company.com'}),
+            'area': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g. Kaloor, Kochi'}),
+            'industry': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g. Retail, IT'}),
+            'address': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter Address', 'rows': 3}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Describe your company...'}),
+            'company_logo': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'profile_picture': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }

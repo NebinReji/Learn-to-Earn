@@ -1,0 +1,56 @@
+{% extends 'employer/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="job-details-area pt-100 pb-70">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card p-4 border-0 shadow-sm mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="badge bg-primary">{{ service.get_category_display }}</span>
+                        <h3 class="text-success fw-bold">₹{{ service.price }} <small class="text-muted fs-6 fw-normal">/
+                                session</small></h3>
+                    </div>
+
+                    <h2 class="mb-3">{{ service.title }}</h2>
+
+                    <div class="d-flex align-items-center mb-4 p-3 bg-light rounded">
+                        <div class="me-3">
+                            <i class='bx bxs-user-circle display-4 text-primary'></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Offered by {{ service.student.student_name }}</h5>
+                            <small class="text-muted">Student at LearnToEarn</small>
+                        </div>
+                    </div>
+
+                    <h4 class="mb-3">Description</h4>
+                    <p class="lead text-muted">{{ service.description|linebreaks }}</p>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card p-4 border-0 shadow-sm sticky-top" style="top: 100px; z-index: 1;">
+                    <h4 class="mb-4">Contact Student</h4>
+                    <p class="text-muted mb-4">Interested in this service? Contact the student directly via email or
+                        phone provided below.</p>
+
+                    <div class="d-grid gap-2">
+                        <!-- In a real app, this would initiate a chat or booking. For now, we simulate contact info. -->
+                        {% if service.student.user.email %}
+                        <a href="mailto:{{ service.student.user.email }}" class="btn btn-outline-dark btn-lg">
+                            <i class='bx bx-envelope me-2'></i> Email Student
+                        </a>
+                        {% endif %}
+
+                        <button class="btn btn-success btn-lg disabled" disabled>
+                            <i class='bx bx-calendar-check me-2'></i> Book Now (Coming Soon)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

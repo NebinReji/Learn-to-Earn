@@ -1,1199 +1,505 @@
 {% extends 'student/base.html' %}
 {% load static %}
+
+{% block extra_css %}
+<style>
+    /* Global Theme Overrides for Student Dashboard Specifics if needed, 
+       but strictly adhering to guest/employer global styles */
+
+
+    /* HERO */
+    .banner-style-two {
+        background-color: var(--primary-dark);
+        padding-top: 100px;
+        padding-bottom: 240px;
+        /* Extra padding for search overlap */
+        position: relative;
+        overflow: hidden;
+        background-image: url("{% static 'guest/assets/img/banner/7.jpg' %}");
+        background-size: cover;
+        background-position: center;
+    }
+
+    .banner-text {
+        position: relative;
+        z-index: 2;
+    }
+
+    .banner-text h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: #fff;
+        line-height: 1.2;
+        margin-bottom: 20px;
+    }
+
+    .banner-text p {
+        color: #e2e8f0;
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+        opacity: 0.8;
+    }
+
+    /* Stats Section Overlap - Matches Guest 'find-section' */
+    .stats-overlap {
+        margin-top: -120px;
+        /* Negative margin for overlap */
+        position: relative;
+        z-index: 10;
+        padding-bottom: 70px;
+    }
+
+    /* Card Styling - Strictly from Guest Theme */
+    .choose-card {
+        background: #fff;
+        border: 1px solid #f1f5f9;
+        border-radius: 12px;
+        padding: 40px 30px;
+        text-align: center;
+        transition: 0.3s;
+        height: 100%;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    .choose-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+        border-color: #e2e8f0;
+    }
+
+    .choose-card i {
+        font-size: 3rem;
+        color: #FF2B2B;
+        /* Primary Red */
+        margin-bottom: 20px;
+        display: inline-block;
+    }
+
+    .choose-card h3 {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #1A202E;
+        /* Primary Dark */
+        margin-bottom: 10px;
+    }
+
+    .choose-card p {
+        color: #64748b;
+        margin-bottom: 0;
+        font-weight: 500;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        letter-spacing: 0.5px;
+    }
+
+    /* Application Table Card */
+    .table-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        border: 1px solid #f1f5f9;
+    }
+
+    /* Premium Job Card - Matches Employer/Guest Styles */
+    .premium-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 30px;
+        border: 1px solid #f1f5f9;
+        /* Subtle border */
+        transition: 0.3s;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .premium-card:hover {
+        border-color: var(--primary-red);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    /* MODERN UI POLISH */
+    :root {
+        --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        --card-hover-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        --border-color: #f1f5f9;
+    }
+
+    /* Stats Cards - Clean & Minimal */
+    .choose-card {
+        background: #fff;
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 30px 20px;
+        text-align: center;
+        transition: all 0.3s ease;
+        height: 100%;
+        box-shadow: var(--card-shadow);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .choose-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--card-hover-shadow);
+        border-color: var(--primary-red);
+    }
+
+    /* Sidebar & Table Cards */
+    .modern-card {
+        background: #fff;
+        border-radius: 16px;
+        border: 1px solid var(--border-color);
+        box-shadow: var(--card-shadow);
+        overflow: hidden;
+        transition: 0.3s;
+    }
+
+    /* Quick Action Buttons */
+    .action-btn {
+        background: #fff;
+        border: 1px solid var(--border-color);
+        padding: 15px 20px;
+        border-radius: 12px;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--primary-dark);
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .action-btn:hover {
+        background: #f8fafc;
+        border-color: var(--primary-red);
+        transform: translateX(5px);
+        color: var(--primary-red);
+    }
+
+    .action-btn i.icon {
+        font-size: 1.2rem;
+        width: 30px;
+        text-align: center;
+    }
+
+    /* Section Spacing & Titles */
+    .section-title {
+        margin-bottom: 30px;
+    }
+
+    .section-title h3 {
+        font-size: 1.75rem;
+        font-weight: 800;
+        color: var(--primary-dark);
+    }
+
+    .badge {
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    .bg-main {
+        background: #f8fafc;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-        <!-- Banner Section Start -->
-        <div class="banner-style-two">
-            <div class="d-table">
-                <div class="d-table-cell">
-                    <div class="container">
-                        <div class="banner-text">
-                            <span>A Student Opportunity Ecosystem</span>
-                            <h1>Earn while you learn safely, flexibly and responsibly</h1>
-                            <p>LearnToEarn is a student-exclusive platform designed to help students find verified part-time jobs, micro-tasks,
-and peer-to-peer services without compromising their academic life.</p>
-    
-                            <div class="theme-btn">
-                                <a href="job-details.html" class="default-btn">Upload your CV</a>
-                                <a href="contact.html" class="default-btn">Contact Us</a>
-                            </div>
-                        </div>
+<!-- SECTION 1: HERO -->
+<section class="banner-style-two">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <div class="banner-text text-start">
+
+                    <h1>Welcome Back,<br> {{ request.user.name }}!</h1>
+                    <p>
+                        Track your applications, manage your skills, and find new verified part-time jobs.
+                    </p>
+
+                    <div class="d-flex align-items-center gap-3">
+                        <a href="{% url 'student_view_jobs' %}"
+                            class="btn btn-lg px-4 py-3 fw-bold text-white shadow-sm"
+                            style="border-radius: 8px; background-color: var(--primary-red); border: none;">
+                            Find Jobs <i class='bx bx-search'></i>
+                        </a>
+                        <a href="{% url 'student_profile' %}" class="btn btn-outline-light btn-lg px-4 py-3 fw-bold"
+                            style="border-radius: 8px;">
+                            My Profile <i class='bx bx-user'></i>
+                        </a>
                     </div>
                 </div>
             </div>
-
-            <div class="banner-img">
-                <img src="{% static 'student/assets/img/banner/8.jpg' %}" alt="banner image">
-            </div>
-        </div>
-        <!-- Banner Section End -->
-
-        <!-- Find Section Start -->
-        <div class="find-section pb-100">
-            <div class="container">
-                <form class="find-form">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Job Title or Keyword">
-                                <i class="bx bx-search-alt"></i>
-                            </div>
-                        </div>
-    
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="exampleInputEmail2" placeholder="Location">
-                                <i class="bx bx-location-plus"></i>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3">
-                            <select class="category">
-                                <option data-display="Category">Category</option>
-                                <option value="1">Web Development</option>
-                                <option value="2">Graphics Design</option>
-                                <option value="4">Data Entry</option>
-                                <option value="5">Visual Editor</option>
-                                <option value="6">Office Assistant</option>
-                            </select>
-                        </div>
-    
-                        <div class="col-lg-3">
-                            <button type="submit" class="find-btn">
-                                Find A Job
-                                <i class='bx bx-search'></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
+            <div class="col-lg-5 position-relative">
+                <!-- Spacer for right side balance, optionally add the hero shape or image here later -->
             </div>
         </div>
-        <!-- Find Section End -->
+    </div>
+</section>
 
-        <!-- Why Choose Section Start -->
-        <section class="why-choose-two pb-70">
-            <div class="container">
-                <div class="section-title text-center">
-                    <h2>Why You Choose Us Among Other Job Site?</h2>
-                    <p>Unlike traditional job portals, we focus on safe, flexible, and verified opportunities that fit academic schedules. From part-time jobs to micro-gigs and student-to-student services, LearnToEarn helps students earn responsibly while building real skills and experience — not just uploading resumes.</p>
-                </div>
-
-                <div class="row justify-content-center">
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="choose-card">
-                            <i class="flaticon-user"></i>
-                            <h3>Student-Only Platform</h3>
-                            <p>Only verified students can join</p>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="choose-card">
-                            <i class="flaticon-results"></i>
-                            <h3>Verified Employers & Services</h3>
-                            <p>No fake jobs, no scams</p>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-sm-6  ">
-                        <div class="choose-card">
-                            <i class="flaticon-computer-1"></i>
-                            <h3>Flexible Work Hours</h3>
-                            <p>Built around academic schedules</p>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-sm-6  ">
-                        <div class="choose-card">
-                            <i class="flaticon-portfolio"></i>
-                            <h3>Skill & Experience Records</h3>
-                            <p>More than just a resume</p>
-                        </div>
-                    </div>
+<!-- SECTION 2: STATS OVERVIEW (Overlapping) -->
+<!-- SECTION 2: STATS OVERVIEW (Snapshot Section) -->
+<section class="stats-overlap">
+    <div class="container">
+        <div class="row justify-content-center">
+            <!-- Stat 1: Applications -->
+            <div class="col-lg-3 col-sm-6 mb-4">
+                <div class="choose-card">
+                    <i class="bx bx-send"></i>
+                    <h3>{{ applications_count }}</h3>
+                    <p>Applications Submitted</p>
                 </div>
             </div>
-        </section>
-        <!-- Why Choose Section End -->
-
-        <!-- Category Section Start -->
-        <section class="categories-section pb-70">
-            <div class="container">
-                <div class="section-title text-center">
-                    <h2>Choose Your Category</h2>
-                    <p>Pick from student-friendly tracks — on-campus shifts, remote micro-gigs, and projects that build your portfolio without clashing with classes.</p>
-                </div>
-
-                <div class="row justify-content-center">
-                    <div class="col-lg-3 col-md-4 col-sm-6">
-                        <a href="job-list.html">
-                            <div class="category-card">
-                                <i class='flaticon-accounting'></i>
-                                <h3>Accountancy</h3>
-                                <p>301 open position</p>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-lg-3 col-md-4 col-sm-6">
-                        <a href="job-list.html">
-                            <div class="category-card">
-                                <i class='flaticon-graduation-cap'></i>
-                                <h3>Education</h3>
-                                <p>210 open position</p>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-lg-3 col-md-4 col-sm-6">
-                        <a href="job-list.html">
-                            <div class="category-card">
-                                <i class='flaticon-wrench-and-screwdriver-in-cross'></i>
-                                <h3>Automotive Jobs</h3>
-                                <p>281 open position</p>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-lg-3 col-md-4 col-sm-6">
-                        <a href="job-list.html">
-                            <div class="category-card">
-                                <i class='flaticon-consultation'></i>
-                                <h3>Business</h3>
-                                <p>122 open position</p>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-lg-3 col-md-4 col-sm-6">
-                        <a href="job-list.html">
-                            <div class="category-card">
-                                <i class='flaticon-heart'></i>
-                                <h3>Health Care</h3>
-                                <p>335 open position</p>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-lg-3  col-md-4 col-sm-6">
-                        <a href="job-list.html">
-                            <div class="category-card">
-                                <i class='flaticon-computer'></i>
-                                <h3>IT & Agency</h3>
-                                <p>401 open position</p>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-lg-3  col-md-4 col-sm-6  ">
-                        <a href="job-list.html">
-                            <div class="category-card">
-                                <i class='flaticon-worker'></i>
-                                <h3>Engineering</h3>
-                                <p>100 open position</p>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-lg-3 col-md-4 col-sm-6">
-                        <a href="job-list.html">
-                            <div class="category-card">
-                                <i class='flaticon-auction'></i>
-                                <h3>Legal</h3>
-                                <p>201 open position</p>
-                            </div>
-                        </a>
-                    </div>
+            <!-- Stat 2: Profile Completion -->
+            <div class="col-lg-3 col-sm-6 mb-4">
+                <div class="choose-card">
+                    <i class="bx bx-check-shield"></i>
+                    <h3>{{ profile_completion }}%</h3>
+                    <p>Profile Completion</p>
                 </div>
             </div>
-        </section>
-        <!-- Category Section End -->  
-
-        <!-- Job Section End -->   
-        <section class="job-style-two pt-100 pb-70">
-            <div class="container">
-                <div class="section-title text-center">
-                    <h2>Jobs You May Be Interested In</h2>
-                    <p>Handpicked part-time and micro-gig roles verified for students — fair pay, safe employers, and schedules that fit around lectures and exams.</p>
-                </div>
-
-                <div class="row justify-content-center">
-                    <div class="col-lg-12">
-                        <div class="job-card-two">
-                            <div class="row align-items-center justify-content-center">
-                                <div class="col-md-1">
-                                    <div class="company-logo">
-                                        <a href="job-details.html">
-                                            <img src="assets/img/company-logo/1.png" alt="logo">
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="job-info">
-                                        <h3>
-                                            <a href="job-details.html">Campus Graphic Designer & Poster Creator</a>
-                                        </h3>
-                                        <ul>                                          
-                                            <li>
-                                                <i class='bx bx-briefcase' ></i>
-                                                Student Graphic Designer
-                                            </li>
-                                            <li>
-                                                <i class='bx bx-briefcase' ></i>
-                                                $18-$22/hr
-                                            </li>
-                                            <li>
-                                                <i class='bx bx-location-plus'></i>
-                                                On-campus design lab
-                                            </li>
-                                            <li>
-                                                <i class='bx bx-stopwatch' ></i>
-                                                9 days ago
-                                            </li>
-                                        </ul>
-
-                                        <span>Part-Time</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="theme-btn text-end">
-                                        <a href="job-details.html" class="default-btn">
-                                            Browse Job
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-12">
-                        <div class="job-card-two">
-                            <div class="row align-items-center justify-content-center">
-                                <div class="col-md-1">
-                                    <div class="company-logo">
-                                        <a href="job-details.html">
-                                            <img src="assets/img/company-logo/2.png" alt="logo">
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="job-info">
-                                        <h3>
-                                            <a href="job-details.html">Student Web Assistant (WordPress/HTML)</a>
-                                        </h3>
-                                        <ul>                                          
-                                            <li>
-                                                <i class='bx bx-briefcase' ></i>
-                                                Junior Web Assistant
-                                            </li>
-                                            <li>
-                                                <i class='bx bx-briefcase' ></i>
-                                                $17-$20/hr
-                                            </li>
-                                            <li>
-                                                <i class='bx bx-location-plus'></i>
-                                                Remote, UK time zone
-                                            </li>
-                                            <li>
-                                                <i class='bx bx-stopwatch' ></i>
-                                                5 days ago
-                                            </li>
-                                        </ul>
-
-                                        <span>Part-Time</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="theme-btn text-end">
-                                        <a href="job-details.html" class="default-btn">
-                                            Browse Job
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-12">
-                        <div class="job-card-two">
-                            <div class="row align-items-center justify-content-center">
-                                <div class="col-md-1">
-                                    <div class="company-logo">
-                                        <a href="job-details.html">
-                                            <img src="assets/img/company-logo/3.png" alt="logo">
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="job-info">
-                                        <h3>
-                                            <a href="job-details.html">Peer Tutor - Intro to Python</a>
-                                        </h3>
-                                        <ul>                                          
-                                            <li>
-                                                <i class='bx bx-briefcase'></i>
-                                                Peer Tutor
-                                            </li>
-                                            <li>
-                                                <i class='bx bx-briefcase'></i>
-                                                $20-$25/hr
-                                            </li>
-                                            <li>
-                                                <i class='bx bx-location-plus'></i>
-                                                Library study hub
-                                            </li>
-                                            <li>
-                                                <i class='bx bx-stopwatch' ></i>
-                                                8 days ago
-                                            </li>
-                                        </ul>
-
-                                        <span>Flexible</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="theme-btn text-end">
-                                        <a href="job-details.html" class="default-btn">
-                                            Browse Job
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-12">
-                        <div class="job-card-two">
-                            <div class="row align-items-center justify-content-center">
-                                <div class="col-md-1">
-                                    <div class="company-logo">
-                                        <a href="job-details.html">
-                                            <img src="assets/img/company-logo/4.png" alt="logo">
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="job-info">
-                                        <h3>
-                                            <a href="job-details.html">Student Union Social Media Assistant</a>
-                                        </h3>
-                                        <ul>                                          
-                                            <li>
-                                                <i class='bx bx-briefcase' ></i>
-                                                Social Media Assistant
-                                            </li>
-                                            <li>
-                                                <i class='bx bx-briefcase' ></i>
-                                                $17-$21/hr
-                                            </li>
-                                            <li>
-                                                <i class='bx bx-location-plus'></i>
-                                                Hybrid — NY campus
-                                            </li>
-                                            <li>
-                                                <i class='bx bx-stopwatch' ></i>
-                                                1 days ago
-                                            </li>
-                                        </ul>
-
-                                        <span>Part-Time</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="theme-btn text-end">
-                                        <a href="job-details.html" class="default-btn">
-                                            Browse Job
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-12">
-                        <div class="job-card-two">
-                            <div class="row align-items-center justify-content-center">
-                                <div class="col-md-1">
-                                    <div class="company-logo">
-                                        <a href="job-details.html">
-                                            <img src="assets/img/company-logo/5.png" alt="logo">
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="job-info">
-                                        <h3>
-                                            <a href="job-details.html">Lab Assistant - IT Help Desk</a>
-                                        </h3>
-                                        <ul>                                          
-                                            <li>
-                                                <i class='bx bx-briefcase' ></i>
-                                                Lab Assistant
-                                            </li>
-                                            <li>
-                                                <i class='bx bx-briefcase' ></i>
-                                                $16-$19/hr
-                                            </li>
-                                            <li>
-                                                <i class='bx bx-location-plus'></i>
-                                                Campus IT desk
-                                            </li>
-                                            <li>
-                                                <i class='bx bx-stopwatch' ></i>
-                                                7 days ago
-                                            </li>
-                                        </ul>
-
-                                        <span>Part-Time</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="theme-btn text-end">
-                                        <a href="job-details.html" class="default-btn">
-                                            Browse Job
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <!-- Stat 3: Skills Listed -->
+            <div class="col-lg-3 col-sm-6 mb-4">
+                <div class="choose-card">
+                    <i class="bx bx-bulb"></i>
+                    <h3>{{ my_skills_count }}</h3>
+                    <p>Skills Listed</p>
                 </div>
             </div>
-        </section>
-        <!-- Job Section End -->
+            <!-- Stat 4: Application Status (Visual Placeholder or Logic) -->
+            <div class="col-lg-3 col-sm-6 mb-4">
+                <div class="choose-card">
+                    <i class="bx bx-briefcase-alt-2"></i>
+                    <h3>Active</h3>
+                    <p>Current Status</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-        <!-- Companies Section Start -->
-        <section class="company-section pt-100 pb-70">
-            <div class="container">
-                <div class="section-title text-center">
-                    <h2>Top Companies</h2>
-                    <p>Trusted campus partners, verified local businesses, and remote employers committed to student-safe, flexible roles.</p>
+<!-- SECTION 3: RECENT APPLICATIONS & ACTIVITY SIDEBAR -->
+<section class="pt-50 pb-70">
+    <div class="container">
+        <div class="row">
+            <!-- Left Column: Recent Applications (Tracking) -->
+            <div class="col-lg-8">
+                <div class="section-title text-start mb-4">
+                    <h3>Recent Applications</h3>
+                    <p>Track the status of your latest job applications.</p>
+                </div>
+                <!-- Modern Table Card -->
+                <div class="table-card modern-card mb-4"
+                    style="box-shadow: var(--card-shadow); border: 1px solid var(--border-color);">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="py-3 ps-4">Job Title</th>
+                                    <th class="py-3">Company</th>
+                                    <th class="py-3">Date</th>
+                                    <th class="py-3">Status</th>
+                                    <th class="py-3">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for app in recent_applications %}
+                                <tr>
+                                    <td class="fw-bold text-dark ps-4">{{ app.job.job_title }}</td>
+                                    <td>{{ app.job.employer.company_name }}</td>
+                                    <td>{{ app.applied_date|date:"M d" }}</td>
+                                    <td>
+                                        {% if app.status == 'pending' %}
+                                        <span class="badge bg-warning text-dark px-2 py-1 rounded-3">Pending</span>
+                                        {% elif app.status == 'accepted' %}
+                                        <span class="badge bg-success px-2 py-1 rounded-3">Accepted</span>
+                                        {% elif app.status == 'rejected' %}
+                                        <span class="badge bg-danger px-2 py-1 rounded-3">Rejected</span>
+                                        {% else %}
+                                        <span class="badge bg-info px-2 py-1 rounded-3">{{ app.status|title }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'student_job_detail' app.job.id %}"
+                                            class="btn btn-sm btn-outline-dark rounded-pill px-3 fw-bold"
+                                            style="font-size: 0.8rem;">View</a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center py-5 text-muted">
+                                        <i class='bx bx-ghost fs-1 mb-2'></i>
+                                        <p>You haven't applied to any jobs yet.</p>
+                                        <a href="{% url 'student_view_jobs' %}"
+                                            class="btn btn-sm mt-2 rounded-pill px-4 text-white"
+                                            style="background-color: var(--primary-red); border: none;">Browse Jobs</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="text-center mt-3">
+                    <a href="{% url 'student_my_applications' %}"
+                        class="btn btn-link text-dark fw-bold text-decoration-none small">
+                        View All History <i class='bx bx-right-arrow-alt'></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Column: Sidebar (Notifications & Actions) -->
+            <div class="col-lg-4">
+                <!-- Notifications Widget -->
+                <div class="modern-card mb-4">
+                    <div class="card-header bg-white py-3 border-bottom ps-4">
+                        <h5 class="mb-0 fw-bold" style="font-size: 1.1rem;"><i class='bx bx-bell me-2 text-warning'></i>
+                            Recent Alerts</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
+                            {% for notif in recent_notifications %}
+                            <li class="list-group-item px-4 py-3 border-bottom-0">
+                                <div class="d-flex align-items-start">
+                                    <div class="flex-grow-1">
+                                        <p class="mb-1 small fw-bold text-dark">{{ notif.message }}</p>
+                                        <span class="text-muted" style="font-size: 0.75rem;">{{
+                                            notif.timestamp|timesince }} ago</span>
+                                    </div>
+                                    <small class="text-primary"><i class='bx bx-chevron-right'></i></small>
+                                </div>
+                            </li>
+                            {% empty %}
+                            <li class="list-group-item p-4 text-center text-muted">
+                                <small>No new notifications.</small>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
 
-                <div class="row justify-content-center">
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="company-card">
-                            <div class="company-logo">
-                                <a href="job-grid.html">
-                                    <img src="assets/img/top-company/1.png" alt="company logo">
-                                </a>
-                            </div>
-                            <div class="company-text">
-                                <h3>Trophy  & Sans</h3>
-                                <p>
-                                    <i class='bx bx-location-plus'></i>
-                                    Green Lanes, London
-                                </p>
-                                <a href="job-grid.html" class="company-btn">
-                                    25 Open Position
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="company-card">
-                            <div class="company-logo">
-                                <a href="job-grid.html">
-                                    <img src="assets/img/top-company/2.png" alt="company logo">
-                                </a>
-                            </div>
-                            <div class="company-text">
-                                <h3>Trout Design</h3>
-                                <p>
-                                    <i class='bx bx-location-plus'></i>
-                                    Park Avenue, Mumbai
-                                </p>
-                                <a href="job-grid.html" class="company-btn">
-                                    35 Open Position
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="company-card">
-                            <div class="company-logo">
-                                <a href="job-grid.html">
-                                    <img src="assets/img/top-company/3.png" alt="company logo">
-                                </a>
-                            </div>
-                            <div class="company-text">
-                                <h3>Resland LTD</h3>
-                                <p>
-                                    <i class='bx bx-location-plus'></i>
-                                    Betas Quence, London
-                                </p>
-                                <a href="job-grid.html" class="company-btn">
-                                    20 Open Position
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="company-card">
-                        <div class="company-logo">
-                            <a href="job-grid.html">
-                                <img src="assets/img/top-company/4.png" alt="company logo">
+                <!-- Quick Actions Widget -->
+                <div class="modern-card" style="background: #f8fafc;">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold mb-3" style="font-size: 1.1rem;">Quick Actions</h5>
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'student_profile' %}" class="action-btn">
+                                <span><i class='bx bx-id-card me-2 text-primary icon'></i> Update Resume</span>
+                                <i class='bx bx-chevron-right text-muted'></i>
+                            </a>
+                            <a href="{% url 'my_skills' %}" class="action-btn">
+                                <span><i class='bx bx-list-plus me-2 text-success icon'></i> Verify ID</span>
+                                <i class='bx bx-chevron-right text-muted'></i>
+                            </a>
+                            <a href="{% url 'student_view_jobs' %}" class="action-btn">
+                                <span><i class='bx bx-search-alt me-2 text-danger icon'></i> Premium Jobs</span>
+                                <i class='bx bx-chevron-right text-muted'></i>
                             </a>
                         </div>
-                        <div class="company-text">
-                            <h3>Lawn Hopper</h3>
-                            <p>
-                            <i class='bx bx-location-plus'></i>
-                            Wellesley Rd, London
-                            </p>
-                            <a href="job-grid.html" class="company-btn">
-                            45 Open Position
-                            </a>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Companies Section End -->
-
-        <!-- Job Info Section Start -->
-        <div class="job-info-two pt-100 pb-70">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-md-6">
-                        <div class="looking-job">
-                            <div class="media">
-                                <i class='flaticon-group align-self-start mr-3'></i>
-                                <div class="media-body">
-                                    <h5 class="mt-0">Looking For a Job</h5>
-                                    <p>Your next role could be with one of these top leading organizations</p>
-
-                                    <a href="job-list.html">
-                                        Apply Now
-                                        <i class='bx bx-chevrons-right'></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="recruiting-card">
-                            <div class="media">
-                                <i class='flaticon-resume align-self-start mr-3'></i>
-                                <div class="media-body">
-                                    <h5 class="mt-0">Are You Recruiting?</h5>
-                                    <p>Your next role could be with one of these top leading organizations</p>
-
-                                    <a href="post-job.html">
-                                        Apply Now
-                                        <i class='bx bx-chevrons-right'></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>  
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Job Info Section End -->
+    </div>
+</section>
 
-        <!-- Candidate Section Start -->
-        <section class="candidate-section ptb-100">
-            <div class="container">
-                <div class="section-title text-center">
-                    <h2>Featured Candidates</h2>
-                    <p>Students showcasing real skills, availability, and campus-friendly schedules — find tutors, designers, developers, and more in one place.</p>
-                </div>
+<!-- SECTION 4: LATEST JOBS (Grid) -->
+<section class="bg-main pt-100 pb-70">
+    <div class="container">
+        <div class="section-title">
+            <h2>Latest Job Opportunities</h2>
+            <p>Verified roles matching your profile.</p>
+        </div>
 
-                <div class="condidate-slider owl-carousel owl-theme">
-                    <div class="condidate-item">
-                        <div class="candidate-img">
-                            <img src="assets/img/candidate/1.jpg" alt="candidate image">
+        <div class="row">
+            {% for job in recent_jobs %}
+            <div class="col-lg-6 mb-4">
+                <div class="premium-card">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="rounded-3 bg-light p-2 me-3 border"
+                            style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+                            {% if job.employer.company_logo %}
+                            <img src="{{ job.employer.company_logo.url }}" alt="logo"
+                                style="max-width: 100%; max-height: 100%;">
+                            {% else %}
+                            <i class='bx bx-briefcase fs-2 text-muted'></i>
+                            {% endif %}
                         </div>
-                        <div class="candidate-social">
-                            <a href="https://www.facebook.com/login/" target="_blank"><i class='bx bxl-facebook'></i></a>
-                            <a href="https://twitter.com/i/flow/login" target="_blank"><i class='bx bxl-twitter'></i></a>
-                            <a href="https://www.instagram.com/" target="_blank"><i class='bx bxl-instagram'></i></a>
-                        </div>
-                        <div class="candidate-text">
-                            <h3><a href="candidate-details.html">Mibraj Alex</a></h3>
-                            <ul>
-                                <li>
-                                    <i class='bx bx-filter-alt'></i>
-                                    Construction & Property
-                                </li>
-                                <li>
-                                    <i class='bx bx-location-plus'></i>
-                                    Botchergate, Carlisle               
-                                </li>
-                            </ul>
-
-                            <div class="bottom-text">
-                                <p>
-                                    <i class='bx bx-stopwatch'></i>
-                                    9D ago
-                                </p>
-                                <a href="job-details.html">
-                                    <i class='bx bx-heart'></i>
-                                </a>
-                            </div>
+                        <div>
+                            <h4 class="mb-1" style="font-size: 1.25rem;"><a href="{% url 'student_job_detail' job.id %}"
+                                    class="text-dark text-decoration-none">{{ job.job_title }}</a></h4>
+                            <p class="mb-0 text-muted small">{{ job.employer.company_name }}</p>
                         </div>
                     </div>
 
-                    <div class="condidate-item">
-                        <div class="candidate-img">
-                            <img src="assets/img/candidate/2.jpg" alt="candidate image">
+                    <div class="d-flex justify-content-between mb-4 pb-3 border-bottom">
+                        <div class="d-flex align-items-center text-muted small">
+                            <i class='bx bx-map me-1'></i> {{ job.district }}
                         </div>
-                        <div class="candidate-social">
-                            <a href="https://www.facebook.com/login/" target="_blank"><i class='bx bxl-facebook'></i></a>
-                            <a href="https://twitter.com/i/flow/login" target="_blank"><i class='bx bxl-twitter'></i></a>
-                            <a href="https://www.instagram.com/" target="_blank"><i class='bx bxl-instagram'></i></a>
+                        <div class="d-flex align-items-center text-muted small">
+                            <i class='bx bx-time me-1'></i> {{ job.job_type|title }}
                         </div>
-                        <div class="candidate-text">
-                            <h3> <a href="candidate-details.html">Felica Kareon</a></h3>
-                            <ul>
-                                <li>
-                                    <i class='bx bx-filter-alt'></i>
-                                    SEO Expart
-                                </li>
-                                <li>
-                                    <i class='bx bx-location-plus'></i>
-                                    Georgetown, USA               
-                                </li>
-                            </ul>
-
-                            <div class="bottom-text">
-                                <p>
-                                    <i class='bx bx-stopwatch'></i>
-                                    8D ago
-                                </p>
-                                <a href="#">
-                                    <i class='bx bx-heart' ></i>
-                                </a>
-                            </div>
+                        <div class="d-flex align-items-center text-success fw-bold small">
+                            <i class='bx bx-dollar me-1'></i> {{ job.salary_min }} - {{ job.salary_max }}
                         </div>
                     </div>
 
-                    <div class="condidate-item">
-                        <div class="candidate-img">
-                            <img src="assets/img/candidate/3.jpg" alt="candidate image">
-                        </div>
-                        <div class="candidate-social">
-                            <a href="https://www.facebook.com/login/" target="_blank"><i class='bx bxl-facebook'></i></a>
-                            <a href="https://twitter.com/i/flow/login" target="_blank"><i class='bx bxl-twitter'></i></a>
-                            <a href="https://www.instagram.com/" target="_blank"><i class='bx bxl-instagram'></i></a>
-                        </div>
-                        <div class="candidate-text">
-                            <h3> <a href="candidate-details.html">Malisa Petel</a></h3>
-                            <ul>
-                                <li>
-                                    <i class='bx bx-filter-alt'></i>
-                                    Project Management
-                                </li>
-                                <li>
-                                    <i class='bx bx-location-plus'></i>
-                                    Madison, USA               
-                                </li>
-                            </ul>
-
-                            <div class="bottom-text">
-                                <p>
-                                    <i class='bx bx-stopwatch'></i>
-                                    1D ago
-                                </p>
-                                <a href="job-details.html">
-                                    <i class='bx bx-heart'></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="condidate-item">
-                        <div class="candidate-img">
-                            <img src="assets/img/candidate/4.jpg" alt="candidate image">
-                        </div>
-                        <div class="candidate-social">
-                            <a href="https://www.facebook.com/login/" target="_blank"><i class='bx bxl-facebook'></i></a>
-                            <a href="https://twitter.com/i/flow/login" target="_blank"><i class='bx bxl-twitter'></i></a>
-                            <a href="https://www.instagram.com/" target="_blank"><i class='bx bxl-instagram'></i></a>
-                        </div>
-                        <div class="candidate-text">
-                            <h3> <a href="candidate-details.html">Quence Joes</a></h3>
-                            <ul>
-                                <li>
-                                    <i class='bx bx-filter-alt'></i>
-                                    Web Developer
-                                </li>
-                                <li>
-                                    <i class='bx bx-location-plus'></i>
-                                    Augusta, Maine             
-                                </li>
-                            </ul>
-
-                        <div class="bottom-text">
-                            <p>
-                                <i class='bx bx-stopwatch'></i>
-                                8D ago
-                            </p>
-                            <a href="#">
-                                <i class='bx bx-heart'></i>
-                            </a>
-                        </div>
-                        </div>
-                    </div>
-
-                    <div class="condidate-item">
-                        <div class="candidate-img">
-                            <img src="assets/img/candidate/1.jpg" alt="candidate image">
-                        </div>
-                        <div class="candidate-social">
-                            <a href="https://www.facebook.com/login/" target="_blank"><i class='bx bxl-facebook'></i></a>
-                            <a href="https://twitter.com/i/flow/login" target="_blank"><i class='bx bxl-twitter'></i></a>
-                            <a href="https://www.instagram.com/" target="_blank"><i class='bx bxl-instagram'></i></a>
-                        </div>
-                        <div class="candidate-text">
-                            <h3><a href="candidate-details.html">Mibraj Alex</a></h3>
-                            <ul>
-                                <li>
-                                    <i class='bx bx-filter-alt'></i>
-                                    Construction & Property
-                                </li>
-                                <li>
-                                    <i class='bx bx-location-plus'></i>
-                                    Botchergate, Carlisle               
-                                </li>
-                            </ul>
-
-                            <div class="bottom-text">
-                                <p>
-                                    <i class='bx bx-stopwatch'></i>
-                                    9D ago
-                                </p>
-                                <a href="job-details.html">
-                                    <i class='bx bx-heart'></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="condidate-item">
-                        <div class="candidate-img">
-                            <img src="assets/img/candidate/2.jpg" alt="candidate image">
-                        </div>
-                        <div class="candidate-social">
-                            <a href="https://www.facebook.com/login/" target="_blank"><i class='bx bxl-facebook'></i></a>
-                            <a href="https://twitter.com/i/flow/login" target="_blank"><i class='bx bxl-twitter'></i></a>
-                            <a href="https://www.instagram.com/" target="_blank"><i class='bx bxl-instagram'></i></a>
-                        </div>
-                        <div class="candidate-text">
-                            <h3> <a href="candidate-details.html">Felica Kareon</a></h3>
-                            <ul>
-                                <li>
-                                    <i class='bx bx-filter-alt'></i>
-                                    SEO Expart
-                                </li>
-                                <li>
-                                    <i class='bx bx-location-plus'></i>
-                                    Georgetown, USA               
-                                </li>
-                            </ul>
-
-                            <div class="bottom-text">
-                                <p>
-                                    <i class='bx bx-stopwatch'></i>
-                                    8D ago
-                                </p>
-                                <a href="job-details.html">
-                                    <i class='bx bx-heart'></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="condidate-item">
-                        <div class="candidate-img">
-                            <img src="assets/img/candidate/3.jpg" alt="candidate image">
-                        </div>
-                        <div class="candidate-social">
-                            <a href="https://www.facebook.com/login/" target="_blank"><i class='bx bxl-facebook'></i></a>
-                            <a href="https://twitter.com/i/flow/login" target="_blank"><i class='bx bxl-twitter'></i></a>
-                            <a href="https://www.instagram.com/" target="_blank"><i class='bx bxl-instagram'></i></a>
-                        </div>
-                        <div class="candidate-text">
-                            <h3><a href="candidate-details.html">Malisa Petel</a></h3>
-                            <ul>
-                                <li>
-                                    <i class='bx bx-filter-alt'></i>
-                                    Project Management
-                                </li>
-                                <li>
-                                    <i class='bx bx-location-plus'></i>
-                                    Madison, USA               
-                                </li>
-                            </ul>
-
-                            <div class="bottom-text">
-                                <p>
-                                    <i class='bx bx-stopwatch'></i>
-                                    1D ago
-                                </p>
-                                <a href="job-details.html">
-                                    <i class='bx bx-heart'></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="condidate-item">
-                        <div class="candidate-img">
-                            <img src="assets/img/candidate/4.jpg" alt="candidate image">
-                        </div>
-                        <div class="candidate-social">
-                            <a href="https://www.facebook.com/login/" target="_blank"><i class='bx bxl-facebook'></i></a>
-                            <a href="https://twitter.com/i/flow/login" target="_blank"><i class='bx bxl-twitter'></i></a>
-                            <a href="https://www.instagram.com/" target="_blank"><i class='bx bxl-instagram'></i></a>
-                        </div>
-                        <div class="candidate-text">
-                            <h3><a href="candidate-details.html">Quence Joes</a></h3>
-                            <ul>
-                                <li>
-                                    <i class='bx bx-filter-alt'></i>
-                                    Web Developer
-                                </li>
-                                <li>
-                                    <i class='bx bx-location-plus'></i>
-                                    Augusta, Maine             
-                                </li>
-                            </ul>
-
-                            <div class="bottom-text">
-                                <p>
-                                    <i class='bx bx-stopwatch'></i>
-                                    8D ago
-                                </p>
-                                <a href="job-details.html">
-                                    <i class='bx bx-heart'></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Candidate Section End -->
-
-        <!-- Counter Section Start -->
-        <div class="counter-section pt-100 pb-70">
-            <div class="container">
-                <div class="row counter-area">
-                    <div class="col-lg-3 col-6">
-                        <div class="counter-text">
-                            <i class="flaticon-resume"></i>
-                            <h2><span>1225</span></h2>
-                            <p>Job Posted</p>
-                        </div>
-                    </div>
-        
-                    <div class="col-lg-3 col-6">
-                        <div class="counter-text">
-                            <i class="flaticon-recruitment"></i>
-                            <h2><span>145</span></h2>
-                            <p>Job Filed</p>
-                        </div>
-                    </div>
-        
-                    <div class="col-lg-3 col-6">
-                        <div class="counter-text">
-                            <i class="flaticon-portfolio"></i>
-                            <h2><span>170</span></h2>
-                            <p>Company</p>
-                        </div>
-                    </div>
-        
-                    <div class="col-lg-3 col-6">
-                        <div class="counter-text">
-                            <i class="flaticon-employee"></i>
-                            <h2><span>125</span></h2>
-                            <p>Members</p>
-                        </div>
-                    </div>
+                    <span class="text-muted small">Posted {{ job.posted_date|timesince }} ago</span>
+                    {% if job.id in applied_job_ids %}
+                    <span class="fw-bold px-3 py-2 rounded-3"
+                        style="background-color: #e2e8f0; color: #64748b; font-size: 0.9rem;">
+                        <i class='bx bx-check-circle me-1'></i> Applied
+                    </span>
+                    {% else %}
+                    <a href="{% url 'student_job_detail' job.id %}" class="fw-bold text-decoration-none"
+                        style="color: #FF2B2B;">
+                        View Details <i class='bx bx-right-arrow-alt'></i>
+                    </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
-        <!-- Counter Section End --> 
+        {% empty %}
+        <div class="col-12 text-center text-muted">
+            <p>No new jobs posted recently.</p>
+        </div>
+        {% endfor %}
+    </div>
 
-        <!-- Testimonial Section Start -->
-        <div class="testimonial-style-two ptb-100">
-            <div class="container">
-                <div class="section-title text-center">
-                    <h2>What Client’s Say About Us</h2>
-                    <p>Hear from students and employers who use LearnToEarn to match flexible roles with real campus talent.</p>
+    <div class="text-center mt-4">
+        <a href="{% url 'student_view_jobs' %}" class="btn btn-outline-dark rounded-pill px-5 py-3 fw-bold">Browse
+            All Jobs</a>
+    </div>
+    </div>
+</section>
+
+<!-- SECTION 5: CTA / SKILLS -->
+<section class="pb-100 pt-70">
+    <div class="container">
+        <div class="premium-card bg-dark text-white p-5 border-0"
+            style="background: linear-gradient(135deg, #1A202E 0%, #2c3e50 100%);">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h2 class="text-white fw-bold mb-3">Boost Your Visibility</h2>
+                    <p class="mb-4 text-white-50 fs-5">
+                        You currently have <strong class="text-white">{{ my_skills_count }}</strong> active skills
+                        listed.
+                        Add more services to get noticed by top employers. Students with completed profiles get 3x more
+                        job interviews.
+                    </p>
+                    <a href="{% url 'add_skill' %}" class="btn btn-light rounded-pill px-5 py-3 fw-bold text-dark">
+                        Add a New Skill <i class='bx bx-plus-circle ms-1'></i>
+                    </a>
                 </div>
-
-                <div class="row justify-content-center">
-                    <div class="testimonial-slider-two owl-carousel owl-theme">
-                        <div class="testimonial-items">
-                            <div class="testimonial-text">
-                                <i class='flaticon-left-quotes-sign'></i>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do mod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's.</p>
-                            </div>
-
-                            <div class="testimonial-info-text">
-                                <h3>Alisa Meair</h3>
-                                <p>CEO of  Company</p>
-                            </div>
-                        </div>
-
-                        <div class="testimonial-items">
-                            <div class="testimonial-text">
-                                <i class='flaticon-left-quotes-sign'></i>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do mod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's.</p>
-                            </div>
-
-                            <div class="testimonial-info-text">
-                                <h3>Adam Smith</h3>
-                                <p>Web Developer</p>
-                            </div>
-                        </div>
-
-                        <div class="testimonial-items">
-                            <div class="testimonial-text">
-                                <i class='flaticon-left-quotes-sign'></i>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do mod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's.</p>
-                            </div>
-
-                            <div class="testimonial-info-text">
-                                <h3>John Doe</h3>
-                                <p>Graphics Designer</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col-lg-4 text-center d-none d-lg-block">
+                    <i class='bx bx-rocket' style="font-size: 8rem; color: rgba(255,255,255,0.1);"></i>
                 </div>
             </div>
         </div>
-        <!-- Testimonial Section End --> 
+    </div>
+</section>
 
-        <!-- Pricing Section Start -->
-        <section class="pricing-section pb-70">
-            <div class="container">
-                <div class="section-title text-center">
-                    <h2>Buy Our Plans & Packages</h2>
-                    <p>Simple options for students and campus employers — free to browse and apply, with affordable boosts when you need extra reach.</p>
-                </div>
-
-                <div class="row justify-content-center">
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="price-card">
-                            <div class="price-top">
-                                <h3>Free Forever</h3>
-                                <i class='bx bx-user'></i>
-                                <h2>0<sub>/Month</sub></h2>
-                            </div>
-
-                            <div class="price-feature">
-                                <ul>
-                                    <li>
-                                        <i class='bx bx-check'></i>
-                                        Appear in results
-                                    </li>
-                                    <li>
-                                        <i class='bx bx-check'></i>
-                                        <strong>Accept mobile app</strong>
-                                    </li>
-                                    <li>
-                                        <i class='bx bx-check'></i>
-                                        Manage canditates directly
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="price-btn">
-                                <a href="post-job.html">Find A  Job</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="price-card mt-12">
-                            <div class="price-top">
-                                <h3>Sponsor</h3>
-                                <i class='bx bx-user'></i>
-                                <h2>10<sub>/Month</sub></h2>
-                            </div>
-
-                            <div class="price-feature">
-                                <ul>
-                                    <li>
-                                        <i class='bx bx-check'></i>
-                                        Premium placement
-                                    </li>
-                                    <li>
-                                        <i class='bx bx-check'></i>
-                                        <strong>PPC on your job</strong>
-                                    </li>
-                                    <li>
-                                        <i class='bx bx-check'></i>
-                                        Reach more candidates
-                                    </li>
-                                    <li>
-                                        <i class='bx bx-check'></i>
-                                        Desktop, mobile job alerts
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="price-btn">
-                                <a href="post-job.html">Find A  Job</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-sm-6  ">
-                        <div class="price-card">
-                            <div class="price-top">
-                                <h3>Premium Plan</h3>
-                                <i class='bx bx-user'></i>
-                                <h2>30<sub>/Month</sub></h2>
-                            </div>
-
-                            <div class="price-feature">
-                                <ul>
-                                    <li>
-                                        <i class='bx bx-check'></i>
-                                        Job ad live for six-weeks
-                                    </li>
-                                    <li>
-                                        <i class='bx bx-check'></i>
-                                        <strong>Premium placement</strong>
-                                    </li>
-                                    <li>
-                                        <i class='bx bx-check'></i>
-                                        Desktop, mobile job alerts
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="price-btn">
-                                <a href="post-job.html">Find A  Job</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Pricing Section End -->
-
-        <!-- Blog Section Start -->
-        <section class="blog-section pb-70">
-            <div class="container">
-                <div class="section-title text-center">
-                    <h2>News, Tips & Articles</h2>
-                    <p>Guides for earning while studying: time management, safe applications, and building a portfolio from short gigs.</p>
-                </div>
-
-                <div class="row justify-content-center">
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="blog-card">
-                            <div class="blog-img">
-                                <a href="blog-details.html">
-                                    <img src="{% static 'assets/img/blog/1.jpg' %}" alt="blog image">
-                                </a>
-                            </div>
-                            <div class="blog-text">
-                                <ul>
-                                    <li>
-                                        <i class='bx bxs-user'></i>
-                                        Admin
-                                    </li>
-                                    <li>
-                                        <i class='bx bx-calendar'></i>
-                                        7 Feb, 2024
-                                    </li>
-                                </ul>
-
-                                <h3>
-                                    <a href="blog-details.html">
-                                        How to Introduce Yourself in a Campus Interview
-                                    </a>
-                                </h3>
-                                <p>Use a tight intro that covers your major, recent projects, and the hours you can work this semester.</p>
-
-                                <a href="blog-details.html" class="blog-btn">
-                                    Read More
-                                    <i class='bx bx-plus bx-spin'></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="blog-card">
-                            <div class="blog-img">
-                                <a href="blog-details.html">
-                                    <img src="{% static 'assets/img/blog/2.jpg' %}" alt="blog image">
-                                </a>
-                            </div>
-                            <div class="blog-text">
-                                <ul>
-                                    <li>
-                                        <i class='bx bxs-user'></i>
-                                        Admin
-                                    </li>
-                                    <li>
-                                        <i class='bx bx-calendar'></i>
-                                        7 Feb, 2024
-                                    </li>
-                                </ul>
-
-                                <h3>
-                                    <a href="blog-details.html">
-                                        Build a Portfolio from Micro-Gigs Between Exams
-                                    </a>
-                                </h3>
-                                <p>Stack small design, writing, or dev tasks to show proof of work without overloading your class schedule.</p>
-
-                                <a href="blog-details.html" class="blog-btn">
-                                    Read More
-                                    <i class='bx bx-plus bx-spin'></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-sm-6  ">
-                        <div class="blog-card">
-                            <div class="blog-img">
-                                <a href="blog-details.html">
-                                    <img src="{% static 'assets/img/blog/3.jpg' %}" alt="blog image">
-                                </a>
-                            </div>
-                            <div class="blog-text">
-                                <ul>
-                                    <li>
-                                        <i class='bx bxs-user'></i>
-                                        Admin
-                                    </li>
-                                    <li>
-                                        <i class='bx bx-calendar'></i>
-                                        7 Feb, 2024
-                                    </li>
-                                </ul>
-
-                                <h3>
-                                    <a href="blog-details.html">
-                                        Why Student Developer Roles Pay Off
-                                    </a>
-                                </h3>
-                                <p>Earn fair hourly pay, learn real tools, and graduate with experience that translates directly into your first role.</p>
-
-                                <a href="blog-details.html" class="blog-btn">
-                                    Read More
-                                    <i class='bx bx-plus bx-spin'></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Blog Section End -->
-
-        {% endblock %}
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'student/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container" style="margin-top: 100px; margin-bottom: 100px;">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-5">
+                    <div class="mb-4">
+                        <i class="bx bxs-time-five text-warning" style="font-size: 80px;"></i>
+                    </div>
+                    <h2 class="fw-bold mb-3">Verification Pending</h2>
+                    <p class="lead text-muted mb-4">
+                        Thank you for completing your profile! Your account is currently under review by our admin team.
+                    </p>
+                    <div class="alert alert-info border-0 bg-info-subtle text-info-emphasis">
+                        <i class="bx bx-info-circle me-2"></i> Only verified students can apply for jobs.
+                    </div>
+                    <p class="mb-4">
+                        We usually process verifications within 24 hours. You will be notified once your account is
+                        approved.
+                    </p>
+
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="{% url 'student_index' %}" class="btn btn-outline-primary rounded-pill px-4">
+                            <i class="bx bx-home-alt me-2"></i> Returns Home
+                        </a>
+                        <a href="{% url 'student_profile' %}" class="btn btn-primary rounded-pill px-4">
+                            <i class="bx bx-user me-2"></i> View Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
