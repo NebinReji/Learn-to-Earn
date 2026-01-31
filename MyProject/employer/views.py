@@ -10,6 +10,7 @@ def index(request):
         employer = Employer.objects.get(user_id=request.user.id)
         jobs_count = employer.job_postings.count()
         total_applications_count = Application.objects.filter(job__employer=employer).count()
+<<<<<<< HEAD
         shortlisted_count = Application.objects.filter(job__employer=employer, status='shortlisted').count()
         recent_applications = Application.objects.filter(job__employer=employer).select_related('student__user', 'job').order_by('-id')[:5]
 
@@ -23,6 +24,14 @@ def index(request):
             'shortlisted_count': shortlisted_count,
             'recent_applications': recent_applications,
             'notifications': notifications,
+=======
+        recent_applications = Application.objects.filter(job__employer=employer).select_related('student__user', 'job').order_by('-id')[:5]
+
+        context = {
+            'jobs_count': jobs_count,
+            'total_applications_count': total_applications_count,
+            'recent_applications': recent_applications,
+>>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
         }
         return render(request, 'employer/index.html', context)
     except Employer.DoesNotExist:
@@ -230,6 +239,7 @@ def subscriptions(request):
     plans = [] # Placeholder for actual DB plans if needed
     return render(request, 'employer/subscriptions.html', {'plan_type': plan_type, 'plans': plans})
 
+<<<<<<< HEAD
 
 def payment_page(request, plan_type):
     return render(request, 'employer/payment.html', {'plan_type': plan_type})
@@ -254,3 +264,7 @@ def view_student_profile(request, student_id):
     # For now, allow viewing if they have applied, or if checking talent.
     
     return render(request, 'employer/student_profile.html', {'student': student_obj})
+=======
+def payment_page(request, plan_type):
+    return render(request, 'employer/payment.html', {'plan_type': plan_type})
+>>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667

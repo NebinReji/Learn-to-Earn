@@ -72,12 +72,26 @@ class student(models.Model):
     email = models.EmailField()
     phone_number = models.CharField(max_length=15)
     district = models.ForeignKey(District, on_delete=models.SET_NULL, null=True, blank=True)
-    academic_status = models.CharField(max_length=100, blank=True, null=True)
+    academic_status = models.CharField(max_length=100, choices=[
+        ('diploma', 'Diploma'),
+        ('undergraduate', 'Undergraduate'),
+        ('postgraduate', 'Postgraduate'),
+        ('passout', 'Pass-out'),
+    ], default='undergraduate')
+    institution_name = models.CharField(max_length=200, blank=True, null=True)
+    course_name = models.CharField(max_length=200, blank=True, null=True)
+    
     skills = models.TextField(blank=True, null=True)
     
     # New Fields for Part-Time Matching
-    availability = models.CharField(max_length=200, default="Flexible", blank=True, null=True, help_text="e.g., Weekends, After 5 PM")
-    preferred_roles = models.CharField(max_length=200, blank=True, null=True, help_text="e.g., Sales, Data Entry")
+    AVAILABILITY_CHOICES = [
+        ('weekdays_evening', 'Weekdays (Evening)'),
+        ('weekends', 'Weekends'),
+        ('flexible', 'Flexible'),
+        ('10_15_hrs', '10-15 hrs/week'),
+    ]
+    availability = models.CharField(max_length=50, choices=AVAILABILITY_CHOICES, default="flexible")
+    preferred_roles = models.CharField(max_length=500, blank=True, help_text="Multi-select: Web Developer, Tutor, etc.")
     id_card = models.FileField(upload_to='id_cards/', blank=True, null=True)
     
     # Profile Enhancements
@@ -86,6 +100,7 @@ class student(models.Model):
     bio = models.TextField(blank=True, null=True)
     
     verification_status = models.BooleanField(default=False)
+    date_of_birth = models.DateField(blank=True, null=True)
 
     def __str__(self):
         return self.student_name    

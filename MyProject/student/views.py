@@ -3,12 +3,25 @@ from django.contrib import messages
 from employer.models import Jobposting
 from guest.models import student
 from student.models import Application, SkillService
+<<<<<<< HEAD
 from student.forms import StudentProfileForm, StudentProfileSetupForm
+=======
+from student.forms import StudentProfileForm
+>>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
 
 
 def index(request):
     try:
         stud = student.objects.get(user_id=request.user.id)
+<<<<<<< HEAD
+=======
+        
+        # Redirect to Profile Completion if essential info is missing
+        if not stud.institution_name or not stud.course_name:
+            messages.info(request, "Please complete your profile to continue.")
+            return redirect('complete_profile')
+            
+>>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
         applications_count = Application.objects.filter(student=stud).count()
         my_skills_count = SkillService.objects.filter(student=stud).count()
         
@@ -23,8 +36,14 @@ def index(request):
         available_skills = SkillService.objects.exclude(student=stud).select_related('student').order_by('-id')[:4]
         recent_applications = Application.objects.filter(student=stud).select_related('job', 'job__employer').order_by('-applied_date')[:5]
         
+<<<<<<< HEAD
         # Get list of applied job IDs
         applied_job_ids = Application.objects.filter(student=stud).values_list('job_id', flat=True)
+=======
+        # Dashboard Widgets
+        from guest.models import Notification
+        recent_notifications = Notification.objects.filter(user=request.user).order_by('-timestamp')[:3]
+>>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
 
         context = {
             'applications_count': applications_count,
@@ -33,11 +52,37 @@ def index(request):
             'recent_jobs': recent_jobs,
             'available_skills': available_skills,
             'recent_applications': recent_applications,
+<<<<<<< HEAD
             'applied_job_ids': applied_job_ids,
+=======
+            'recent_notifications': recent_notifications,
+            'is_verified': stud.verification_status, # Pass verification status
+>>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
         }
         return render(request, 'student/index.html', context)
     except student.DoesNotExist:
         return render(request, 'student/index.html')
+<<<<<<< HEAD
+=======
+
+
+def complete_profile(request):
+    try:
+        stud = student.objects.get(user_id=request.user.id)
+    except student.DoesNotExist:
+        return redirect('student_index')
+
+    if request.method == 'POST':
+        form = StudentProfileForm(request.POST, request.FILES, instance=stud)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profile completed successfully! Welcome to your dashboard.")
+            return redirect('student_index')
+    else:
+        form = StudentProfileForm(instance=stud)
+    
+    return render(request, 'student/complete_profile.html', {'form': form})
+>>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
 
 
 def view_jobs(request):
@@ -58,6 +103,7 @@ def view_jobs(request):
 def job_detail(request, job_id):
     job = get_object_or_404(Jobposting.objects.select_related('employer'), id=job_id)
     
+<<<<<<< HEAD
     has_applied = False
     if request.user.is_authenticated:
         try:
@@ -68,6 +114,18 @@ def job_detail(request, job_id):
             
     return render(request, 'student/job_detail.html', {'job': job, 'has_applied': has_applied})
 
+=======
+    # Check if applied
+    is_applied = False
+    if request.user.is_authenticated:
+        try:
+            stud = student.objects.get(user_id=request.user.id)
+            is_applied = Application.objects.filter(student=stud, job_id=job_id).exists()
+        except student.DoesNotExist:
+            pass
+            
+    return render(request, 'student/job_detail.html', {'job': job, 'is_applied': is_applied})
+>>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
 
 
 def apply_job(request, job_id):
@@ -214,6 +272,7 @@ from .forms import SkillServiceForm
 
 def add_skill(request):
     user_id = request.user.id
+<<<<<<< HEAD
     # Auto-create/Get
     stud, created = student.objects.get_or_create(
         user_id=user_id,
@@ -232,6 +291,10 @@ def add_skill(request):
         messages.warning(request, "Your profile is under verification. You can add skills once verified.")
         return redirect('student_verification_pending')
 
+=======
+    stud = get_object_or_404(student, user_id=user_id)
+    
+>>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
     if request.method == 'POST':
         form = SkillServiceForm(request.POST)
         if form.is_valid():
@@ -247,6 +310,7 @@ def add_skill(request):
 
 def my_skills(request):
     user_id = request.user.id
+<<<<<<< HEAD
     # Auto-create/Get
     stud, created = student.objects.get_or_create(
         user_id=user_id,
@@ -256,6 +320,9 @@ def my_skills(request):
             'phone_number': '',
         }
     )
+=======
+    stud = get_object_or_404(student, user_id=user_id)
+>>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
     services = SkillService.objects.filter(student=stud)
     bookings = ServiceBooking.objects.filter(service__student=stud).order_by('-booking_date')
     

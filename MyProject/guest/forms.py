@@ -45,7 +45,6 @@ class SignupForm(forms.Form):
         label="Confirm Password",
         widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Confirm password"})
     )
-
     def clean_name(self):
         name = self.cleaned_data["name"]
         if not re.match(r"^[A-Za-z\s]+$", name):
@@ -78,7 +77,7 @@ class SignupForm(forms.Form):
             password=self.cleaned_data["password1"],
             role='student'
         )
-        user.is_active = True
+        user.is_active = True  # Step 1 Complete, Login Allowed for Step 2
         user.save()
 
         student.objects.create(
@@ -100,6 +99,12 @@ class EmployerSignupForm(forms.ModelForm):
     password2 = forms.CharField(
         label="Confirm Password",
         widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Confirm password"})
+    )
+
+    terms_agreement = forms.BooleanField(
+        label="I agree to the Terms and Conditions",
+        required=True,
+        error_messages={'required': 'You must agree to the terms to register.'}
     )
 
     class Meta:
@@ -139,7 +144,6 @@ class EmployerSignupForm(forms.ModelForm):
         )
         user.is_active = True
         user.save()
-
         employer.user = user
         employer.verification_status = False  # Pending verification
         if commit:
@@ -164,8 +168,8 @@ class StudentProfileForm(forms.ModelForm):
             'preferred_roles', 'skills', 'bio', 'resume', 'profile_picture'
         ]
         widgets = {
-            "academic_status": forms.TextInput(attrs={"class": "form-control", "placeholder": "e.g., Undergraduate, Final year"}),
-            "availability": forms.TextInput(attrs={"class": "form-control", "placeholder": "e.g., Weekends, After 5 PM"}),
+            "academic_status": forms.Select(attrs={"class": "form-select"}),
+            "availability": forms.Select(attrs={"class": "form-select"}),
             "preferred_roles": forms.TextInput(attrs={"class": "form-control", "placeholder": "e.g., Sales, Data Entry"}),
             "skills": forms.Textarea(attrs={"rows": 3, "class": "form-control", "placeholder": "List key skills"}),
             "bio": forms.Textarea(attrs={"class": "form-control", "rows": 3, "placeholder": "Short bio..."}),

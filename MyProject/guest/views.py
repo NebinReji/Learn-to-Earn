@@ -13,6 +13,7 @@ def guest_index(request):
     reviews = Feedback.objects.filter(rating__gte=4).order_by('-created_at')[:5]
     services = SkillService.objects.filter(is_active=True).order_by('-created_at')[:6]
     return render(request, 'guest/index.html', {'jobs': jobs, 'reviews': reviews, 'services': services})
+<<<<<<< HEAD
 
 def about(request):
     return render(request, 'guest/about.html')
@@ -22,6 +23,8 @@ def contact(request):
 
 def team(request):
     return render(request, 'guest/team.html')
+=======
+>>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
 
 def addemployer(request):
     if request.method == 'POST':

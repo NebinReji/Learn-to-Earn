@@ -208,6 +208,17 @@
 {% endblock %}
 
 {% block content %}
+<<<<<<< HEAD
+=======
+{% if not is_verified %}
+<div class="alert alert-warning text-center fw-bold rounded-0 mb-0" role="alert"
+    style="background-color: #fff3cd; color: #856404; border-bottom: 1px solid #ffeeba;">
+    <i class='bx bx-error-circle' style="vertical-align: middle; font-size: 1.2rem;"></i>
+    Your account is currently under verification by the Admin. You can update your profile, but job applications may be
+    restricted.
+</div>
+{% endif %}
+>>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
 <!-- SECTION 1: HERO -->
 <section class="banner-style-two">
     <div class="container">
@@ -221,9 +232,14 @@
                     </p>
 
                     <div class="d-flex align-items-center gap-3">
+<<<<<<< HEAD
                         <a href="{% url 'student_view_jobs' %}"
                             class="btn btn-lg px-4 py-3 fw-bold text-white shadow-sm"
                             style="border-radius: 8px; background-color: var(--primary-red); border: none;">
+=======
+                        <a href="{% url 'student_view_jobs' %}" class="btn btn-danger btn-lg px-4 py-3 fw-bold"
+                            style="border-radius: 8px;">
+>>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
                             Find Jobs <i class='bx bx-search'></i>
                         </a>
                         <a href="{% url 'student_profile' %}" class="btn btn-outline-light btn-lg px-4 py-3 fw-bold"
@@ -334,8 +350,12 @@
                                         <i class='bx bx-ghost fs-1 mb-2'></i>
                                         <p>You haven't applied to any jobs yet.</p>
                                         <a href="{% url 'student_view_jobs' %}"
+<<<<<<< HEAD
                                             class="btn btn-sm mt-2 rounded-pill px-4 text-white"
                                             style="background-color: var(--primary-red); border: none;">Browse Jobs</a>
+=======
+                                            class="btn btn-primary btn-sm mt-2 rounded-pill px-4">Browse Jobs</a>
+>>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -447,6 +467,7 @@
                         </div>
                     </div>
 
+<<<<<<< HEAD
                     <span class="text-muted small">Posted {{ job.posted_date|timesince }} ago</span>
                     {% if job.id in applied_job_ids %}
                     <span class="fw-bold px-3 py-2 rounded-3"
@@ -502,4 +523,55 @@
     </div>
 </section>
 
+=======
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-muted small">Posted {{ job.posted_date|timesince }} ago</span>
+                        <a href="{% url 'student_job_detail' job.id %}" class="fw-bold text-decoration-none"
+                            style="color: #FF2B2B;">
+                            View Details <i class='bx bx-right-arrow-alt'></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center text-muted">
+                <p>No new jobs posted recently.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="{% url 'student_view_jobs' %}" class="btn btn-outline-dark rounded-pill px-5 py-3 fw-bold">Browse
+                All Jobs</a>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION 5: CTA / SKILLS -->
+<section class="pb-100 pt-70">
+    <div class="container">
+        <div class="premium-card bg-dark text-white p-5 border-0"
+            style="background: linear-gradient(135deg, #1A202E 0%, #2c3e50 100%);">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h2 class="text-white fw-bold mb-3">Boost Your Visibility</h2>
+                    <p class="mb-4 text-white-50 fs-5">
+                        You currently have <strong class="text-white">{{ my_skills_count }}</strong> active skills
+                        listed.
+                        Add more services to get noticed by top employers. Students with completed profiles get 3x more
+                        job interviews.
+                    </p>
+                    <a href="{% url 'add_skill' %}" class="btn btn-light rounded-pill px-5 py-3 fw-bold text-dark">
+                        Add a New Skill <i class='bx bx-plus-circle ms-1'></i>
+                    </a>
+                </div>
+                <div class="col-lg-4 text-center d-none d-lg-block">
+                    <i class='bx bx-rocket' style="font-size: 8rem; color: rgba(255,255,255,0.1);"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+>>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
 {% endblock %}

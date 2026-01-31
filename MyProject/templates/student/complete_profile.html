@@ -1,0 +1,75 @@
+{% extends 'guest/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<section class="account-login-area ptb-100">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-12">
+                <div class="user-form-card"
+                    style="max-width: 800px; margin: 0 auto; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); background: #fff;">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <div>
+                            <h2 style="font-weight: 700; color: #1A202E; margin-bottom: 5px;">Complete Your Profile</h2>
+                            <p style="color: #64748b;">Step 2 of 2: Tell us more about you</p>
+                        </div>
+                        <div
+                            style="background: #e0f2fe; color: #0284c7; padding: 5px 15px; border-radius: 20px; font-size: 14px; font-weight: 600;">
+                            Almost Done!
+                        </div>
+                    </div>
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.institution_name|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.course_name|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.academic_status|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.availability|as_crispy_field }}
+                            </div>
+                            <div class="col-12 mb-3">
+                                {{ form.preferred_roles|as_crispy_field }}
+                            </div>
+                            <div class="col-12 mb-3">
+                                {{ form.skills|as_crispy_field }}
+                            </div>
+                            <div class="col-12 mb-3">
+                                {{ form.bio|as_crispy_field }}
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" style="font-weight: 500;">Resume</label>
+                                {{ form.resume }}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" style="font-weight: 500;">Profile Picture</label>
+                                {{ form.profile_picture }}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" style="font-weight: 500;">ID Card</label>
+                                {{ form.id_card }}
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary"
+                                style="background-color: #FF2B2B; border-color: #FF2B2B; padding: 12px 30px; border-radius: 8px; font-weight: 600; width: 100%;">
+                                Complete Registration <i class='bx bx-right-arrow-alt'></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

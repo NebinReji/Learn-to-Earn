@@ -44,6 +44,23 @@
 
         .page-sidebar {
             background-color: var(--sidebar-bg) !important;
+<<<<<<< HEAD
+=======
+            min-height: 100vh;
+            /* Force full viewport height */
+            height: 100%;
+        }
+
+        .page-container {
+            display: flex;
+            flex: 1;
+            min-height: 100vh;
+        }
+
+        /* Ensure wrapper takes full height */
+        .page-sidebar-wrapper {
+            height: 100%;
+>>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
         }
 
         .page-topbar {
@@ -76,6 +93,7 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             border: none;
         }
+<<<<<<< HEAD
 
         /* Sidebar Fix */
         .page-container {
@@ -99,6 +117,8 @@
             padding: 0;
             width: calc(100% - 260px);
         }
+=======
+>>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
     </style>
 </head>
 
@@ -108,7 +128,11 @@
         <div class='logo-area'>
             <a href="{% url 'admin_index' %}">
                 <div class="d-none d-md-block" style="padding: 15px; text-align: center;">
+<<<<<<< HEAD
                     <h3 style="color:#fff; margin:0; font-weight:bold; letter-spacing:1px;">L2E Admin</h3>
+=======
+                    <!-- Logo removed -->
+>>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
                 </div>
             </a>
         </div>
@@ -157,15 +181,26 @@
                             <!-- Placeholder image or static asset -->
                             <div
                                 style="width: 50px; height: 50px; background: #FF2B2B; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+<<<<<<< HEAD
                                 AD</div>
+=======
+                                {{ request.user.name|slice:":2"|upper }}</div>
+>>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
                         </a>
                     </div>
                     <div class="profile-details col-lg-8 col-md-8 col-8">
                         <h3>
+<<<<<<< HEAD
                             <a href="#">Admin</a>
                             <span class="profile-status online"></span>
                         </h3>
                         <p class="profile-title">Manager</p>
+=======
+                            <a href="#">{{ request.user.name }}</a>
+                            <span class="profile-status online"></span>
+                        </h3>
+                        <p class="profile-title">{{ request.user.role|title }}</p>
+>>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
                     </div>
                 </div>
 
@@ -231,7 +266,17 @@
         </div>
         <!--  SIDEBAR - END -->
 
+<<<<<<< HEAD
         {% block content %}{% endblock %}
+=======
+        <!--  SIDEBAR - END -->
+
+        <!-- START CONTENT -->
+        <div class="page-content-wrapper" style="flex: 1; width: 100%;">
+            {% block content %}{% endblock %}
+        </div>
+        <!-- END CONTENT -->
+>>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
 
     </div>
     <!-- END CONTAINER -->
