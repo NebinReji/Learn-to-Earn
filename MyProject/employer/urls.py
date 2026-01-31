@@ -14,10 +14,7 @@ urlpatterns = [
     path('application/<int:application_id>/status/<str:status>/', views.update_status, name='update_status'),
     path('subscriptions/', views.subscriptions, name='subscriptions'),
     path('payment/<str:plan_type>/', views.payment_page, name='payment_page'),
-<<<<<<< HEAD
     path('find-talent/', views.find_talent, name='employer_service_list'),
     path('find-talent/<int:service_id>/', views.service_detail, name='employer_service_detail'),
     path('student-profile/<int:student_id>/', views.view_student_profile, name='view_student_profile'),
-=======
->>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
 ]
