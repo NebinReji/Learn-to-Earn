@@ -88,120 +88,72 @@
         color: #212529;
         margin-bottom: 20px;
         padding-bottom: 10px;
-        <div class="col-lg-4">
-            <!-- Mobile Apply Button (Visible only on smaller screens) -->
-            <div class="d-lg-none mb-4">
-                {% if has_applied %}
-                <button class="btn btn-secondary btn-apply w-100 shadow-sm" disabled>
-                    <i class="bi bi-check-circle-fill me-2"></i> Applied
-                </button>
-                {% else %}
-                <a href="{% url 'apply_job' job.id %}" class="btn btn-success btn-apply w-100 shadow-sm">
-                    Apply Now <i class="bi bi-arrow-right ms-2"></i>
-                </a>
-                {% endif %}
-            </div>
+    }
+</style>
+<section class="mb-5">
+    <h5 class="section-title">Job Description</h5>
+    <div class="text-muted" style="line-height: 1.8;">
+        {{ job.job_description|linebreaks }}
+    </div>
+</section>
 
-            <div class="sidebar-card">
-                <h5 class="fw-bold mb-4">Job Overview</h5>
-                <ul class="list-unstyled">
-                    <li class="mb-3 d-flex justify-content-between align-items-center border-bottom pb-2">
-                        <span class="text-muted"><i class="bi bi-calendar-check me-2"></i>Posted Date</span>
-                        <span class="fw-semibold">{{ job.posted_date|date:"M d, Y" }}</span>
-                    </li>
-                    <li class="mb-3 d-flex justify-content-between align-items-center border-bottom pb-2">
-                        <span class="text-muted"><i class="bi bi-hourglass-split me-2"></i>Deadline</span>
-                        <span class="fw-semibold text-danger">{{ job.expiry_date|date:"M d, Y" }}</span>
-                    </li>
-                    <li class="mb-3 d-flex justify-content-between align-items-center">
-                        <span class="text-muted"><i class="bi bi-people me-2"></i>Vacancies</span>
-                        <span class="fw-semibold">{{ job.vacancies|default:"N/A" }}</span>
-                    </li>
-                </ul>
-            </div>
+<section class="mb-5">
+    <h5 class="section-title">Key Responsibilities & Requirements</h5>
+    <div class="text-muted">
+        <!-- Assuming description might contain formatted text or lists, if not, static text -->
+        <p>No specific responsibilities listed. Please refer to the job description above.</p>
+    </div>
+</section>
+</div>
+</div>
 
-            <div class="sidebar-card text-center">
-                <h6 class="fw-bold mb-3">About the Company</h6>
-                {% if job.employer.logo %}
-                <img src="{{ job.employer.logo.url }}" alt="Logo" class="rounded mb-3"
-                    style="width: 60px; height: 60px; object-fit: cover;">
-                {% endif %}
-                <h5 class="fw-bold">{{ job.employer.company_name }}</h5>
-                {% if job.employer.website %}
-                <a href="{{ job.employer.website }}" target="_blank"
-                    class="btn btn-outline-primary btn-sm rounded-pill mt-2">
-                    <i class="bi bi-link-45deg me-1"></i> Visit Website
-                </a>
-                {% endif %}
-            </div>
-        </div>
+<!-- Sidebar Info -->
+<div class="col-lg-4">
+    <!-- Mobile Apply Button (Visible only on smaller screens) -->
+    <div class="d-lg-none mb-4">
+        {% if has_applied %}
+        <button class="btn btn-secondary btn-apply w-100 shadow-sm" disabled>
+            <i class="bi bi-check-circle-fill me-2"></i> Applied
+        </button>
+        {% else %}
+        <a href="{% url 'apply_job' job.id %}" class="btn btn-success btn-apply w-100 shadow-sm">
+            Apply Now <i class="bi bi-arrow-right ms-2"></i>
+        </a>
+        {% endif %}
+    </div>
+
+    <div class="sidebar-card">
+        <h5 class="fw-bold mb-4">Job Overview</h5>
+        <ul class="list-unstyled">
+            <li class="mb-3 d-flex justify-content-between align-items-center border-bottom pb-2">
+                <span class="text-muted"><i class="bi bi-calendar-check me-2"></i>Posted Date</span>
+                <span class="fw-semibold">{{ job.posted_date|date:"M d, Y" }}</span>
+            </li>
+            <li class="mb-3 d-flex justify-content-between align-items-center border-bottom pb-2">
+                <span class="text-muted"><i class="bi bi-hourglass-split me-2"></i>Deadline</span>
+                <span class="fw-semibold text-danger">{{ job.expiry_date|date:"M d, Y" }}</span>
+            </li>
+            <li class="mb-3 d-flex justify-content-between align-items-center">
+                <span class="text-muted"><i class="bi bi-people me-2"></i>Vacancies</span>
+                <span class="fw-semibold">{{ job.vacancies|default:"N/A" }}</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="sidebar-card text-center">
+        <h6 class="fw-bold mb-3">About the Company</h6>
+        {% if job.employer.logo %}
+        <img src="{{ job.employer.logo.url }}" alt="Logo" class="rounded mb-3"
+            style="width: 60px; height: 60px; object-fit: cover;">
+        {% endif %}
+        <h5 class="fw-bold">{{ job.employer.company_name }}</h5>
+        {% if job.employer.website %}
+        <a href="{{ job.employer.website }}" target="_blank" class="btn btn-outline-primary btn-sm rounded-pill mt-2">
+            <i class="bi bi-link-45deg me-1"></i> Visit Website
+        </a>
+        {% endif %}
     </div>
 </div>
-                <section class="mb-5">
-                    <h5 class="section-title">Job Description</h5>
-                    <div class="text-muted" style="line-height: 1.8;">
-                        {{ job.job_description|linebreaks }}
-                    </div>
-                </section>
-
-                <section class="mb-5">
-                    <h5 class="section-title">Key Responsibilities & Requirements</h5>
-                    <div class="text-muted">
-                        <!-- Assuming description might contain formatted text or lists, if not, static text -->
-                        <p>No specific responsibilities listed. Please refer to the job description above.</p>
-                    </div>
-                </section>
-            </div>
-        </div>
-
-        <!-- Sidebar Info -->
-        <div class="col-lg-4">
-            <!-- Mobile Apply Button (Visible only on smaller screens) -->
-            <div class="d-lg-none mb-4">
-                {% if has_applied %}
-                <button class="btn btn-secondary btn-apply w-100 shadow-sm" disabled>
-                    <i class="bi bi-check-circle-fill me-2"></i> Applied
-                </button>
-                {% else %}
-                <a href="{% url 'apply_job' job.id %}" class="btn btn-success btn-apply w-100 shadow-sm">
-                    Apply Now <i class="bi bi-arrow-right ms-2"></i>
-                </a>
-                {% endif %}
-            </div>
-
-            <div class="sidebar-card">
-                <h5 class="fw-bold mb-4">Job Overview</h5>
-                <ul class="list-unstyled">
-                    <li class="mb-3 d-flex justify-content-between align-items-center border-bottom pb-2">
-                        <span class="text-muted"><i class="bi bi-calendar-check me-2"></i>Posted Date</span>
-                        <span class="fw-semibold">{{ job.posted_date|date:"M d, Y" }}</span>
-                    </li>
-                    <li class="mb-3 d-flex justify-content-between align-items-center border-bottom pb-2">
-                        <span class="text-muted"><i class="bi bi-hourglass-split me-2"></i>Deadline</span>
-                        <span class="fw-semibold text-danger">{{ job.expiry_date|date:"M d, Y" }}</span>
-                    </li>
-                    <li class="mb-3 d-flex justify-content-between align-items-center">
-                        <span class="text-muted"><i class="bi bi-people me-2"></i>Vacancies</span>
-                        <span class="fw-semibold">{{ job.vacancies|default:"N/A" }}</span>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="sidebar-card text-center">
-                <h6 class="fw-bold mb-3">About the Company</h6>
-                {% if job.employer.logo %}
-                <img src="{{ job.employer.logo.url }}" alt="Logo" class="rounded mb-3"
-                    style="width: 60px; height: 60px; object-fit: cover;">
-                {% endif %}
-                <h5 class="fw-bold">{{ job.employer.company_name }}</h5>
-                {% if job.employer.website %}
-                <a href="{{ job.employer.website }}" target="_blank"
-                    class="btn btn-outline-primary btn-sm rounded-pill mt-2">
-                    <i class="bi bi-link-45deg me-1"></i> Visit Website
-                </a>
-                {% endif %}
-            </div>
-        </div>
-    </div>
+</div>
 </div>
 {% endblock %}

@@ -1,46 +1,30 @@
 {% extends 'guest/base.html' %}
 {% load static %}
 
-{% block content %}
-
-<!-- HERO SECTION -->
-<section class="hero-section">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
-                <div class="hero-content">
-                    <h1>Learn, Earn, and Grow with Us.</h1>
-                    <p>The flexible job marketplace designed for students who want to earn while they learn, and
-                        employers who need energetic talent.</p>
-                    <div class="hero-btns">
-                        <a href="{% url 'signup' %}#student" class="btn-student">I'm a Student</a>
-                        <a href="{% url 'signup' %}#employer" class="btn-employer">I'm an Employer</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6" data-aos="fade-left" data-aos-duration="1000">
-                <div class="hero-img text-center">
-                    <img src="{% static 'guest/assets/img/banner/banner-img.png' %}" alt="Hero Image" class="img-fluid"
-                        onerror="this.src='https://placehold.co/600x500?text=Learn+To+Earn'">
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-{% endblock %}
-{% comment %}
-
 {% block extra_css %}
 <style>
     /* HERO */
     .banner-style-two {
         background-color: var(--primary-dark);
-        padding-top: 100px;
+        padding-top: 180px;
         padding-bottom: 240px;
-        /* Extra padding for search overlap */
         position: relative;
         overflow: hidden;
+        background-image: url("{% static 'guest/assets/img/banner/7.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        z-index: 1;
+    }
+
+    .banner-style-two::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(26, 32, 46, 0.85);
+        z-index: -1;
     }
 
     .banner-text {
@@ -58,33 +42,15 @@
 
     .banner-text p {
         color: #e2e8f0;
-        font-size: 1.1rem;
+        font-size: 1.25rem;
+        line-height: 1.8;
         margin-bottom: 30px;
-        opacity: 0.8;
-    }
-
-    .hero-shape {
-        background: #e2e8f0;
-        width: 100%;
-        height: 600px;
-        border-radius: 300px 300px 0 0;
-        position: absolute;
-        bottom: -100px;
-        right: -50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #94a3b8;
-        font-size: 3rem;
-        font-weight: 700;
-        opacity: 0.1;
-        /* Placeholder effect */
+        opacity: 0.9;
     }
 
     /* SEARCH */
     .find-section {
         margin-top: -120px;
-        /* Negative margin for overlap */
         position: relative;
         z-index: 10;
         padding-bottom: 80px;
@@ -135,7 +101,7 @@
 
     /* SECTIONS */
     .section-title h2 {
-        font-size: 2.2rem;
+        font-size: 2.5rem;
         font-weight: 800;
         color: var(--primary-dark);
         margin-bottom: 15px;
@@ -143,6 +109,7 @@
 
     .section-title p {
         color: #64748b;
+        font-size: 1.1rem;
     }
 
     /* CARDS */
@@ -235,6 +202,8 @@
         padding: 30px;
         border: 1px solid #f1f5f9;
         transition: 0.3s;
+        height: 100%;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
     }
 
     .premium-card:hover {
@@ -243,8 +212,79 @@
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     }
 
+    .service-card {
+        background: #fff;
+        border: 1px solid #f1f5f9;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .service-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        border-color: #e2e8f0;
+    }
+
+    .service-top {
+        padding: 25px;
+        flex-grow: 1;
+    }
+
+    .service-bottom {
+        padding: 15px 25px;
+        background: #f8fafc;
+        border-top: 1px solid #f1f5f9;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .service-icon {
+        width: 50px;
+        height: 50px;
+        background: #fff0f0;
+        color: var(--primary-red);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
     .bg-main {
         background: #f8fafc;
+    }
+
+    .company-logo-placeholder {
+        width: 50px;
+        height: 50px;
+        background-color: #f1f5f9;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: #94a3b8;
+        margin-right: 15px;
+    }
+
+    .job-type-badge {
+        background-color: #fff0f0;
+        color: var(--primary-red);
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .salary-tag {
+        font-weight: 700;
+        color: var(--primary-dark);
     }
 </style>
 {% endblock %}
@@ -255,50 +295,22 @@
 <section class="banner-style-two">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-7">
+            <div class="col-lg-8">
                 <div class="banner-text text-start">
-                    <p class="text-white text-uppercase"
-                        style="letter-spacing: 1px; font-weight: 600; font-size: 0.9rem;">Find Jobs, Employment & Career
-                        Opportunities</p>
-                    <h1>Job Board For Hiring Creative Designers</h1>
+                    <span class="d-block mb-2 text-uppercase fw-bold text-white-50 letter-spacing-2">Welcome to
+                        Jovie</span>
+                    <h1>The Job Marketplace <br> for Students & Employers</h1>
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                        incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse.
+                        Find flexible part-time work that fits your schedule, or hire energetic student talent for your
+                        business needs.
+                        Validated, secure, and easy to use.
                     </p>
-                </div>
-            </div>
-            <div class="col-lg-5 position-relative">
-                <!-- Placeholder for the Right Side Image -->
-                <!-- Using a visual placeholder to emulate the layout -->
-                <div
-                    style="width: 100%; height: 400px; background: rgba(255,255,255,0.1); border-radius: 50% 50% 40% 60%; position: relative;">
-                    <div
-                        style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(255,255,255,0.3); font-size: 2rem; font-weight: 700;">
-                        600 x 700
-                    </div>
->>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<<<<<<< HEAD
-<!-- FEATURES / HOW IT WORKS -->
-<section class="features-section pt-100 pb-70">
-    <div class="container">
-        <div class="section-title text-center mb-5" data-aos="fade-up">
-            <h2>Why Choose LearnToEarn?</h2>
-            <p>We make it simple for students to find work and for businesses to find help.</p>
-        </div>
-
-        <div class="row">
-            <!-- Student Feature -->
-            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                <div class="feature-box">
-                    <div class="feature-icon-wrapper">
-                        <i class='bx bxs-graduation'></i>
-=======
 <!-- SEARCH -->
 <div class="find-section">
     <div class="container">
@@ -325,38 +337,15 @@
                             <option>Web Dev</option>
                             <option>Mobile Dev</option>
                             <option>Design</option>
+                            <option>Data Entry</option>
+                            <option>Writing</option>
                         </select>
->>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
                     </div>
-                    <h3>For Students</h3>
-                    <p>Find flexible part-time jobs that fit your class schedule. Gain experience and earn money.</p>
                 </div>
                 <div class="col-lg-3">
                     <button class="find-btn">FIND A JOB <i class='bx bx-search'></i></button>
                 </div>
             </div>
-<<<<<<< HEAD
-
-            <!-- Employer Feature -->
-            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                <div class="feature-box">
-                    <div class="feature-icon-wrapper">
-                        <i class='bx bxs-briefcase'></i>
-                    </div>
-                    <h3>For Employers</h3>
-                    <p>Post jobs quickly and connect with verified local students ready to work.</p>
-                </div>
-            </div>
-
-            <!-- Community Feature -->
-            <div class="col-lg-4 col-md-6 offset-md-3 offset-lg-0" data-aos="fade-up" data-aos-delay="300">
-                <div class="feature-box">
-                    <div class="feature-icon-wrapper">
-                        <i class='bx bxs-check-shield'></i>
-                    </div>
-                    <h3>Safe & Secure</h3>
-                    <p>We verify all users to ensure a safe and trustworthy community for everyone.</p>
-=======
         </form>
     </div>
 </div>
@@ -365,10 +354,10 @@
 <section class="pt-50 pb-100">
     <div class="container">
         <div class="section-title text-center">
-            <h2>Why You Choose Us Among Other Job Site?</h2>
+            <h2>Why Choose LearnToEarn?</h2>
             <p class="mx-auto" style="max-width: 700px; margin-top: 15px;">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus
+                We bridge the gap between students seeking financial independence and employers looking for
+                cost-effective talent.
             </p>
         </div>
 
@@ -376,32 +365,31 @@
             <div class="col-lg-4 col-sm-6 mb-4">
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="flaticon-resume"></i>
+                        <i class='bx bxs-graduation'></i>
                     </div>
-                    <h3>Advertise Job</h3>
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                        incididunt ut labore.</p>
+                    <h3>For Students</h3>
+                    <p class="text-muted">Earn money while studying. Gain real-world experience. Flexible hours that fit
+                        your class schedule.</p>
                 </div>
             </div>
             <div class="col-lg-4 col-sm-6 mb-4">
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="flaticon-hr-manager"></i>
+                        <i class='bx bxs-briefcase-alt-2'></i>
                     </div>
-                    <h3>Recruiter Profiles</h3>
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                        incididunt ut labore.</p>
+                    <h3>For Employers</h3>
+                    <p class="text-muted">Access a vast pool of motivated students. Post jobs quickly and find the
+                        perfect match for your needs.</p>
                 </div>
             </div>
             <div class="col-lg-4 col-sm-6 mb-4">
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="flaticon-recruitment"></i>
+                        <i class='bx bxs-check-shield'></i>
                     </div>
-                    <h3>Find Your Dream Job</h3>
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                        incididunt ut labore.</p>
->>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
+                    <h3>Safe & Secure</h3>
+                    <p class="text-muted">Verified profiles and secure communications ensure a safe environment for both
+                        parties.</p>
                 </div>
             </div>
         </div>
@@ -409,8 +397,7 @@
 </section>
 
 <!-- CATEGORIES -->
-<<<<<<< HEAD
-<section id="categories" class="pt-100 pb-70 bg-main" style="background-color: var(--bg-light);">
+<section id="categories" class="pt-100 pb-70 bg-main">
     <div class="container">
         <div class="section-title text-center" data-aos="fade-up">
             <h2>Explore Categories</h2>
@@ -443,47 +430,12 @@
                     <i class="flaticon-consultation"></i>
                     <h3>Events</h3>
                     <p>Ushering, Catering</p>
-=======
-<section id="categories" class="pt-100 pb-70 bg-main">
-    <div class="container">
-        <div class="section-title text-center">
-            <h2>Explore Categories</h2>
-        </div>
-        <div class="row pt-45">
-            <div class="col-lg-3 col-sm-6 mb-4">
-                <div class="cat-card-modern">
-                    <i class="flaticon-computer"></i>
-                    <h3>IT & Dev</h3>
-                    <p>40+ Jobs</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-sm-6 mb-4">
-                <div class="cat-card-modern">
-                    <i class="flaticon-graduation-cap"></i>
-                    <h3>Education</h3>
-                    <p>24+ Jobs</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-sm-6 mb-4">
-                <div class="cat-card-modern">
-                    <i class="flaticon-accounting"></i>
-                    <h3>Accountancy</h3>
-                    <p>15+ Jobs</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-sm-6 mb-4">
-                <div class="cat-card-modern">
-                    <i class="flaticon-consultation"></i>
-                    <h3>Business</h3>
-                    <p>10+ Jobs</p>
->>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<<<<<<< HEAD
 <!-- SERVICES (Database Integrated) -->
 <section id="services" class="pt-100 pb-70">
     <div class="container">
@@ -516,29 +468,12 @@
                     </div>
                     <div class="service-bottom">
                         <span class="price-tag">From ${{ service.price }}</span>
-                        <a href="{% url 'login' %}" class="btn btn-outline w-100">View Details</a>
+                        <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm rounded-pill">View Details</a>
                     </div>
-=======
-<!-- JOBS -->
-<section id="jobs" class="pt-100 pb-70">
-    <div class="container">
-        <div class="section-title text-center">
-            <h2>Featured Opportunities</h2>
-        </div>
-        <div class="row pt-45">
-            {% for job in jobs %}
-            <div class="col-lg-6 mb-4">
-                <div class="premium-card">
-                    <h4>{{ job.job_title }}</h4>
-                    <p class="text-muted">{{ job.employer.company_name }}</p>
-                    <a href="{% url 'login' %}" class="apply-link"
-                        style="color: var(--primary-red); font-weight: 600;">Apply Now →</a>
->>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
                 </div>
             </div>
             {% empty %}
             <div class="col-12 text-center">
-<<<<<<< HEAD
                 <p>No services listed yet.</p>
             </div>
             {% endfor %}
@@ -576,8 +511,8 @@
 
                     <div class="d-flex justify-content-between align-items-center mt-auto">
                         <span class="salary-tag">{{ job.salary_range }}</span>
-                        <a href="{% url 'login' %}" class="apply-link">Apply Now <i
-                                class='bx bx-right-arrow-alt'></i></a>
+                        <a href="{% url 'login' %}" class="apply-link text-decoration-none fw-bold text-primary">Apply
+                            Now <i class='bx bx-right-arrow-alt'></i></a>
                     </div>
                 </div>
             </div>
@@ -589,7 +524,7 @@
         </div>
         <div class="text-center mt-4">
             <a href="{% url 'login' %}" class="btn btn-primary"
-                style="background-color: var(--primary-color); border: none; padding: 12px 30px; border-radius: 50px;">View
+                style="background-color: var(--primary-red); border: none; padding: 12px 30px; border-radius: 5px; font-weight: 600;">View
                 All Jobs</a>
         </div>
     </div>
@@ -605,7 +540,7 @@
         <div class="row pt-45">
             {% for review in reviews %}
             <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}00">
-                <div class="testimonial-card p-4 bg-white shadow-sm rounded">
+                <div class="testimonial-card p-4 bg-white shadow-sm rounded border">
                     <div class="d-flex align-items-center mb-3">
                         <div class="icon me-3" style="color: var(--primary-red); font-size: 2rem;">
                             <i class='bx bxs-quote-alt-left'></i>
@@ -638,7 +573,7 @@
 
 <!-- CALL TO ACTION -->
 <section class="cta-section pt-100 pb-100"
-    style="background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); color: #fff;">
+    style="background: linear-gradient(135deg, var(--primary-dark) 0%, #2c3e50 100%); color: #fff;">
     <div class="container text-center">
         <h2 class="text-white mb-4" data-aos="fade-up">Ready to Start Your Journey?</h2>
         <p class="text-white mb-5" style="max-width: 700px; margin: 0 auto 3rem;" data-aos="fade-up"
@@ -646,20 +581,10 @@
         </p>
         <div data-aos="zoom-in" data-aos-delay="200">
             <a href="{% url 'signup' %}" class="btn btn-light btn-lg"
-                style="color: var(--primary-color); border-radius: 50px; padding: 15px 40px; font-weight: 700;">Get
+                style="color: var(--primary-red); border-radius: 50px; padding: 15px 40px; font-weight: 700;">Get
                 Started Today</a>
         </div>
     </div>
 </section>
 
-=======
-                <p>No jobs available currently.</p>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
->>>>>>> acda9d3dcf6de26f7b59b91daa07a25c96383667
 {% endblock %}
-{% endcomment %}

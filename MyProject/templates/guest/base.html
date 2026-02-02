@@ -127,13 +127,59 @@
             color: var(--text-muted);
         }
 
-        .top-btn i {
-            background-color: var(--primary-red);
-        }
-
         .top-btn i:hover {
             background-color: #fff;
             color: var(--primary-red);
+        }
+
+        /* PREMIUM FORM STYLES */
+        .premium-form-card {
+            background: #ffffff;
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.02);
+        }
+
+        .user-form-area .form-control {
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: #f8fafc;
+        }
+
+        .user-form-area .form-control:focus {
+            border-color: var(--primary-red);
+            box-shadow: 0 0 0 4px rgba(255, 43, 43, 0.1);
+            background-color: #fff;
+        }
+
+        .user-form-area .form-label,
+        label {
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-premium {
+            padding: 14px 30px;
+            border-radius: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-premium:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 43, 43, 0.25);
         }
     </style>
     <!-- Custom CSS Block -->
@@ -293,7 +339,8 @@
                             <li><a href="{% url 'about' %}"><i class='bx bx-chevrons-right bx-tada'></i>About</a></li>
                             <li><a href="#"><i class='bx bx-chevrons-right bx-tada'></i>FAQ</a></li>
                             <li><a href="#"><i class='bx bx-chevrons-right bx-tada'></i>Privacy</a></li>
-                            <li><a href="{% url 'contact' %}"><i class='bx bx-chevrons-right bx-tada'></i>Contact</a></li>
+                            <li><a href="{% url 'contact' %}"><i class='bx bx-chevrons-right bx-tada'></i>Contact</a>
+                            </li>
                         </ul>
                     </div>
                 </div>

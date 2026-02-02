@@ -42,51 +42,70 @@
                     {% endfor %}
                     {% endif %}
 
-                    <form method="post" class="card p-4 shadow-sm border-0">
-                        {% csrf_token %}
+                    <div class="premium-form-card p-5">
+                        <form method="post">
+                            {% csrf_token %}
 
-                        {% if form.non_field_errors %}
-                        <div class="alert alert-danger">{{ form.non_field_errors }}</div>
-                        {% endif %}
-
-                        <div class="form-group mb-3">
-                            <label>Email Address</label>
-                            {{ form.email }}
-                            {% if form.email.errors %}
-                            <div class="text-danger small">{{ form.email.errors }}</div>
+                            {% if form.non_field_errors %}
+                            <div class="alert alert-danger rounded-3">{{ form.non_field_errors }}</div>
                             {% endif %}
-                        </div>
 
-                        <div class="form-group mb-3">
-                            <label>Password</label>
-                            {{ form.password }}
-                            {% if form.password.errors %}
-                            <div class="text-danger small">{{ form.password.errors }}</div>
-                            {% endif %}
-                        </div>
+                            <div class="form-group mb-4">
+                                <label><i class='bx bx-envelope me-1'></i> Email Address</label>
+                                {{ form.email }}
+                                {% if form.email.errors %}
+                                <div class="text-danger small mt-1">{{ form.email.errors }}</div>
+                                {% endif %}
+                            </div>
 
-                        <div class="row align-items-center mb-3">
-                            <div class="col-lg-6 col-sm-6">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="rememberMe">
-                                    <label class="form-check-label" for="rememberMe">Remember Me</label>
+                            <div class="form-group mb-4">
+                                <label><i class='bx bx-lock-alt me-1'></i> Password</label>
+                                {{ form.password }}
+                                {% if form.password.errors %}
+                                <div class="text-danger small mt-1">{{ form.password.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="row align-items-center mb-4">
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="rememberMe">
+                                        <label class="form-check-label small text-muted" for="rememberMe">Remember
+                                            Me</label>
+                                    </div>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <a href="#" class="forgot-password small fw-bold text-decoration-none">Forgot
+                                        Password?</a>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-sm-6 text-end">
-                                <a href="#" class="forgot-password">Forgot Password?</a>
-                            </div>
-                        </div>
 
-                        <button type="submit" class="btn btn-primary w-100 btn-lg">Log In</button>
+                            <button type="submit" class="btn btn-premium btn-primary w-100 mb-4"
+                                style="background: var(--primary-red); border: none;">
+                                Log In <i class='bx bx-log-in-circle ms-1'></i>
+                            </button>
 
-                        <div class="text-center mt-3">
-                            <p class="mb-0">Or Login With</p>
-                            <div class="mt-2">
-                                <a href="#" class="btn btn-outline-danger me-2"><i class='bx bxl-google'></i> Google</a>
-                                <a href="#" class="btn btn-outline-primary"><i class='bx bxl-linkedin'></i> LinkedIn</a>
+                            <div class="position-relative text-center mb-4">
+                                <div class="progress" style="height: 1px;">
+                                    <div class="progress-bar bg-light" style="width: 100%"></div>
+                                </div>
+                                <span
+                                    class="position-absolute top-50 start-50 translate-middle bg-white px-3 text-muted small text-uppercase fw-bold">Or
+                                    Login With</span>
                             </div>
-                        </div>
-                    </form>
+
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <a href="#" class="btn btn-outline-danger w-100 fw-bold"><i
+                                            class='bx bxl-google'></i> Google</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="#" class="btn btn-outline-primary w-100 fw-bold"><i
+                                            class='bx bxl-linkedin'></i> LinkedIn</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
 
                     <div class="bottom-text text-center mt-4">
                         <p>Don't have an account? <a href="{% url 'signup' %}">Sign up here</a></p>

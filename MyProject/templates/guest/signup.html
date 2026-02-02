@@ -73,48 +73,57 @@
                             <div class="row justify-content-center">
                                 <div class="col-lg-8">
                                     <form method="post" enctype="multipart/form-data" novalidate
-                                        class="card p-4 shadow-sm border-0">
+                                        class="premium-form-card p-5">
                                         {% csrf_token %}
 
                                         {% if student_form.non_field_errors %}
-                                        <div class="alert alert-danger">{{ student_form.non_field_errors }}</div>
+                                        <div class="alert alert-danger rounded-3">{{ student_form.non_field_errors }}
+                                        </div>
                                         {% endif %}
 
-                                        <h4 class="mb-4 text-primary">Student Details</h4>
+                                        <h4 class="mb-4 fw-bold" style="color: var(--primary-dark);">Student Details
+                                        </h4>
 
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
                                                 <label>Full Name</label>
                                                 {{ student_form.name }}
-                                                <div class="text-danger small">{{ student_form.name.errors }}</div>
+                                                <div class="text-danger small mt-1">{{ student_form.name.errors }}</div>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label>Email Address</label>
                                                 {{ student_form.email }}
-                                                <div class="text-danger small">{{ student_form.email.errors }}</div>
+                                                <div class="text-danger small mt-1">{{ student_form.email.errors }}
+                                                </div>
                                             </div>
                                             <div class="col-md-12 mb-3">
                                                 <label>Phone Number</label>
                                                 {{ student_form.phone_number }}
-                                                <div class="text-danger small">{{ student_form.phone_number.errors }}
+                                                <div class="text-danger small mt-1">{{ student_form.phone_number.errors
+                                                    }}
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6 mb-3">
                                                 <label>Password</label>
                                                 {{ student_form.password1 }}
-                                                <div class="text-danger small">{{ student_form.password1.errors }}</div>
+                                                <div class="text-danger small mt-1">{{ student_form.password1.errors }}
+                                                </div>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label>Confirm Password</label>
                                                 {{ student_form.password2 }}
-                                                <div class="text-danger small">{{ student_form.password2.errors }}</div>
+                                                <div class="text-danger small mt-1">{{ student_form.password2.errors }}
+                                                </div>
                                             </div>
                                         </div>
 
                                         <div class="text-center mt-4">
                                             <button type="submit" name="student-submit"
-                                                class="btn btn-primary btn-lg w-50">Register Now</button>
+                                                class="btn btn-premium btn-primary w-50"
+                                                style="background: var(--primary-red); border: none;">
+                                                Register Now <i class='bx bx-right-arrow-alt ms-1'></i>
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
@@ -125,56 +134,63 @@
                         <div class="tab-pane fade" id="employer" role="tabpanel" aria-labelledby="employer-tab">
                             <div class="row justify-content-center">
                                 <div class="col-lg-8">
-                                    <form method="post" novalidate class="card p-4 shadow-sm border-0">
+                                    <form method="post" novalidate class="premium-form-card p-5">
                                         {% csrf_token %}
 
                                         {% if employer_form.non_field_errors %}
-                                        <div class="alert alert-danger">{{ employer_form.non_field_errors }}</div>
+                                        <div class="alert alert-danger rounded-3">{{ employer_form.non_field_errors }}
+                                        </div>
                                         {% endif %}
 
-                                        <h4 class="mb-4 text-success">Employer Details</h4>
+                                        <h4 class="mb-4 fw-bold" style="color: var(--primary-green);">Employer Details
+                                        </h4>
 
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
                                                 <label>Company Name</label>
                                                 {{ employer_form.company_name }}
-                                                <div class="text-danger small">{{ employer_form.company_name.errors }}
+                                                <div class="text-danger small mt-1">{{ employer_form.company_name.errors
+                                                    }}
                                                 </div>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label>Contact Person</label>
                                                 {{ employer_form.contact_person }}
-                                                <div class="text-danger small">{{ employer_form.contact_person.errors }}
+                                                <div class="text-danger small mt-1">{{
+                                                    employer_form.contact_person.errors }}
                                                 </div>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label>Email Address</label>
                                                 {{ employer_form.email }}
-                                                <div class="text-danger small">{{ employer_form.email.errors }}</div>
+                                                <div class="text-danger small mt-1">{{ employer_form.email.errors }}
+                                                </div>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label>Phone Number</label>
                                                 {{ employer_form.phone }}
-                                                <div class="text-danger small">{{ employer_form.phone.errors }}</div>
+                                                <div class="text-danger small mt-1">{{ employer_form.phone.errors }}
+                                                </div>
                                             </div>
 
                                             <div class="col-md-6 mb-3">
                                                 <label>Password</label>
                                                 {{ employer_form.password1 }}
-                                                <div class="text-danger small">{{ employer_form.password1.errors }}
+                                                <div class="text-danger small mt-1">{{ employer_form.password1.errors }}
                                                 </div>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label>Confirm Password</label>
                                                 {{ employer_form.password2 }}
-                                                <div class="text-danger small">{{ employer_form.password2.errors }}
+                                                <div class="text-danger small mt-1">{{ employer_form.password2.errors }}
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="text-center mt-4">
                                             <button type="submit" name="employer-submit"
-                                                class="btn btn-success btn-lg w-50">Register Employer</button>
+                                                class="btn btn-premium btn-success w-50">Register Employer <i
+                                                    class='bx bx-briefcase-alt-2 ms-1'></i></button>
                                         </div>
                                     </form>
                                 </div>
