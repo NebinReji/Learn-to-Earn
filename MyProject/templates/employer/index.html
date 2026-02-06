@@ -386,13 +386,12 @@
                                         <div class="d-flex align-items-center">
                                             <div class="rounded-circle bg-light d-flex align-items-center justify-content-center text-primary me-3 fw-bold"
                                                 style="width: 40px; height: 40px; font-size: 1.1rem;">
-                                                {{ app.student.user.first_name|first }}
+                                                {{ app.student.user.name|first }}
                                             </div>
                                             <div>
                                                 <a href="{% url 'view_student_profile' app.student.id %}"
                                                     class="text-decoration-none text-dark">
-                                                    <h6 class="mb-0 fw-bold">{{ app.student.user.first_name }} {{
-                                                        app.student.user.last_name }}</h6>
+                                                    <h6 class="mb-0 fw-bold">{{ app.student.user.name }}</h6>
                                                 </a>
                                                 <small class="text-muted">ID: #{{ app.student.id }}</small>
                                             </div>
@@ -452,8 +451,7 @@
                                 <div class="d-flex align-items-start">
                                     <div class="flex-grow-1">
                                         <p class="mb-1 small fw-bold text-dark">{{ notif.message }}</p>
-                                        <span class="text-muted" style="font-size: 0.75rem;">{{
-                                            notif.timestamp|timesince }} ago</span>
+                                        <span class="text-muted" style="font-size: 0.75rem;">{{ notif.timestamp|timesince }} ago</span>
                                     </div>
                                     <small class="text-primary"><i class='bx bx-chevron-right'></i></small>
                                 </div>

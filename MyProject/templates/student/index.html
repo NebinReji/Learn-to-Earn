@@ -366,8 +366,7 @@
                                 <div class="d-flex align-items-start">
                                     <div class="flex-grow-1">
                                         <p class="mb-1 small fw-bold text-dark">{{ notif.message }}</p>
-                                        <span class="text-muted" style="font-size: 0.75rem;">{{
-                                            notif.timestamp|timesince }} ago</span>
+                                        <span class="text-muted" style="font-size: 0.75rem;">{{ notif.timestamp|timesince }} ago</span>
                                     </div>
                                     <small class="text-primary"><i class='bx bx-chevron-right'></i></small>
                                 </div>
@@ -437,13 +436,18 @@
 
                     <div class="d-flex justify-content-between mb-4 pb-3 border-bottom">
                         <div class="d-flex align-items-center text-muted small">
-                            <i class='bx bx-map me-1'></i> {{ job.district }}
+                            <i class='bx bx-map me-1'></i>
+                            {% if job.job_type == 'online' %}
+                            Remote
+                            {% else %}
+                            {{ job.location|default:"On-site" }}
+                            {% endif %}
                         </div>
                         <div class="d-flex align-items-center text-muted small">
                             <i class='bx bx-time me-1'></i> {{ job.job_type|title }}
                         </div>
                         <div class="d-flex align-items-center text-success fw-bold small">
-                            <i class='bx bx-dollar me-1'></i> {{ job.salary_min }} - {{ job.salary_max }}
+                            <i class='bx bx-dollar me-1'></i> ₹{{ job.salary_range }}
                         </div>
                     </div>
 
@@ -497,21 +501,21 @@
                 <div class="col-lg-4 text-center d-none d-lg-block">
                     <i class='bx bx-rocket' style="font-size: 8rem; color: rgba(255,255,255,0.1);"></i>
                 </div>
-                    <p class="mb-4 text-white-50 fs-5">
-                        You currently have <strong class="text-white">{{ my_skills_count }}</strong> active skills
-                        listed.
-                        Add more services to get noticed by top employers. Students with completed profiles get 3x more
-                        job interviews.
-                    </p>
-                    <a href="{% url 'add_skill' %}" class="btn btn-light rounded-pill px-5 py-3 fw-bold text-dark">
-                        Add a New Skill <i class='bx bx-plus-circle ms-1'></i>
-                    </a>
-                </div>
-                <div class="col-lg-4 text-center d-none d-lg-block">
-                    <i class='bx bx-rocket' style="font-size: 8rem; color: rgba(255,255,255,0.1);"></i>
-                </div>
+                <p class="mb-4 text-white-50 fs-5">
+                    You currently have <strong class="text-white">{{ my_skills_count }}</strong> active skills
+                    listed.
+                    Add more services to get noticed by top employers. Students with completed profiles get 3x more
+                    job interviews.
+                </p>
+                <a href="{% url 'add_skill' %}" class="btn btn-light rounded-pill px-5 py-3 fw-bold text-dark">
+                    Add a New Skill <i class='bx bx-plus-circle ms-1'></i>
+                </a>
+            </div>
+            <div class="col-lg-4 text-center d-none d-lg-block">
+                <i class='bx bx-rocket' style="font-size: 8rem; color: rgba(255,255,255,0.1);"></i>
             </div>
         </div>
+    </div>
     </div>
 </section>
 {% endblock %}

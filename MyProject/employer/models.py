@@ -42,11 +42,12 @@ class Jobposting(models.Model):
     
     shift_timing = models.CharField(max_length=100, help_text="e.g., 6 PM - 10 PM")
     working_days = models.CharField(max_length=100, help_text="e.g., Saturday & Sunday")
-    hourly_pay = models.DecimalField(max_digits=10, decimal_places=2, help_text="Rate per hour")
+    hourly_pay = models.DecimalField(max_digits=10, decimal_places=2, help_text="Rate per hour", blank=True, null=True)
     
     posted_date = models.DateField(auto_now_add=True)
     expiry_date = models.DateField()
     salary_range = models.CharField(max_length=100, blank=True, null=True)
+    requirements = models.TextField(help_text="Key Responsibilities and Requirements", blank=True, null=True)
 
     def __str__(self):
         return self.job_title

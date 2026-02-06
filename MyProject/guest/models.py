@@ -50,7 +50,7 @@ class Employer(models.Model):
     email = models.EmailField()
     district = models.ForeignKey(District, on_delete=models.SET_NULL, null=True, blank=True)
     area = models.CharField(max_length=100, blank=True, null=True, help_text="e.g., Kaloor, Kochi")
-    industry = models.CharField(max_length=100, default="General", blank=True, null=True, help_text="e.g., Retail, Education")
+    industry = models.ForeignKey('MyApp.Category', on_delete=models.SET_NULL, null=True, blank=True)
     address = models.TextField(blank=True, null=True)
     verification_status = models.BooleanField(default=False)
     
@@ -106,7 +106,7 @@ class student(models.Model):
         return self.student_name    
 
     def is_profile_complete(self):
-        return bool(self.district and self.student_name and self.phone_number)
+        return bool(self.district and self.student_name and self.phone_number and self.id_card)
 
 class Notification(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='notifications')

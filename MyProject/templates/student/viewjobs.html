@@ -43,10 +43,11 @@
                             </span>
                         </div>
 
-                        <h4 class="card-title fw-bold text-dark mb-3">
+                        <h4 class="card-title fw-bold text-dark mb-1">
                             <a href="{% url 'student_job_detail' job.id %}"
                                 class="text-decoration-none text-dark stretched-link">{{ job.job_title }}</a>
                         </h4>
+                        <p class="text-muted small mb-3">{{ job.employer.company_name }}</p>
 
                         <div class="job-meta mb-4">
                             <div class="d-flex align-items-center text-secondary mb-2">
@@ -65,7 +66,7 @@
                             </div>
                             <div class="d-flex align-items-center text-success">
                                 <i class='bx bx-rupee me-2 fs-5'></i>
-                                <span class="fw-bold">{{ job.hourly_pay }}/hr</span>
+                                <span class="fw-bold">{{ job.salary_range }}</span>
                             </div>
                         </div>
 
@@ -74,8 +75,7 @@
                     <div
                         class="card-footer bg-white border-top p-3 d-flex justify-content-between align-items-center z-index-fix">
                         <small class="text-muted">
-                            <i class='bx bx-calendar-check me-1'></i>
-                            Posted {{ job.posted_date|date:"M d" }}
+                            <i class='bx bx-calendar-check me-1'></i> Posted {{ job.posted_date|date:"M d" }}
                         </small>
                         <div class="action-buttons">
                             {% if job.id in applied_job_ids %}

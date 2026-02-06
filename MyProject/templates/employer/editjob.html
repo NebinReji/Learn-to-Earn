@@ -53,6 +53,12 @@
 								<div class="text-danger small">{{ form.job_description.errors }}</div>
 							</div>
 
+							<div class="col-md-12 mb-3">
+								<label class="form-label fw-bold">Key Responsibilities & Requirements</label>
+								{{ form.requirements }}
+								<div class="text-danger small">{{ form.requirements.errors }}</div>
+							</div>
+
 							<div class="col-md-6 mb-3">
 								<label class="form-label fw-bold d-block">Job Type</label>
 								{{ form.job_type }}
@@ -74,22 +80,18 @@
 							<div class="col-md-6 mb-3">
 								<label class="form-label fw-bold">Working Days</label>
 								{{ form.working_days }}
-								<small class="text-muted d-block mt-1">Specify which days the employee is expected to
-									work (e.g., "Mon-Fri", "Weekends").</small>
+								<small class="text-muted d-block mt-1">No. of days they can work per week.</small>
 								<div class="text-danger small">{{ form.working_days.errors }}</div>
 							</div>
 
 							<div class="col-md-6 mb-3">
-								<label class="form-label fw-bold">Hourly Pay</label>
-								<div class="input-group">
-									<span class="input-group-text">₹</span>
-									{{ form.hourly_pay }}
-								</div>
-								<div class="text-danger small">{{ form.hourly_pay.errors }}</div>
-							</div>
+							<label class="form-label fw-bold">Hourly Pay (₹/hour)</label>
+							{{ form.hourly_pay }}
+							<small class="text-muted d-block mt-1">Optional: Specify the hourly rate</small>
+							<div class="text-danger small">{{ form.hourly_pay.errors }}</div>
+						</div>
 
-							<div class="col-md-6 mb-3">
-								<label class="form-label fw-bold">Salary Range (Monthly Estimate)</label>
+						<div class="col-md-6 mb-3">
 								{{ form.salary_range }}
 								<div class="text-danger small">{{ form.salary_range.errors }}</div>
 							</div>

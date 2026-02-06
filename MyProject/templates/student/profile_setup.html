@@ -73,6 +73,12 @@
                                 {{ form.profile_picture }}
                                 <div class="text-danger small">{{ form.profile_picture.errors }}</div>
                             </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Upload ID Card (Required for Verification)</label>
+                                {{ form.id_card }}
+                                <div class="text-secondary small">Accepted formats: JPG, PNG, PDF. Max size 5MB.</div>
+                                <div class="text-danger small">{{ form.id_card.errors }}</div>
+                            </div>
                             <div class="col-12">
                                 <label class="form-label">Short Bio</label>
                                 {{ form.bio }}

@@ -66,6 +66,12 @@ def approve_employer(request, employer_id):
         if employer.user:
             employer.user.is_active = True
             employer.user.save()
+            from guest.models import Notification
+            Notification.objects.create(
+                user=employer.user,
+                message="Your employer profile has been approved. You can now post jobs.",
+                link='/employer/profile/'
+            )
         messages.success(request, f'{employer.company_name} has been approved and activated!')
     except Employer.DoesNotExist:
         messages.error(request, 'Employer not found.')
@@ -79,6 +85,12 @@ def reject_employer(request, employer_id):
         if employer.user:
             employer.user.is_active = False
             employer.user.save()
+            from guest.models import Notification
+            Notification.objects.create(
+                user=employer.user,
+                message="Your employer profile was rejected. Please update your details and try again.",
+                link='/employer/profile/'
+            )
         messages.warning(request, f'{employer.company_name} has been rejected and deactivated.')
     except Employer.DoesNotExist:
         messages.error(request, 'Employer not found.')
@@ -97,6 +109,12 @@ def approve_student(request, student_id):
         if stud.user:
             stud.user.is_active = True
             stud.user.save()
+            from guest.models import Notification
+            Notification.objects.create(
+                user=stud.user,
+                message="Your student profile has been approved. You can now apply for jobs.",
+                link='/student/profile/'
+            )
         messages.success(request, f'{stud.student_name} has been approved and verified!')
     except student.DoesNotExist:
         messages.error(request, 'Student not found.')
@@ -110,6 +128,12 @@ def reject_student(request, student_id):
         if stud.user:
             stud.user.is_active = False # Deactivate user on rejection? Yes, strict.
             stud.user.save()
+            from guest.models import Notification
+            Notification.objects.create(
+                user=stud.user,
+                message="Your student profile was rejected. Please update your details and try again.",
+                link='/student/profile/'
+            )
         messages.warning(request, f'{stud.student_name} has been rejected and deactivated.')
     except student.DoesNotExist:
         messages.error(request, 'Student not found.')

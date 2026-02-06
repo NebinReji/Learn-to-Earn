@@ -77,11 +77,20 @@
                     <div class="collapse navbar-collapse mean-menu">
                         <ul class="navbar-nav m-auto">
                             <li class="nav-item"><a href="{% url 'student_index' %}" class="nav-link">Dashboard</a></li>
+                            {% if request.user.student_profile.verification_status %}
                             <li class="nav-item"><a href="{% url 'student_view_jobs' %}" class="nav-link">Find Jobs</a>
                             </li>
                             <li class="nav-item"><a href="{% url 'my_skills' %}" class="nav-link">Offer Skills</a></li>
                             <li class="nav-item"><a href="{% url 'student_my_applications' %}" class="nav-link">My
                                     Applications</a></li>
+                            {% else %}
+                            <li class="nav-item"><a href="#" class="nav-link text-muted" style="cursor: not-allowed;"
+                                    title="Verification Pending">Find Jobs <i class='bx bx-lock-alt'></i></a></li>
+                            <li class="nav-item"><a href="#" class="nav-link text-muted" style="cursor: not-allowed;"
+                                    title="Verification Pending">Offer Skills <i class='bx bx-lock-alt'></i></a></li>
+                            <li class="nav-item"><a href="#" class="nav-link text-muted" style="cursor: not-allowed;"
+                                    title="Verification Pending">My Applications <i class='bx bx-lock-alt'></i></a></li>
+                            {% endif %}
                             <li class="nav-item"><a href="{% url 'student_profile' %}" class="nav-link">Profile</a></li>
                         </ul>
 
@@ -96,17 +105,17 @@
 
     <!-- PROFILE STATUS ALERT -->
     {% if request.user.student_profile %}
-        {% if not request.user.student_profile.is_profile_complete %}
-        <div class="alert alert-danger text-center mb-0 rounded-0 fw-bold" role="alert">
-            <i class='bx bx-error-circle'></i> Your profile is incomplete. Please add your district to continue.
-            <a href="{% url 'student_profile_setup' %}" class="alert-link">Complete Setup</a>
-        </div>
-        {% elif request.user.student_profile.verification_status is False %}
-        <div class="alert alert-warning text-center mb-0 rounded-0 fw-bold" role="alert">
-            <i class='bx bx-time'></i> Your profile is pending verification. You can apply for jobs once verified.
-            <a href="{% url 'student_profile' %}" class="alert-link">View Profile</a>
-        </div>
-        {% endif %}
+    {% if not request.user.student_profile.is_profile_complete %}
+    <div class="alert alert-danger text-center mb-0 rounded-0 fw-bold" role="alert">
+        <i class='bx bx-error-circle'></i> Your profile is incomplete. Please add your district to continue.
+        <a href="{% url 'student_profile_setup' %}" class="alert-link">Complete Setup</a>
+    </div>
+    {% elif request.user.student_profile.verification_status is False %}
+    <div class="alert alert-warning text-center mb-0 rounded-0 fw-bold" role="alert">
+        <i class='bx bx-time'></i> Your profile is pending verification. You can apply for jobs once verified.
+        <a href="{% url 'student_profile' %}" class="alert-link">View Profile</a>
+    </div>
+    {% endif %}
     {% endif %}
 
     {% block content %}{% endblock %}

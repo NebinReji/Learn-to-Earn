@@ -30,6 +30,14 @@
             <p>Manage all applications received for your job postings</p>
         </div>
 
+        {% url 'shortlisted_candidates' as shortlisted_url %}
+
+        <div class="d-flex justify-content-end mb-3">
+            <a href="{{ shortlisted_url|default:'/employer/shortlisted-candidates/' }}" class="btn btn-outline-primary">
+                View Shortlisted Candidates
+            </a>
+        </div>
+
         <div class="row justify-content-center">
             <div class="col-lg-12">
 
@@ -80,6 +88,16 @@
                                         class="btn btn-sm btn-primary">
                                         View Profile
                                     </a>
+                                    {% if application.status != 'accepted' and application.status != 'rejected' %}
+                                    <a href="{% url 'update_status' application.id 'shortlisted' %}"
+                                        class="btn btn-sm btn-info text-white ms-1">
+                                        Shortlist
+                                    </a>
+                                    <a href="{% url 'update_status' application.id 'accepted' %}"
+                                        class="btn btn-sm btn-success ms-1">
+                                        Approve
+                                    </a>
+                                    {% endif %}
                                 </td>
                             </tr>
                             {% endfor %}

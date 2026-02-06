@@ -111,13 +111,11 @@
                 {% endif %}
             </div>
             <div class="col-lg-7 text-center text-lg-start">
-                <h1 class="fw-bold mb-2">{{ student.student_name }}</h1>
-                <p class="mb-3 fs-5 opacity-75">{{ student.academic_status }}</p>
+                <h1 class="fw-bold mb-2 text-white">{{ student.student_name }}</h1>
+                <p class="mb-3 fs-5 opacity-75 text-white">{{ student.academic_status }}</p>
                 <div class="d-flex gap-2 justify-content-center justify-content-lg-start">
-                    <span class="badge bg-white text-dark px-3 py-2 rounded-pill"><i class='bx bx-map me-1'></i> {{
-                        student.district.name }}</span>
-                    <span class="badge bg-white text-dark px-3 py-2 rounded-pill"><i class='bx bx-time me-1'></i> {{
-                        student.availability }}</span>
+                    <span class="badge bg-white text-dark px-3 py-2 rounded-pill"><i class='bx bx-map me-1'></i> {{ student.district.district_name }}</span>
+                    <span class="badge bg-white text-dark px-3 py-2 rounded-pill"><i class='bx bx-time me-1'></i> {{ student.get_availability_display }}</span>
                 </div>
             </div>
             <div class="col-lg-3 text-center text-lg-end mt-4 mt-lg-0">
@@ -170,7 +168,7 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <small class="text-muted d-block mb-1">Availability</small>
-                        <span class="fw-bold">{{ student.availability }}</span>
+                        <span class="fw-bold">{{ student.get_availability_display }}</span>
                     </div>
                 </div>
             </div>
@@ -202,7 +200,7 @@
                     <div class="detail-icon"><i class='bx bx-map-pin'></i></div>
                     <div class="detail-content">
                         <h6>Location</h6>
-                        <p>{{ student.district.name }}, {{ student.district.state.name }}</p>
+                        <p>{{ student.district }}</p>
                     </div>
                 </div>
             </div>

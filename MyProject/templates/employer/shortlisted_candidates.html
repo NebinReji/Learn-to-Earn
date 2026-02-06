@@ -1,0 +1,111 @@
+{% extends 'employer/base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Page Title Start -->
+<section class="page-title title-bg5">
+    <div class="d-table">
+        <div class="d-table-cell">
+            <h2>Shortlisted Candidates</h2>
+            <ul>
+                <li>
+                    <a href="{% url 'employer_index' %}">Home</a>
+                </li>
+                <li>Shortlisted Candidates</li>
+            </ul>
+        </div>
+    </div>
+    <div class="lines">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+</section>
+<!-- Page Title End -->
+
+<section class="job-section pt-100 pb-70">
+    <div class="container">
+        <div class="section-title text-center">
+            <h2>Shortlisted for Your Jobs</h2>
+            <p>Review shortlisted applicants and approve if needed</p>
+        </div>
+
+        <div class="d-flex justify-content-end mb-3">
+            <a href="{% url 'view_applications' %}" class="btn btn-outline-secondary">
+                Back to Applications
+            </a>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+
+                {% if applications %}
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" style="font-size:16px; min-width:900px;">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Job Title</th>
+                                <th>Student Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Applied Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for application in applications %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ application.job.job_title }}</td>
+                                <td>
+                                    <a href="{% url 'view_student_profile' application.student.id %}"
+                                        class="fw-bold text-dark text-decoration-none">
+                                        {{ application.student.student_name }}
+                                    </a>
+                                </td>
+                                <td>{{ application.student.email }}</td>
+                                <td>{{ application.student.phone_number }}</td>
+                                <td>{{ application.applied_date|date:"d M Y, h:i A" }}</td>
+                                <td>
+                                    <span class="badge bg-primary text-white">
+                                        {{ application.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="{% url 'view_student_profile' application.student.id %}"
+                                        class="btn btn-sm btn-primary">
+                                        View Profile
+                                    </a>
+                                    <a href="{% url 'update_status' application.id 'accepted' %}"
+                                        class="btn btn-sm btn-success ms-1">
+                                        Approve
+                                    </a>
+                                    <a href="{% url 'update_status' application.id 'rejected' %}"
+                                        class="btn btn-sm btn-danger ms-1">
+                                        Reject
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+
+                {% else %}
+                <div class="alert alert-info text-center">
+                    <h4>No Shortlisted Candidates</h4>
+                    <p>You haven't shortlisted any candidates yet.</p>
+                    <a href="{% url 'view_applications' %}" class="btn btn-primary">Go to Applications</a>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

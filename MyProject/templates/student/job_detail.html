@@ -3,157 +3,315 @@
 
 {% block content %}
 <style>
-    .job-header-card {
-        background: white;
-        border-radius: 15px;
+    .job-header-section {
+        background-color: #f8f9fa;
+        padding: 60px 0;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .job-profile-card {
+        background: #fff;
+        border-radius: 16px;
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-        padding: 40px;
-        margin-bottom: 30px;
-        position: relative;
+        border: 1px solid #f1f5f9;
         overflow: hidden;
+        transition: transform 0.3s ease;
     }
 
-    .job-header-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 6px;
-        height: 100%;
-        background: #0d6efd;
-    }
-
-    .company-logo-large {
-        width: 100px;
-        height: 100px;
-        object-fit: cover;
+    .company-logo-wrapper {
+        width: 120px;
+        height: 120px;
         border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .job-meta-item {
+        background: #fff;
         display: flex;
         align-items: center;
-        margin-right: 25px;
+        justify-content: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        margin-right: 30px;
+    }
+
+    .company-logo-wrapper img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .job-title {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: #1a202e;
         margin-bottom: 10px;
-        color: #6c757d;
-        font-size: 0.95rem;
     }
 
-    .job-meta-item i {
-        font-size: 1.2rem;
-        color: #0d6efd;
-        margin-right: 8px;
-    }
-
-    .job-content-card {
-        background: white;
-        border-radius: 15px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-        padding: 40px;
-        height: 100%;
-    }
-
-    .sidebar-card {
-        background: white;
-        border-radius: 15px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-        padding: 25px;
-        margin-bottom: 25px;
-    }
-
-    .btn-apply {
-        padding: 15px;
-        border-radius: 10px;
-        font-weight: 600;
-        font-size: 1.1rem;
-        letter-spacing: 0.5px;
-        transition: all 0.3s ease;
-    }
-
-    .btn-apply:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(25, 135, 84, 0.3);
-    }
-
-    .badge-soft {
-        padding: 8px 15px;
-        border-radius: 8px;
+    .job-meta-badge {
+        font-size: 0.9rem;
         font-weight: 500;
-        font-size: 0.85rem;
+        padding: 6px 12px;
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
     }
 
-    .section-title {
+    .badge-location {
+        background: #e3f2fd;
+        color: #0d6efd;
+    }
+
+    .badge-type {
+        background: #f3e5f5;
+        color: #9c27b0;
+    }
+
+    .badge-salary {
+        background: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    .content-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 40px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        border: 1px solid #f1f5f9;
+        margin-bottom: 30px;
+    }
+
+    .section-header {
+        position: relative;
+        padding-bottom: 15px;
+        margin-bottom: 25px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .section-header h4 {
         font-weight: 700;
-        color: #212529;
-        margin-bottom: 20px;
-        padding-bottom: 10px;
+        color: #1a202e;
+        margin: 0;
+        position: relative;
+    }
+
+    .section-header h4::after {
+        content: '';
+        position: absolute;
+        bottom: -16px;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background: #FF2B2B;
+        /* Primary Red */
+    }
+
+    .sidebar-widget {
+        background: #fff;
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        border: 1px solid #f1f5f9;
+        margin-bottom: 30px;
+    }
+
+    .info-list li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid #f8f9fa;
+    }
+
+    .info-list li:last-child {
+        border-bottom: none;
+    }
+
+    .info-label {
+        color: #64748b;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .info-value {
+        font-weight: 600;
+        color: #1a202e;
+    }
+
+    .btn-apply-lg {
+        padding: 15px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(255, 43, 43, 0.3);
+        transition: transform 0.2s;
+    }
+
+    .btn-apply-lg:hover {
+        transform: translateY(-2px);
     }
 </style>
-<section class="mb-5">
-    <h5 class="section-title">Job Description</h5>
-    <div class="text-muted" style="line-height: 1.8;">
-        {{ job.job_description|linebreaks }}
+
+<!-- HEADER SECTION -->
+<div class="job-header-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center">
+                    <div class="company-logo-wrapper mb-3 mb-md-0">
+                        {% if job.employer.company_logo %}
+                        <img src="{{ job.employer.company_logo.url }}" alt="{{ job.employer.company_name }}">
+                        {% else %}
+                        <i class='bx bxs-buildings fs-1 text-muted'></i>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <h1 class="job-title">{{ job.job_title }}</h1>
+                        <div class="d-flex flex-wrap gap-3 mb-3">
+                            <span class="text-muted fw-bold fs-5">
+                                <i class='bx bx-building-house me-1'></i> {{ job.employer.company_name }}
+                            </span>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="job-meta-badge badge-location">
+                                <i class='bx bx-map'></i>
+                                {% if job.job_type == 'online' %}
+                                Remote
+                                {% else %}
+                                {{ job.location|default:"On-site" }}
+                                {% endif %}
+                            </span>
+                            <span class="job-meta-badge badge-type">
+                                <i class='bx bx-time-five'></i> {{ job.job_type|title }}
+                            </span>
+                            <span class="job-meta-badge badge-salary">
+                                <i class='bx bx-money'></i> ₹{{ job.salary_range }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+                {% if has_applied %}
+                <button class="btn btn-secondary btn-lg px-5 py-3 rounded-pill fw-bold" disabled>
+                    <i class='bx bx-check-double me-2'></i> Applied
+                </button>
+                <div class="mt-2 text-muted small">Application submitted on {{ has_applied_date|date:"M d, Y" }}</div>
+                {% else %}
+                <a href="{% url 'apply_job' job.id %}" class="btn btn-danger btn-apply-lg w-100 text-white"
+                    style="background-color: #FF2B2B; border:none;">
+                    Apply for this Job <i class='bx bx-right-arrow-alt ms-2'></i>
+                </a>
+                <div class="mt-2 text-muted small"><i class='bx bx-time'></i> Deadline: {{ job.expiry_date|date:"F d, Y"
+                    }}</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<section class="py-5" style="background-color: #fcfcfc;">
+    <div class="container">
+        <div class="row">
+            <!-- LEFT COLUMN: Description -->
+            <div class="col-lg-8">
+                <div class="content-card">
+                    <div class="section-header">
+                        <h4>Job Description</h4>
+                    </div>
+                    <div class="text-secondary" style="line-height: 1.8; font-size: 1.05rem;">
+                        {{ job.job_description|linebreaks }}
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="section-header">
+                        <h4>Key Responsibilities & Requirements</h4>
+                    </div>
+                    <div class="text-secondary" style="line-height: 1.8; font-size: 1.05rem;">
+                        {% if job.requirements %}
+                        {{ job.requirements|linebreaks }}
+                        {% else %}
+                        <p class="text-muted fst-italic">No specific requirements listed.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if job.employer.description %}
+                <div class="content-card">
+                    <div class="section-header">
+                        <h4>About {{ job.employer.company_name }}</h4>
+                    </div>
+                    <div class="text-secondary" style="line-height: 1.8;">
+                        {{ job.employer.description|linebreaks }}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- RIGHT COLUMN: Sidebar -->
+            <div class="col-lg-4">
+                <!-- Job Overview Card -->
+                <div class="sidebar-widget">
+                    <h5 class="fw-bold mb-4">Job Overview</h5>
+                    <ul class="list-unstyled info-list mb-0">
+                        <li>
+                            <span class="info-label"><i class='bx bx-calendar'></i> Posted Date</span>
+                            <span class="info-value">{{ job.posted_date|date:"M d, Y" }}</span>
+                        </li>
+                        <li>
+                            <span class="info-label"><i class='bx bx-stopwatch'></i> Deadline</span>
+                            <span class="info-value text-danger">{{ job.expiry_date|date:"M d, Y" }}</span>
+                        </li>
+                        <li>
+                            <span class="info-label"><i class='bx bx-briefcase'></i> Category</span>
+                            <span class="info-value">{{ job.get_part_time_category_display }}</span>
+                        </li>
+                        <li>
+                            <span class="info-label"><i class='bx bx-time'></i> Shift</span>
+                            <span class="info-value">{{ job.shift_timing }}</span>
+                        </li>
+                        {% if job.hourly_pay %}
+                        <li>
+                            <span class="info-label"><i class='bx bx-money'></i> Hourly Pay</span>
+                            <span class="info-value text-success">₹{{ job.hourly_pay }}/hr</span>
+                        </li>
+                        {% endif %}
+                        <li>
+                            <span class="info-label"><i class='bx bx-group'></i> Vacancies</span>
+                            <span class="info-value">{{ job.vacancies|default:"Open" }}</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Company Card -->
+                <div class="sidebar-widget text-center">
+                    {% if job.employer.company_logo %}
+                    <img src="{{ job.employer.company_logo.url }}" alt="Logo" class="rounded-circle mb-3 border p-1"
+                        style="width: 80px; height: 80px; object-fit: contain;">
+                    {% endif %}
+                    <h5 class="fw-bold mb-1">{{ job.employer.company_name }}</h5>
+                    <p class="text-muted small mb-3">{{ job.employer.area|default:"Location not specified" }}</p>
+
+                    {% if job.employer.website %}
+                    <a href="{{ job.employer.website }}" target="_blank"
+                        class="btn btn-outline-dark btn-sm rounded-pill px-4">
+                        Visit Website <i class='bx bx-link-external ms-1'></i>
+                    </a>
+                    {% endif %}
+                </div>
+
+                <!-- Help Box -->
+                <div class="card bg-primary text-white border-0 rounded-4 p-4 text-center"
+                    style="background: linear-gradient(135deg, #1A202E 0%, #303a4e 100%);">
+                    <i class='bx bx-help-circle fs-1 mb-3 text-white-50'></i>
+                    <h5 class="fw-bold text-white">Need Help?</h5>
+                    <p class="text-white-50 small mb-3">If you have questions about this role or the application
+                        process.</p>
+                    <a href="#" class="btn btn-light btn-sm rounded-pill px-4 text-dark fw-bold">Contact Support</a>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
-
-<section class="mb-5">
-    <h5 class="section-title">Key Responsibilities & Requirements</h5>
-    <div class="text-muted">
-        <!-- Assuming description might contain formatted text or lists, if not, static text -->
-        <p>No specific responsibilities listed. Please refer to the job description above.</p>
-    </div>
-</section>
-</div>
-</div>
-
-<!-- Sidebar Info -->
-<div class="col-lg-4">
-    <!-- Mobile Apply Button (Visible only on smaller screens) -->
-    <div class="d-lg-none mb-4">
-        {% if has_applied %}
-        <button class="btn btn-secondary btn-apply w-100 shadow-sm" disabled>
-            <i class="bi bi-check-circle-fill me-2"></i> Applied
-        </button>
-        {% else %}
-        <a href="{% url 'apply_job' job.id %}" class="btn btn-success btn-apply w-100 shadow-sm">
-            Apply Now <i class="bi bi-arrow-right ms-2"></i>
-        </a>
-        {% endif %}
-    </div>
-
-    <div class="sidebar-card">
-        <h5 class="fw-bold mb-4">Job Overview</h5>
-        <ul class="list-unstyled">
-            <li class="mb-3 d-flex justify-content-between align-items-center border-bottom pb-2">
-                <span class="text-muted"><i class="bi bi-calendar-check me-2"></i>Posted Date</span>
-                <span class="fw-semibold">{{ job.posted_date|date:"M d, Y" }}</span>
-            </li>
-            <li class="mb-3 d-flex justify-content-between align-items-center border-bottom pb-2">
-                <span class="text-muted"><i class="bi bi-hourglass-split me-2"></i>Deadline</span>
-                <span class="fw-semibold text-danger">{{ job.expiry_date|date:"M d, Y" }}</span>
-            </li>
-            <li class="mb-3 d-flex justify-content-between align-items-center">
-                <span class="text-muted"><i class="bi bi-people me-2"></i>Vacancies</span>
-                <span class="fw-semibold">{{ job.vacancies|default:"N/A" }}</span>
-            </li>
-        </ul>
-    </div>
-
-    <div class="sidebar-card text-center">
-        <h6 class="fw-bold mb-3">About the Company</h6>
-        {% if job.employer.logo %}
-        <img src="{{ job.employer.logo.url }}" alt="Logo" class="rounded mb-3"
-            style="width: 60px; height: 60px; object-fit: cover;">
-        {% endif %}
-        <h5 class="fw-bold">{{ job.employer.company_name }}</h5>
-        {% if job.employer.website %}
-        <a href="{{ job.employer.website }}" target="_blank" class="btn btn-outline-primary btn-sm rounded-pill mt-2">
-            <i class="bi bi-link-45deg me-1"></i> Visit Website
-        </a>
-        {% endif %}
-    </div>
-</div>
-</div>
-</div>
 {% endblock %}

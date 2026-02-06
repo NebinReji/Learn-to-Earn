@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 import re
 from guest.models import CustomUser, Employer, student
-from MyApp.models import District
+from MyApp.models import District, Category
 
 
 class EmployerForm(forms.ModelForm):
@@ -184,6 +184,11 @@ class EmployerProfileForm(forms.ModelForm):
         widget=forms.Select(attrs={"class": "form-control"}),
         required=True
     )
+    industry = forms.ModelChoiceField(
+        queryset=Category.objects.all(),
+        widget=forms.Select(attrs={"class": "form-control"}),
+        required=True
+    )
 
     class Meta:
         model = Employer
@@ -193,7 +198,6 @@ class EmployerProfileForm(forms.ModelForm):
         widgets = {
             'website': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'https://company.com'}),
             'area': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g. Kaloor, Kochi'}),
-            'industry': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g. Retail, IT'}),
             'address': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter Address', 'rows': 3}),
             'description': forms.Textarea(attrs={"class": "form-control", "rows": 4, "placeholder": "Describe your company..."}),
             'company_logo': forms.ClearableFileInput(attrs={"class": "form-control"}),

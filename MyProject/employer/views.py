@@ -114,6 +114,19 @@ def view_applications(request):
     return render(request, 'employer/view_applications.html', {'applications': applications})
 
 
+def shortlisted_candidates(request):
+    user_id = request.user.id
+    employer = Employer.objects.get(user_id=user_id)
+
+    jobs = employer.job_postings.all()
+    applications = Application.objects.filter(
+        job__in=jobs,
+        status='shortlisted'
+    ).select_related('student__user', 'job')
+
+    return render(request, 'employer/shortlisted_candidates.html', {'applications': applications})
+
+
 
 def profile(request):
     user_id = request.user.id

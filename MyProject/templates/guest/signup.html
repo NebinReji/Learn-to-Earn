@@ -88,33 +88,38 @@
                                             <div class="col-md-6 mb-3">
                                                 <label>Full Name</label>
                                                 {{ student_form.name }}
-                                                <div class="text-danger small mt-1">{{ student_form.name.errors }}</div>
+                                                {% for error in student_form.name.errors %}
+                                                <div class="text-danger small mt-1">{{ error }}</div>
+                                                {% endfor %}
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label>Email Address</label>
                                                 {{ student_form.email }}
-                                                <div class="text-danger small mt-1">{{ student_form.email.errors }}
-                                                </div>
+                                                {% for error in student_form.email.errors %}
+                                                <div class="text-danger small mt-1">{{ error }}</div>
+                                                {% endfor %}
                                             </div>
                                             <div class="col-md-12 mb-3">
                                                 <label>Phone Number</label>
                                                 {{ student_form.phone_number }}
-                                                <div class="text-danger small mt-1">{{ student_form.phone_number.errors
-                                                    }}
-                                                </div>
+                                                {% for error in student_form.phone_number.errors %}
+                                                <div class="text-danger small mt-1">{{ error }}</div>
+                                                {% endfor %}
                                             </div>
 
                                             <div class="col-md-6 mb-3">
                                                 <label>Password</label>
                                                 {{ student_form.password1 }}
-                                                <div class="text-danger small mt-1">{{ student_form.password1.errors }}
-                                                </div>
+                                                {% for error in student_form.password1.errors %}
+                                                <div class="text-danger small mt-1">{{ error }}</div>
+                                                {% endfor %}
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label>Confirm Password</label>
                                                 {{ student_form.password2 }}
-                                                <div class="text-danger small mt-1">{{ student_form.password2.errors }}
-                                                </div>
+                                                {% for error in student_form.password2.errors %}
+                                                <div class="text-danger small mt-1">{{ error }}</div>
+                                                {% endfor %}
                                             </div>
                                         </div>
 
@@ -149,40 +154,58 @@
                                             <div class="col-md-6 mb-3">
                                                 <label>Company Name</label>
                                                 {{ employer_form.company_name }}
-                                                <div class="text-danger small mt-1">{{ employer_form.company_name.errors
-                                                    }}
-                                                </div>
+                                                {% for error in employer_form.company_name.errors %}
+                                                <div class="text-danger small mt-1">{{ error }}</div>
+                                                {% endfor %}
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label>Contact Person</label>
                                                 {{ employer_form.contact_person }}
-                                                <div class="text-danger small mt-1">{{
-                                                    employer_form.contact_person.errors }}
-                                                </div>
+                                                {% for error in employer_form.contact_person.errors %}
+                                                <div class="text-danger small mt-1">{{ error }}</div>
+                                                {% endfor %}
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label>Email Address</label>
                                                 {{ employer_form.email }}
-                                                <div class="text-danger small mt-1">{{ employer_form.email.errors }}
-                                                </div>
+                                                {% for error in employer_form.email.errors %}
+                                                <div class="text-danger small mt-1">{{ error }}</div>
+                                                {% endfor %}
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label>Phone Number</label>
                                                 {{ employer_form.phone }}
-                                                <div class="text-danger small mt-1">{{ employer_form.phone.errors }}
-                                                </div>
+                                                {% for error in employer_form.phone.errors %}
+                                                <div class="text-danger small mt-1">{{ error }}</div>
+                                                {% endfor %}
                                             </div>
 
                                             <div class="col-md-6 mb-3">
                                                 <label>Password</label>
                                                 {{ employer_form.password1 }}
-                                                <div class="text-danger small mt-1">{{ employer_form.password1.errors }}
-                                                </div>
+                                                {% for error in employer_form.password1.errors %}
+                                                <div class="text-danger small mt-1">{{ error }}</div>
+                                                {% endfor %}
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label>Confirm Password</label>
                                                 {{ employer_form.password2 }}
-                                                <div class="text-danger small mt-1">{{ employer_form.password2.errors }}
+                                                {% for error in employer_form.password2.errors %}
+                                                <div class="text-danger small mt-1">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+
+                                            <div class="col-12 mb-3">
+                                                <div class="form-check">
+                                                    {{ employer_form.terms_agreement }}
+                                                    <label class="form-check-label"
+                                                        for="{{ employer_form.terms_agreement.id_for_label }}">
+                                                        I agree to the <a href="#" class="text-primary">Terms and
+                                                            Conditions</a>
+                                                    </label>
+                                                    {% for error in employer_form.terms_agreement.errors %}
+                                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                                    {% endfor %}
                                                 </div>
                                             </div>
                                         </div>

@@ -158,8 +158,7 @@
                                     <li>
                                         <a class="dropdown-item py-3 border-bottom" href="{{ notif.link|default:'#' }}">
                                             <p class="mb-1 text-wrap small">{{ notif.message }}</p>
-                                            <small class="text-muted" style="font-size: 0.75rem;">{{
-                                                notif.timestamp|timesince }} ago</small>
+                                            <small class="text-muted" style="font-size: 0.75rem;">{{ notif.timestamp|timesince }} ago</small>
                                         </a>
                                     </li>
                                     {% endfor %}

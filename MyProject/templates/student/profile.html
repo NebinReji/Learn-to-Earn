@@ -97,7 +97,14 @@
                 <p class="mb-2 text-white-50"><small>Student ID: #{{ student.id }}</small></p>
                 <div class="d-flex justify-content-center gap-2 mb-3">
                     <span class="badge bg-white text-primary rounded-pill px-3 py-2"><i
-                            class="bi bi-geo-alt-fill me-1"></i> {{ student.district.name }}</span>
+                            class="bi bi-geo-alt-fill me-1"></i> {{ student.district }}</span>
+                    {% if student.verification_status %}
+                    <span class="badge bg-success rounded-pill px-3 py-2"><i class="bi bi-check-circle-fill me-1"></i>
+                        Verified</span>
+                    {% else %}
+                    <span class="badge bg-warning text-dark rounded-pill px-3 py-2"><i
+                            class="bi bi-clock-fill me-1"></i> Pending</span>
+                    {% endif %}
                 </div>
 
                 <hr class="border-white opacity-25 my-3">
@@ -125,7 +132,8 @@
                 <h6 class="fw-bold text-muted text-uppercase small mb-3">Professional Status</h6>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <span class="text-muted small">Availability</span>
-                    <span class="badge bg-success-subtle text-success rounded-pill">{{ student.availability }}</span>
+                    <span class="badge bg-success-subtle text-success rounded-pill">{{ student.get_availability_display
+                        }}</span>
                 </div>
                 <div class="d-flex justify-content-between align-items-center">
                     <span class="text-muted small">Academic Status</span>
@@ -165,6 +173,11 @@
                                 <div class="text-danger small">{{ form.phone_number.errors }}</div>
                             </div>
                             <div class="col-md-6">
+                                <label class="form-label">District</label>
+                                {{ form.district }}
+                                <div class="text-danger small">{{ form.district.errors }}</div>
+                            </div>
+                            <div class="col-md-6">
                                 <label class="form-label">Academic Status</label>
                                 {{ form.academic_status }}
                                 <div class="text-danger small">{{ form.academic_status.errors }}</div>
@@ -195,6 +208,11 @@
                                 <label class="form-label">Resume (Upload New)</label>
                                 {{ form.resume }}
                                 <div class="text-danger small">{{ form.resume.errors }}</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">ID Card (Upload New)</label>
+                                {{ form.id_card }}
+                                <div class="text-danger small">{{ form.id_card.errors }}</div>
                             </div>
                             <div class="col-12">
                                 <label class="form-label">Preferred Job Roles</label>

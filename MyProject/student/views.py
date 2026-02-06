@@ -9,6 +9,11 @@ from student.forms import StudentProfileForm, StudentProfileSetupForm
 def index(request):
     try:
         stud = student.objects.get(user_id=request.user.id)
+        
+        # Redirect to verification pending if profile submitted but not verified
+        if stud.is_profile_complete() and not stud.verification_status:
+             return redirect('student_verification_pending')
+             
         applications_count = Application.objects.filter(student=stud).count()
         my_skills_count = SkillService.objects.filter(student=stud).count()
         
@@ -64,6 +69,16 @@ def complete_profile(request):
 
 
 def view_jobs(request):
+    # Restrict access if not verified
+    if request.user.is_authenticated:
+        try:
+            stud = student.objects.get(user_id=request.user.id)
+            if stud.is_profile_complete() and not stud.verification_status:
+                messages.warning(request, "Please wait for account verification.")
+                return redirect('student_verification_pending')
+        except student.DoesNotExist:
+            pass
+
     jobs = Jobposting.objects.select_related('employer').all()
     
     # Get applied jobs if user is a student
@@ -117,8 +132,22 @@ def apply_job(request, job_id):
         return redirect('student_job_detail', job_id=job_id)
     
     # Create application
-    Application.objects.create(student=stud, job_id=job_id)
+    job = get_object_or_404(Jobposting, id=job_id)
+    Application.objects.create(student=stud, job=job)
     messages.success(request, "Successfully applied for the job!")
+
+    # Notifications
+    from guest.models import Notification
+    Notification.objects.create(
+        user=job.employer.user,
+        message=f"New application from {stud.student_name} for {job.job_title}.",
+        link='/employer/applications/'
+    )
+    Notification.objects.create(
+        user=request.user,
+        message=f"You applied for {job.job_title} at {job.employer.company_name}.",
+        link='/student/my-applications/'
+    )
     
     return redirect('student_job_detail', job_id=job_id)
 
@@ -163,6 +192,7 @@ def profile_setup(request):
         if form.is_valid():
             stud = form.save(commit=False)
             stud.verification_status = False # Ensure it remains False until Admin approves
+            # ID Card is handled by form.save() due to request.FILES
             stud.save()
             
             messages.info(request, "Profile setup complete. Your account is pending Admin verification.")
@@ -201,6 +231,11 @@ def my_applications(request):
             'phone_number': '',
         }
     )
+    
+    if not stud.verification_status:
+        messages.warning(request, "Your profile is under verification.")
+        return redirect('student_verification_pending')
+
     applications = Application.objects.filter(student=stud).select_related('job', 'job__employer').order_by('-applied_date')
     return render(request, 'student/my_applications.html', {'applications': applications})
 
@@ -277,6 +312,11 @@ def my_skills(request):
             'phone_number': '',
         }
     )
+    
+    if not stud.verification_status:
+        messages.warning(request, "Your profile is under verification.")
+        return redirect('student_verification_pending')
+
     services = SkillService.objects.filter(student=stud)
     bookings = ServiceBooking.objects.filter(service__student=stud).order_by('-booking_date')
     
@@ -302,12 +342,25 @@ def service_detail(request, service_id):
         if not requirements:
             messages.error(request, "Please describe your requirements.")
         else:
-            ServiceBooking.objects.create(
+            booking = ServiceBooking.objects.create(
                 service=service,
                 requester=request.user,
                 requirements=requirements
             )
             messages.success(request, "Booking request sent successfully!")
+
+            # Notifications
+            from guest.models import Notification
+            Notification.objects.create(
+                user=service.student.user,
+                message=f"New skill request for '{service.title}' from {request.user.name}.",
+                link='/student/my-skills/'
+            )
+            Notification.objects.create(
+                user=request.user,
+                message=f"Your request for '{service.title}' has been sent.",
+                link=f"/student/services/{service.id}/"
+            )
             return redirect('service_list')
             
     return render(request, 'student/service_detail.html', {'service': service})
@@ -339,18 +392,32 @@ def manage_booking(request, booking_id, action):
         messages.error(request, "Unauthorized action.")
         return redirect('my_skills')
         
+    status_message = None
     if action == 'approve':
         booking.status = 'approved'
+        status_message = "approved"
         messages.success(request, "Booking request approved!")
     elif action == 'reject':
         booking.status = 'rejected'
+        status_message = "rejected"
         messages.error(request, "Booking request rejected.")
     elif action == 'complete':
         booking.status = 'completed'
+        status_message = "completed"
         messages.success(request, "Service marked as completed successfully!")
     elif action == 'revoke':
         booking.status = 'rejected'
+        status_message = "revoked"
         messages.warning(request, "Service booking has been revoked/stopped.")
     
     booking.save()
+
+    # Notify requester about status update
+    if status_message:
+        from guest.models import Notification
+        Notification.objects.create(
+            user=booking.requester,
+            message=f"Your request for '{booking.service.title}' was {status_message}.",
+            link='/student/services/'
+        )
     return redirect('my_skills')
