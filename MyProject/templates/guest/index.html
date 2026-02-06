@@ -3,11 +3,11 @@
 
 {% block extra_css %}
 <style>
-    /* HERO */
+    /* HERO BANNER */
     .banner-style-two {
         background-color: var(--primary-dark);
-        padding-top: 180px;
-        padding-bottom: 240px;
+        padding-top: 60px;
+        padding-bottom: 120px;
         position: relative;
         overflow: hidden;
         background-image: url("{% static 'guest/assets/img/banner/7.jpg' %}");
@@ -23,7 +23,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(26, 32, 46, 0.85);
+        background: linear-gradient(135deg, rgba(26, 32, 46, 0.95) 0%, rgba(45, 27, 78, 0.92) 100%);
         z-index: -1;
     }
 
@@ -38,102 +38,90 @@
         color: #fff;
         line-height: 1.2;
         margin-bottom: 20px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     }
 
     .banner-text p {
-        color: #e2e8f0;
+        color: #d1d5db;
         font-size: 1.25rem;
         line-height: 1.8;
         margin-bottom: 30px;
         opacity: 0.9;
     }
 
-    /* SEARCH */
-    .find-section {
-        margin-top: -120px;
-        position: relative;
-        z-index: 10;
-        padding-bottom: 80px;
+    /* Banner Buttons */
+    .banner-buttons .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(255, 43, 43, 0.5);
     }
 
-    .find-form {
-        background: #fff;
-        border-radius: 12px;
-        padding: 40px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+    .banner-buttons .btn-outline-light:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: #fff;
+        box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
     }
 
-    .find-form .form-control {
-        border: 1px solid #e2e8f0;
-        padding: 15px 20px;
-        border-radius: 8px;
-        height: 55px;
-    }
+    /* Responsive Banner */
+    @media (max-width: 768px) {
+        .banner-style-two {
+            padding-top: 120px;
+            padding-bottom: 80px;
+        }
 
-    .find-form .nice-select-custom {
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        height: 55px;
-        line-height: 55px;
-        width: 100%;
-    }
+        .banner-text h1 {
+            font-size: 2.5rem;
+        }
 
-    .find-btn {
-        background: var(--primary-red);
-        color: #fff;
-        width: 100%;
-        height: 55px;
-        border: none;
-        border-radius: 8px;
-        font-weight: 700;
-        text-transform: uppercase;
-        transition: 0.3s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-    }
+        .banner-text p {
+            font-size: 1.1rem;
+        }
 
-    .find-btn:hover {
-        background: #d11f1f;
-        transform: translateY(-2px);
+        .banner-buttons {
+            flex-direction: column;
+        }
+
+        .banner-buttons .btn {
+            width: 100%;
+        }
     }
 
     /* SECTIONS */
     .section-title h2 {
-        font-size: 2.5rem;
-        font-weight: 800;
+        font-size: 2.25rem;
+        font-weight: 700;
         color: var(--primary-dark);
         margin-bottom: 15px;
+        letter-spacing: -0.5px;
     }
 
     .section-title p {
         color: #64748b;
-        font-size: 1.1rem;
+        font-size: 1.05rem;
+        line-height: 1.6;
     }
 
     /* CARDS */
     .feature-card {
         text-align: center;
-        padding: 40px 30px;
-        border: 1px dashed #e2e8f0;
+        padding: 35px 25px;
+        border: 1px solid #f1f5f9;
         border-radius: 12px;
-        transition: 0.3s;
+        transition: all 0.3s ease;
         height: 100%;
         background: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     }
 
     .feature-card:hover {
-        border-style: solid;
-        border-color: transparent;
+        border-color: var(--primary-red);
         transform: translateY(-5px);
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
     }
 
     .feature-icon {
-        width: 80px;
-        height: 80px;
-        background: #fff0f0;
+        width: 70px;
+        height: 70px;
+        background: #fff5f5;
         color: var(--primary-red);
         border-radius: 50%;
         display: flex;
@@ -199,61 +187,57 @@
     .premium-card {
         background: #fff;
         border-radius: 12px;
-        padding: 30px;
+        padding: 30px 25px;
         border: 1px solid #f1f5f9;
-        transition: 0.3s;
+        transition: all 0.3s ease;
         height: 100%;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     }
 
     .premium-card:hover {
         border-color: var(--primary-red);
         transform: translateY(-5px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
     }
 
+    /* Service Cards */
     .service-card {
         background: #fff;
-        border: 1px solid #f1f5f9;
         border-radius: 12px;
-        overflow: hidden;
+        padding: 30px 25px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        border: 1px solid #f1f5f9;
         transition: all 0.3s ease;
         height: 100%;
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
     }
 
     .service-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-        border-color: #e2e8f0;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+        border-color: var(--primary-red);
+    }
+
+    .service-card h4 {
+        font-size: 1.15rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: var(--primary-dark);
     }
 
     .service-top {
-        padding: 25px;
         flex-grow: 1;
     }
 
     .service-bottom {
-        padding: 15px 25px;
-        background: #f8fafc;
+        padding-top: 20px;
+        margin-top: 20px;
         border-top: 1px solid #f1f5f9;
         display: flex;
         align-items: center;
         justify-content: space-between;
-    }
-
-    .service-icon {
-        width: 50px;
-        height: 50px;
-        background: #fff0f0;
-        color: var(--primary-red);
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        margin-bottom: 20px;
     }
 
     .bg-main {
@@ -274,88 +258,55 @@
     }
 
     .job-type-badge {
-        background-color: #fff0f0;
+        background-color: #fff5f5;
         color: var(--primary-red);
-        padding: 5px 12px;
+        padding: 6px 14px;
         border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 600;
+        font-size: 0.85rem;
+        font-weight: 500;
     }
 
     .salary-tag {
-        font-weight: 700;
+        font-weight: 600;
         color: var(--primary-dark);
+        font-size: 1.05rem;
     }
 </style>
 {% endblock %}
 
 {% block content %}
 
-<!-- HERO -->
+<!-- HERO BANNER -->
 <section class="banner-style-two">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-8">
-                <div class="banner-text text-start">
-                    <span class="d-block mb-2 text-uppercase fw-bold text-white-50 letter-spacing-2">Welcome to
-                        Jovie</span>
-                    <h1>The Job Marketplace <br> for Students & Employers</h1>
-                    <p>
-                        Find flexible part-time work that fits your schedule, or hire energetic student talent for your
-                        business needs.
-                        Validated, secure, and easy to use.
+        <div class="row align-items-center justify-content-center">
+            <div class="col-lg-10 col-xl-9">
+                <div class="banner-text text-center">
+                    <span class="d-block mb-3 text-uppercase fw-bold text-white-50 letter-spacing-2">Welcome to Learn To Earn</span>
+                    <h1 style="font-size: 3.5rem; font-weight: 800; color: #fff; margin-bottom: 20px; line-height: 1.2;">The Job Marketplace <br> For Students & Employers</h1>
+                    <p style="color: #d1d5db; font-size: 1.25rem; line-height: 1.8; max-width: 800px; margin: 0 auto 40px; opacity: 0.9;">
+                        Find flexible part-time work that fits your schedule, or hire energetic student talent for your business needs. Validated, secure, and easy to use.
                     </p>
+                    <div class="banner-buttons d-flex gap-3 justify-content-center flex-wrap" style="margin-top: 30px;">
+                        <a href="{% url 'signup' %}" class="btn btn-lg px-5 py-3" style="background: var(--primary-red); border: none; color: white; font-weight: 600; border-radius: 25px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(255, 43, 43, 0.3);">
+                            <i class='bx bxs-graduation me-2'></i>Student Signup
+                        </a>
+                        <a href="{% url 'addemployer' %}" class="btn btn-lg px-5 py-3" style="background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(255, 255, 255, 0.3); color: white; font-weight: 600; border-radius: 25px; transition: all 0.3s ease;">
+                            <i class='bx bxs-briefcase me-2'></i>Employer Signup
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- SEARCH -->
-<div class="find-section">
-    <div class="container">
-        <form class="find-form" action="{% url 'login' %}">
-            <div class="row g-4 align-items-center">
-                <div class="col-lg-3">
-                    <div class="form-group position-relative">
-                        <input type="text" class="form-control" placeholder="Job Title or Keyword">
-                        <i class="bx bx-search position-absolute"
-                            style="right: 15px; top: 18px; color: #94a3b8; font-size: 1.2rem;"></i>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="form-group position-relative">
-                        <input type="text" class="form-control" placeholder="Location">
-                        <i class="bx bx-map position-absolute"
-                            style="right: 15px; top: 18px; color: #94a3b8; font-size: 1.2rem;"></i>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="form-group">
-                        <select class="category nice-select-custom">
-                            <option>Category</option>
-                            <option>Web Dev</option>
-                            <option>Mobile Dev</option>
-                            <option>Design</option>
-                            <option>Data Entry</option>
-                            <option>Writing</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <button class="find-btn">FIND A JOB <i class='bx bx-search'></i></button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
 <!-- WHY CHOOSE US -->
-<section class="pt-50 pb-100">
+<section class="pt-100 pb-100">
     <div class="container">
         <div class="section-title text-center">
-            <h2>Why Choose LearnToEarn?</h2>
-            <p class="mx-auto" style="max-width: 700px; margin-top: 15px;">
+            <h2>Why Choose Learn To Earn?</h2>
+            <p class="mx-auto" style="max-width: 750px; margin-top: 15px;">
                 We bridge the gap between students seeking financial independence and employers looking for
                 cost-effective talent.
             </p>
@@ -448,7 +399,7 @@
             <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}00">
                 <div class="service-card">
                     <div class="service-top">
-                        <div class="service-icon">
+                        <div class="service-icon" style="width: 60px; height: 60px; background: #fff5f5; color: var(--primary-red); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 20px;">
                             {% if service.category == 'tuition' %}
                             <i class='bx bxs-book-reader'></i>
                             {% elif service.category == 'technical' %}
@@ -461,14 +412,14 @@
                             <i class='bx bxs-briefcase-alt-2'></i>
                             {% endif %}
                         </div>
-                        <span class="badge bg-light text-dark mb-2">{{ service.get_category_display }}</span>
-                        <h4>{{ service.title }}</h4>
-                        <p class="text-muted small">by <span class="fw-bold">{{ service.student.student_name }}</span>
+                        <span class="badge mb-3" style="background: #f1f5f9; color: var(--primary-dark); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 500;">{{ service.get_category_display }}</span>
+                        <h4 style="font-size: 1.15rem; font-weight: 600; color: var(--primary-dark); margin-bottom: 8px;">{{ service.title }}</h4>
+                        <p class="text-muted" style="font-size: 0.9rem;">by <span class="fw-bold">{{ service.student.student_name }}</span>
                         </p>
                     </div>
                     <div class="service-bottom">
-                        <span class="price-tag">From ${{ service.price }}</span>
-                        <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm rounded-pill">View Details</a>
+                        <span class="price-tag" style="font-weight: 600; color: var(--primary-dark); font-size: 1.05rem;">From ₹{{ service.price }}</span>
+                        <a href="{% url 'login' %}" class="btn btn-sm rounded-pill" style="border: 1px solid var(--primary-red); color: var(--primary-red); padding: 6px 18px; font-weight: 500;" onmouseover="this.style.background='var(--primary-red)'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='var(--primary-red)';">View Details</a>
                     </div>
                 </div>
             </div>
@@ -497,8 +448,8 @@
                             <i class='bx bxs-building-house'></i>
                         </div>
                         <div>
-                            <h4 class="mb-1">{{ job.job_title }}</h4>
-                            <p class="company-name mb-0">{{ job.employer.company_name }}</p>
+                            <h4 class="mb-1" style="font-size: 1.15rem; font-weight: 600; color: var(--primary-dark);">{{ job.job_title }}</h4>
+                            <p class="company-name mb-0" style="color: #64748b; font-size: 0.95rem;">{{ job.employer.company_name }}</p>
                         </div>
                         <span class="job-type-badge ms-auto">{{ job.job_type }}</span>
                     </div>
@@ -540,14 +491,14 @@
         <div class="row pt-45">
             {% for review in reviews %}
             <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}00">
-                <div class="testimonial-card p-4 bg-white shadow-sm rounded border">
+                <div class="testimonial-card" style="background: #fff; border-radius: 12px; padding: 30px 25px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); border: 1px solid #f1f5f9; height: 100%; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 12px 35px rgba(0, 0, 0, 0.12)'; this.style.transform='translateY(-5px)'; this.style.borderColor='var(--primary-red)';" onmouseout="this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.04)'; this.style.transform='translateY(0)'; this.style.borderColor='#f1f5f9';">
                     <div class="d-flex align-items-center mb-3">
-                        <div class="icon me-3" style="color: var(--primary-red); font-size: 2rem;">
+                        <div class="icon me-3" style="color: var(--primary-red); font-size: 2.5rem; opacity: 0.9;">
                             <i class='bx bxs-quote-alt-left'></i>
                         </div>
                         <div>
-                            <h5 class="mb-0">{{ review.reviewer_role|title }}</h5>
-                            <div class="text-warning small">
+                            <h5 class="mb-1" style="font-size: 1.05rem; font-weight: 600; color: var(--primary-dark);">{{ review.reviewer_role|title }}</h5>
+                            <div class="text-warning" style="font-size: 0.95rem;">
                                 {% for i in "12345"|make_list %}
                                 {% if forloop.counter <= review.rating %} <i class='bx bxs-star'></i>
                                     {% else %}
@@ -557,9 +508,9 @@
                             </div>
                         </div>
                     </div>
-                    <p class="fst-italic text-muted">"{{ review.review_text|truncatechars:100 }}"</p>
-                    <hr>
-                    <p class="mb-0 fw-bold text-end">- {{ review.application.student.student_name }}</p>
+                    <p class="fst-italic mb-3" style="color: #64748b; font-size: 0.95rem; line-height: 1.7;">"{{ review.review_text|truncatechars:100 }}"</p>
+                    <hr style="border-color: #f1f5f9; margin: 20px 0;">
+                    <p class="mb-0 fw-bold text-end" style="color: var(--primary-dark); font-size: 0.9rem;">- {{ review.application.student.student_name }}</p>
                 </div>
             </div>
             {% empty %}

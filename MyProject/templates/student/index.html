@@ -10,7 +10,7 @@
     /* HERO */
     .banner-style-two {
         background-color: var(--primary-dark);
-        padding-top: 100px;
+        padding-top: 40px;
         padding-bottom: 240px;
         /* Extra padding for search overlap */
         position: relative;
@@ -35,12 +35,10 @@
 
     .banner-text p {
         color: #e2e8f0;
-        font-size: 1rem;
-        margin-bottom: 22px;
-        opacity: 0.85;
-        line-height: 1.6;
-        font-weight: 500;
-        max-width: 560px;
+        font-size: 1.25rem;
+        line-height: 1.8;
+        margin-bottom: 30px;
+        opacity: 0.9;
     }
 
     /* Stats Section Overlap - Matches Guest 'find-section' */
@@ -57,49 +55,53 @@
         background: #fff;
         border: 1px solid #f1f5f9;
         border-radius: 12px;
-        padding: 40px 30px;
+        padding: 35px 25px;
         text-align: center;
-        transition: 0.3s;
+        transition: all 0.3s ease;
         height: 100%;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     }
 
     .choose-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
-        border-color: #e2e8f0;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+        border-color: var(--primary-red);
     }
 
     .choose-card i {
-        font-size: 3rem;
-        color: #FF2B2B;
-        /* Primary Red */
-        margin-bottom: 20px;
+        font-size: 2.5rem;
+        color: var(--primary-red);
+        margin-bottom: 15px;
         display: inline-block;
     }
 
     .choose-card h3 {
-        font-size: 2rem;
-        font-weight: 800;
-        color: #1A202E;
-        /* Primary Dark */
-        margin-bottom: 10px;
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--primary-dark);
+        margin-bottom: 8px;
     }
 
     .choose-card p {
         color: #64748b;
         margin-bottom: 0;
         font-weight: 500;
-        text-transform: uppercase;
         font-size: 0.9rem;
-        letter-spacing: 0.5px;
     }
 
     /* Application Table Card */
     .table-card {
         background: #fff;
         border-radius: 12px;
-        padding: 30px;
+        padding: 30px 25px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        border: 1px solid #f1f5f9;
+        transition: all 0.3s ease;
+    }
+
+    .table-card:hover {
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+    }
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
         border: 1px solid #f1f5f9;
     }
@@ -125,8 +127,8 @@
 
     /* MODERN UI POLISH */
     :root {
-        --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-        --card-hover-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        --card-hover-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
         --border-color: #f1f5f9;
     }
 
@@ -134,14 +136,12 @@
     .choose-card {
         background: #fff;
         border: 1px solid var(--border-color);
-        border-radius: 16px;
-        padding: 30px 20px;
+        border-radius: 12px;
+        padding: 35px 25px;
         text-align: center;
         transition: all 0.3s ease;
         height: 100%;
         box-shadow: var(--card-shadow);
-        position: relative;
-        overflow: hidden;
     }
 
     .choose-card:hover {
@@ -153,11 +153,15 @@
     /* Sidebar & Table Cards */
     .modern-card {
         background: #fff;
-        border-radius: 16px;
+        border-radius: 12px;
         border: 1px solid var(--border-color);
         box-shadow: var(--card-shadow);
         overflow: hidden;
-        transition: 0.3s;
+        transition: all 0.3s ease;
+    }
+
+    .modern-card:hover {
+        box-shadow: var(--card-hover-shadow);
     }
 
     /* Quick Action Buttons */
@@ -195,8 +199,15 @@
 
     .section-title h3 {
         font-size: 1.75rem;
-        font-weight: 800;
+        font-weight: 700;
         color: var(--primary-dark);
+        margin-bottom: 10px;
+    }
+
+    .section-title p {
+        color: #64748b;
+        font-size: 1.05rem;
+        line-height: 1.6;
     }
 
     .badge {
@@ -292,65 +303,32 @@
 {% endblock %}
 
 {% block content %}
-<!-- SECTION 1: HERO -->
+<!-- SECTION 1: HERO BANNER -->
 <section class="banner-style-two">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-7">
-                <div class="banner-text text-start">
-
-                    <h1>Welcome Back,<br> {{ request.user.name }}!</h1>
-                    <p>
-                        Track applications, manage your skills, and discover verified part-time jobs that fit your schedule.
+        <div class="row align-items-center justify-content-center">
+            <div class="col-lg-9">
+                <div class="banner-text text-center">
+                    <span class="d-block mb-3 text-uppercase fw-bold text-white-50 letter-spacing-2">Welcome to Your Student Dashboard</span>
+                    <h1 style="font-size: 3.5rem; font-weight: 800; color: #fff; margin-bottom: 20px;">Find Jobs, Build Skills, Earn Money</h1>
+                    <p style="color: #d1d5db; font-size: 1.25rem; line-height: 1.8; max-width: 800px; margin: 0 auto 40px;">
+                        Track your applications, explore verified part-time opportunities, and start earning while studying. All in one place.
                     </p>
-
-                    <div class="d-flex align-items-center gap-3">
-                        <a href="{% url 'student_view_jobs' %}"
-                            class="btn btn-lg px-4 py-3 fw-bold text-white shadow-sm"
-                            style="border-radius: 8px; background-color: var(--primary-red); border: none;">
-                            Find Jobs <i class='bx bx-search'></i>
+                    <div class="banner-buttons d-flex gap-3 justify-content-center" style="margin-top: 30px;">
+                        <a href="{% url 'student_view_jobs' %}" class="btn btn-lg px-5 py-3" style="background: var(--primary-red); border: none; color: white; font-weight: 600; border-radius: 25px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(255, 43, 43, 0.3);">
+                            <i class='bx bx-search me-2'></i>Find Jobs
                         </a>
-                        <a href="{% url 'student_profile' %}" class="btn btn-outline-light btn-lg px-4 py-3 fw-bold"
-                            style="border-radius: 8px;">
-                            My Profile <i class='bx bx-user'></i>
+                        <a href="{% url 'student_profile' %}" class="btn btn-lg px-5 py-3" style="background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(255, 255, 255, 0.3); color: white; font-weight: 600; border-radius: 25px; transition: all 0.3s ease;">
+                            <i class='bx bx-user me-2'></i>My Profile
                         </a>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-5 position-relative">
-                <!-- Feature Benefits Section -->
-                <div class="banner-features">
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class='bx bx-search-alt'></i>
-                        </div>
-                        <div class="feature-text">
-                            <h5>Easy Job Discovery</h5>
-                            <p>Browse verified part-time opportunities</p>
-                        </div>
-                    </div>
+        </div>
+    </div>
+</section>
 
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class='bx bx-check-circle'></i>
-                        </div>
-                        <div class="feature-text">
-                            <h5>Verified Employers</h5>
-                            <p>Work with trusted companies</p>
-                        </div>
-                    </div>
-
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class='bx bx-wallet-alt'></i>
-                        </div>
-                        <div class="feature-text">
-                            <h5>Flexible Payment</h5>
-                            <p>Get paid on time, every time</p>
-                        </div>
-                    </div>
-
-                    <div class="feature-item">
+<!-- KEY STATS SECTION -->                    <div class="feature-item">
                         <div class="feature-icon">
                             <i class='bx bx-trending-up'></i>
                         </div>

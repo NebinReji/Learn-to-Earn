@@ -34,7 +34,7 @@
     <!-- Title CSS -->
     <title>Learn To Earn - Job Board & Hiring Portal</title>
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="{% static 'img/logo-icon.svg' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/1.png' %}">
     <link rel="icon" type="image/png" href="{% static 'guest/assets/img/favicon.png' %}">
 
     <style>
@@ -48,13 +48,38 @@
         body {
             font-family: 'Inter', sans-serif;
             color: #64748b;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        html {
+            margin: 0;
+            padding: 0;
+        }
+
+        section {
+            margin-top: 0 !important;
         }
 
         /* Navbar Overrides */
         .navbar-area {
             background-color: var(--primary-dark);
-            padding-top: 15px;
-            padding-bottom: 15px;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        .navbar-area .main-nav {
+            padding: 0;
+        }
+
+        .navbar {
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        .navbar-area .container {
+            padding-top: 3px;
+            padding-bottom: 3px;
         }
 
         .navbar-light .navbar-nav .nav-link {
@@ -71,8 +96,34 @@
             color: var(--primary-red) !important;
         }
 
-        .navbar-area .logo img {
-            filter: brightness(0) invert(1);
+        .navbar-area .logo img,
+        .navbar-brand img {
+            height: 160px !important;
+            width: auto !important;
+            max-width: 380px !important;
+            object-fit: contain !important;
+        }
+
+        .footer-logo img {
+            height: 110px !important;
+            width: auto !important;
+            max-width: 300px !important;
+            object-fit: contain !important;
+            margin-bottom: 20px;
+        }
+
+        .navbar-toggler {
+            border-color: rgba(255, 255, 255, 0.3);
+            padding: 8px 12px;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 0.2rem rgba(255, 43, 43, 0.25);
+            border-color: var(--primary-red);
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
         }
 
         /* Button Styles */
@@ -222,7 +273,7 @@
         <!-- Menu For Mobile Device -->
         <div class="mobile-nav">
             <a href="{% url 'guest_index' %}" class="logo">
-                <img src="{% static 'img/logo-white.svg' %}" alt="Learn To Earn Logo">
+                <img src="{% static 'img/1.png' %}" alt="Learn To Earn Logo">
             </a>
         </div>
 
@@ -231,7 +282,7 @@
             <div class="container">
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <a class="navbar-brand" href="{% url 'guest_index' %}">
-                        <img src="{% static 'img/logo-white.svg' %}" alt="Learn To Earn Logo">
+                        <img src="{% static 'img/1.png' %}" alt="Learn To Earn Logo">
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -307,7 +358,7 @@
                     <div class="footer-widget">
                         <div class="footer-logo">
                             <a href="{% url 'guest_index' %}">
-                                <img src="{% static 'img/logo-white.svg' %}" alt="Learn To Earn Logo">
+                                <img src="{% static 'img/1.png' %}" alt="Learn To Earn Logo">
                             </a>
                         </div>
                         <p>LearnToEarn bridges the gap between students looking for flexible work and employers needing
