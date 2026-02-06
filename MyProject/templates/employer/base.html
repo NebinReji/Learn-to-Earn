@@ -25,7 +25,8 @@
     <link rel="stylesheet" href="{% static 'guest/assets/css/dark.css' %}">
     <!-- Responsive CSS -->
     <link rel="stylesheet" href="{% static 'guest/assets/css/responsive.css' %}">
-    <title>Employer Portal - Learn to Earn</title>
+    <title>Employer Portal - Learn To Earn</title>
+    <link rel="icon" type="image/svg+xml" href="{% static 'img/logo-icon.svg' %}">
     <link rel="icon" type="image/png" href="{% static 'employer/assets/img/favicon.png' %}">
 
     <style>
@@ -35,13 +36,68 @@
             --text-light: #ffffff;
         }
 
+        /* SMOOTH SCROLLING */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        /* PROFESSIONAL ANIMATIONS */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* NAVBAR ANIMATIONS */
         .navbar-area {
             background-color: var(--primary-dark);
+            animation: fadeIn 0.5s ease;
         }
 
         .navbar-light .navbar-nav .nav-link {
             color: rgba(255, 255, 255, 0.8) !important;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 16px;
+            position: relative;
+            transition: color 0.3s ease;
+            margin: 0 12px;
+            letter-spacing: 0.3px;
+        }
+
+        .navbar-light .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--primary-red);
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+
+        .navbar-light .navbar-nav .nav-link:hover::after,
+        .navbar-light .navbar-nav .nav-link.active::after {
+            width: 80%;
+            left: 10%;
         }
 
         .navbar-light .navbar-nav .nav-link:hover,
@@ -53,6 +109,77 @@
             background-color: var(--primary-red) !important;
             color: #fff !important;
             border: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .signin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 43, 43, 0.3);
+        }
+
+        /* CARD ANIMATIONS */
+        .card, .choose-card {
+            animation: fadeInUp 0.6s ease forwards;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover, .choose-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12) !important;
+        }
+
+        /* BUTTON RIPPLE EFFECT */
+        .btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* TABLE ANIMATIONS */
+        .table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+            transform: scale(1.01);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        /* SIDEBAR STICKY */
+        .sidebar-sticky {
+            position: sticky;
+            top: 100px;
+            z-index: 1;
+        }
+
+        /* APPLICATION TABLE */
+        .application-table {
+            font-size: 16px;
+            min-width: 900px;
         }
 
         .footer-area {
@@ -96,7 +223,7 @@
     <div class="navbar-area">
         <div class="mobile-nav">
             <a href="{% url 'employer_index' %}" class="logo">
-                <img src="{% static 'employer/assets/img/logo.png' %}" alt="logo">
+                <img src="{% static 'img/logo-white.svg' %}" alt="Learn To Earn Logo">
             </a>
         </div>
 
@@ -104,7 +231,7 @@
             <div class="container">
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <a class="navbar-brand" href="{% url 'employer_index' %}">
-                        <img src="{% static 'employer/assets/img/logo.png' %}" alt="logo">
+                        <img src="{% static 'img/logo-white.svg' %}" alt="Learn To Earn Logo">
                     </a>
                     <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
                         <ul class="navbar-nav m-auto">
@@ -203,7 +330,7 @@
                     <div class="footer-widget">
                         <div class="footer-logo">
                             <a href="{% url 'employer_index' %}">
-                                <img src="{% static 'employer/assets/img/logo.png' %}" alt="logo">
+                                <img src="{% static 'img/logo-white.svg' %}" alt="Learn To Earn Logo">
                             </a>
                         </div>
                         <p>LearnToEarn bridges the gap between students looking for flexible work and employers needing
@@ -311,6 +438,8 @@
         });
     </script>
     {% endif %}
+
+    <script src="{% static 'js/animations.js' %}"></script>
 </body>
 
 </html>

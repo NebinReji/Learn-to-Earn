@@ -41,7 +41,7 @@
 
                 {% if applications %}
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover" style="font-size:16px; min-width:900px;">
+                    <table class="table table-bordered table-hover application-table">
                         <thead class="table-light">
                             <tr>
                                 <th>#</th>
@@ -66,8 +66,8 @@
                                         {{ application.student.student_name }}
                                     </a>
                                 </td>
-                                <td>{{ application.student.email }}</td>
-                                <td>{{ application.student.phone_number }}</td>
+                                <td>{{ application.student.email|default:"N/A" }}</td>
+                                <td>{{ application.student.phone_number|default:"N/A" }}</td>
                                 <td>{{ application.applied_date|date:"d M Y, h:i A" }}</td>
                                 <td>
                                     <span class="badge bg-primary text-white">

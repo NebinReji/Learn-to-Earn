@@ -17,8 +17,10 @@
     <link rel="stylesheet" href="{% static 'guest/assets/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'guest/assets/css/dark.css' %}">
     <link rel="stylesheet" href="{% static 'guest/assets/css/responsive.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animations.css' %}">
 
-    <title>Student Portal - Learn to Earn</title>
+    <title>Student Portal - Learn To Earn</title>
+    <link rel="icon" type="image/svg+xml" href="{% static 'img/logo-icon.svg' %}">
     <link rel="icon" type="image/png" href="{% static 'student/assets/img/favicon.png' %}">
 
     <style>
@@ -40,6 +42,31 @@
 
         .navbar-area {
             background-color: var(--primary-dark);
+        }
+
+        /* NAVBAR STYLING */
+        .navbar-nav .nav-link {
+            font-size: 16px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8) !important;
+            margin: 0 12px;
+            transition: color 0.3s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link.active {
+            color: var(--primary-red) !important;
+        }
+
+        .navbar-brand {
+            margin-right: 30px;
+        }
+
+        /* APPLICATION TABLE */
+        .application-table {
+            font-size: 16px;
+            min-width: 900px;
         }
 
         .footer-area {
@@ -71,7 +98,7 @@
             <div class="container">
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <a class="navbar-brand" href="{% url 'student_index' %}">
-                        <h3 style="color:#fff;font-weight:800;margin:0;">L2E Student</h3>
+                        <img src="{% static 'img/logo-white.svg' %}" alt="Learn To Earn Logo">
                     </a>
 
                     <div class="collapse navbar-collapse mean-menu">
@@ -84,11 +111,11 @@
                             <li class="nav-item"><a href="{% url 'student_my_applications' %}" class="nav-link">My
                                     Applications</a></li>
                             {% else %}
-                            <li class="nav-item"><a href="#" class="nav-link text-muted" style="cursor: not-allowed;"
+                            <li class="nav-item"><a href="#" class="nav-link text-muted nav-disabled"
                                     title="Verification Pending">Find Jobs <i class='bx bx-lock-alt'></i></a></li>
-                            <li class="nav-item"><a href="#" class="nav-link text-muted" style="cursor: not-allowed;"
+                            <li class="nav-item"><a href="#" class="nav-link text-muted nav-disabled"
                                     title="Verification Pending">Offer Skills <i class='bx bx-lock-alt'></i></a></li>
-                            <li class="nav-item"><a href="#" class="nav-link text-muted" style="cursor: not-allowed;"
+                            <li class="nav-item"><a href="#" class="nav-link text-muted nav-disabled"
                                     title="Verification Pending">My Applications <i class='bx bx-lock-alt'></i></a></li>
                             {% endif %}
                             <li class="nav-item"><a href="{% url 'student_profile' %}" class="nav-link">Profile</a></li>
@@ -145,6 +172,7 @@
         });
     </script>
 
+    <script src="{% static 'js/animations.js' %}"></script>
     {% block extra_js %}{% endblock %}
 </body>
 

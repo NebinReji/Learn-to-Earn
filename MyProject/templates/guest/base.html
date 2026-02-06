@@ -30,9 +30,11 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'guest/assets/css/custom.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animations.css' %}">
     <!-- Title CSS -->
-    <title>Jovie - Job Board & Hiring Portal</title>
+    <title>Learn To Earn - Job Board & Hiring Portal</title>
     <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{% static 'img/logo-icon.svg' %}">
     <link rel="icon" type="image/png" href="{% static 'guest/assets/img/favicon.png' %}">
 
     <style>
@@ -57,12 +59,16 @@
 
         .navbar-light .navbar-nav .nav-link {
             color: rgba(255, 255, 255, 0.8) !important;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 0 12px;
+            letter-spacing: 0.3px;
+            transition: color 0.3s ease;
         }
 
         .navbar-light .navbar-nav .nav-link:hover,
         .navbar-light .navbar-nav .nav-link.active {
-            color: #fff !important;
+            color: var(--primary-red) !important;
         }
 
         .navbar-area .logo img {
@@ -216,7 +222,7 @@
         <!-- Menu For Mobile Device -->
         <div class="mobile-nav">
             <a href="{% url 'guest_index' %}" class="logo">
-                <img src="{% static 'guest/assets/img/logo.png' %}" alt="logo">
+                <img src="{% static 'img/logo-white.svg' %}" alt="Learn To Earn Logo">
             </a>
         </div>
 
@@ -225,7 +231,7 @@
             <div class="container">
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <a class="navbar-brand" href="{% url 'guest_index' %}">
-                        <img src="{% static 'guest/assets/img/logo.png' %}" alt="logo">
+                        <img src="{% static 'img/logo-white.svg' %}" alt="Learn To Earn Logo">
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -301,7 +307,7 @@
                     <div class="footer-widget">
                         <div class="footer-logo">
                             <a href="{% url 'guest_index' %}">
-                                <img src="{% static 'guest/assets/img/logo.png' %}" alt="logo">
+                                <img src="{% static 'img/logo-white.svg' %}" alt="Learn To Earn Logo">
                             </a>
                         </div>
                         <p>LearnToEarn bridges the gap between students looking for flexible work and employers needing

@@ -29,7 +29,7 @@
                             </div>
                             <div class="card-footer bg-white border-0 d-flex justify-content-between">
                                 <small class="text-muted">
-                                    {% if service.is_verified %}
+                                    {% if service.verification_status == 'verified' %}
                                     <i class='bx bxs-check-circle text-success'></i> Verified
                                     {% else %}
                                     <i class='bx bxs-time-five text-warning'></i> Pending Verification
@@ -79,9 +79,11 @@
                                     <div class="small">
                                         <i class='bx bx-envelope'></i> {{ booking.requester.email }}<br>
                                         {% if booking.requester.employer_profile %}
-                                        <i class='bx bx-phone'></i> {{ booking.requester.employer_profile.phone }}
+                                        <i class='bx bx-phone'></i> {{ booking.requester.employer_profile.phone|default:"N/A" }}
                                         {% elif booking.requester.student_profile %}
-                                        <i class='bx bx-phone'></i> {{ booking.requester.student_profile.phone_number }}
+                                        <i class='bx bx-phone'></i> {{ booking.requester.student_profile.phone_number|default:"N/A" }}
+                                        {% else %}
+                                        <i class='bx bx-phone'></i> N/A
                                         {% endif %}
                                     </div>
                                 </td>

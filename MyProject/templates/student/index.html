@@ -35,9 +35,12 @@
 
     .banner-text p {
         color: #e2e8f0;
-        font-size: 1.1rem;
-        margin-bottom: 30px;
-        opacity: 0.8;
+        font-size: 1rem;
+        margin-bottom: 22px;
+        opacity: 0.85;
+        line-height: 1.6;
+        font-weight: 500;
+        max-width: 560px;
     }
 
     /* Stats Section Overlap - Matches Guest 'find-section' */
@@ -204,6 +207,87 @@
     .bg-main {
         background: #f8fafc;
     }
+
+    /* BANNER FEATURES */
+    .banner-features {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding-right: 40px;
+        animation: slideInRight 0.8s ease;
+    }
+
+    .feature-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 12px 0;
+        opacity: 0;
+        animation: fadeInUp 0.6s ease forwards;
+    }
+
+    .feature-item:nth-child(1) { animation-delay: 0.2s; }
+    .feature-item:nth-child(2) { animation-delay: 0.4s; }
+    .feature-item:nth-child(3) { animation-delay: 0.6s; }
+    .feature-item:nth-child(4) { animation-delay: 0.8s; }
+
+    .feature-icon {
+        width: 50px;
+        height: 50px;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        color: #fff;
+        flex-shrink: 0;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .feature-text h5 {
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 4px;
+        letter-spacing: 0.3px;
+    }
+
+    .feature-text p {
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 0.9rem;
+        margin: 0;
+        line-height: 1.4;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .banner-features {
+            display: none;
+        }
+    }
 </style>
 {% endblock %}
 
@@ -217,7 +301,7 @@
 
                     <h1>Welcome Back,<br> {{ request.user.name }}!</h1>
                     <p>
-                        Track your applications, manage your skills, and find new verified part-time jobs.
+                        Track applications, manage your skills, and discover verified part-time jobs that fit your schedule.
                     </p>
 
                     <div class="d-flex align-items-center gap-3">
@@ -234,7 +318,48 @@
                 </div>
             </div>
             <div class="col-lg-5 position-relative">
-                <!-- Spacer for right side balance, optionally add the hero shape or image here later -->
+                <!-- Feature Benefits Section -->
+                <div class="banner-features">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class='bx bx-search-alt'></i>
+                        </div>
+                        <div class="feature-text">
+                            <h5>Easy Job Discovery</h5>
+                            <p>Browse verified part-time opportunities</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class='bx bx-check-circle'></i>
+                        </div>
+                        <div class="feature-text">
+                            <h5>Verified Employers</h5>
+                            <p>Work with trusted companies</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class='bx bx-wallet-alt'></i>
+                        </div>
+                        <div class="feature-text">
+                            <h5>Flexible Payment</h5>
+                            <p>Get paid on time, every time</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class='bx bx-trending-up'></i>
+                        </div>
+                        <div class="feature-text">
+                            <h5>Skill Growth</h5>
+                            <p>Build your portfolio while earning</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

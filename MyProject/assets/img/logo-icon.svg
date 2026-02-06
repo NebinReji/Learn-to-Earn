@@ -1,0 +1,32 @@
+<svg width="50" height="50" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF2B2B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1A202E;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="25" cy="25" r="24" fill="#1A202E"/>
+  
+  <!-- Graduation cap -->
+  <polygon points="25,12 12,18 25,24 38,18" fill="url(#iconGradient)"/>
+  <rect x="19" y="8" width="12" height="4" fill="#fff"/>
+  
+  <!-- Tassel -->
+  <line x1="31" y1="8" x2="35" y2="3" stroke="#FF2B2B" stroke-width="2"/>
+  <circle cx="35" cy="2" r="2" fill="#FF2B2B"/>
+  
+  <!-- Book -->
+  <rect x="17" y="24" width="16" height="12" fill="#fff" rx="1"/>
+  <line x1="20" y1="28" x2="30" y2="28" stroke="#FF2B2B" stroke-width="1.5"/>
+  <line x1="20" y1="32" x2="30" y2="32" stroke="#FF2B2B" stroke-width="1.5"/>
+  
+  <!-- Arrow -->
+  <path d="M 25 36 L 25 46" stroke="#FF2B2B" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 20 42 L 25 36 L 30 42" stroke="#FF2B2B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  
+  <!-- Coin -->
+  <circle cx="35" cy="40" r="6" fill="none" stroke="#FF2B2B" stroke-width="2"/>
+  <text x="35" y="44" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#FF2B2B" text-anchor="middle">$</text>
+</svg>

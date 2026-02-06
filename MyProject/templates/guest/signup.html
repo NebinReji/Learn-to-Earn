@@ -200,7 +200,7 @@
                                                     {{ employer_form.terms_agreement }}
                                                     <label class="form-check-label"
                                                         for="{{ employer_form.terms_agreement.id_for_label }}">
-                                                        I agree to the <a href="#" class="text-primary">Terms and
+                                                        I agree to the <a href="{% url 'guest_index' %}" class="text-primary">Terms and
                                                             Conditions</a>
                                                     </label>
                                                     {% for error in employer_form.terms_agreement.errors %}
