@@ -62,6 +62,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -69,13 +70,25 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
         }
 
         /* NAVBAR ANIMATIONS */
@@ -91,8 +104,8 @@
         }
 
         .navbar {
-            padding-top: 5px;
-            padding-bottom: 5px;
+            padding-top: 15px;
+            padding-bottom: 15px;
         }
 
         .navbar-area .container {
@@ -102,10 +115,21 @@
 
         .navbar-area .logo img,
         .navbar-brand img {
-            height: 160px !important;
+            height: 120px !important;
             width: auto !important;
-            max-width: 380px !important;
+            max-width: 400px !important;
             object-fit: contain !important;
+        }
+
+        .navbar-brand {
+            padding: 0 !important;
+            margin: 0 !important;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-nav {
+            align-items: center;
         }
 
         .footer-logo img {
@@ -133,7 +157,7 @@
         .navbar-light .navbar-nav .nav-link {
             color: rgba(255, 255, 255, 0.8) !important;
             font-weight: 600;
-            font-size: 16px;
+            font-size: 18px;
             position: relative;
             transition: color 0.3s ease;
             margin: 0 12px;
@@ -182,12 +206,14 @@
         }
 
         /* CARD ANIMATIONS */
-        .card, .choose-card {
+        .card,
+        .choose-card {
             animation: fadeInUp 0.6s ease forwards;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .card:hover, .choose-card:hover {
+        .card:hover,
+        .choose-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12) !important;
         }
@@ -357,7 +383,9 @@
                                     <li>
                                         <a class="dropdown-item py-3 border-bottom" href="{{ notif.link|default:'#' }}">
                                             <p class="mb-1 text-wrap small">{{ notif.message }}</p>
-                                            <small class="text-muted" style="font-size: 0.75rem;">{{ notif.timestamp|timesince }} ago</small>
+                                            <small class="text-muted" style="font-size: 0.75rem;">
+                                                {{ notif.timestamp|timesince }} ago
+                                            </small>
                                         </a>
                                     </li>
                                     {% endfor %}
@@ -379,17 +407,17 @@
     </div>
 
     {% if request.user.employer_profile %}
-        {% if not request.user.employer_profile.is_profile_complete %}
-        <div class="alert alert-danger text-center mb-0 rounded-0 fw-bold" role="alert">
-            <i class='bx bx-error-circle'></i> Your company profile is incomplete. Please add your district to continue.
-            <a href="{% url 'employer_profile_setup' %}" class="alert-link">Complete Setup</a>
-        </div>
-        {% elif request.user.employer_profile.verification_status is False %}
-        <div class="alert alert-warning text-center mb-0 rounded-0 fw-bold" role="alert">
-            <i class='bx bx-time'></i> Your company profile is pending verification. You can post jobs once verified.
-            <a href="{% url 'employer_profile' %}" class="alert-link">View Profile</a>
-        </div>
-        {% endif %}
+    {% if not request.user.employer_profile.is_profile_complete %}
+    <div class="alert alert-danger text-center mb-0 rounded-0 fw-bold" role="alert">
+        <i class='bx bx-error-circle'></i> Your company profile is incomplete. Please add your district to continue.
+        <a href="{% url 'employer_profile_setup' %}" class="alert-link">Complete Setup</a>
+    </div>
+    {% elif request.user.employer_profile.verification_status is False %}
+    <div class="alert alert-warning text-center mb-0 rounded-0 fw-bold" role="alert">
+        <i class='bx bx-time'></i> Your company profile is pending verification. You can post jobs once verified.
+        <a href="{% url 'employer_profile' %}" class="alert-link">View Profile</a>
+    </div>
+    {% endif %}
     {% endif %}
 
     {% block content %}

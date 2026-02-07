@@ -6,9 +6,8 @@
     /* HERO */
     .banner-style-two {
         background-color: var(--primary-dark);
-        padding-top: 180px;
-        /* Increased from 100px to fix overlap */
-        padding-bottom: 240px;
+        padding-top: 100px;
+        padding-bottom: 250px;
         position: relative;
         overflow: hidden;
         background-image: url("{% static 'guest/assets/img/banner/7.jpg' %}");
@@ -39,11 +38,10 @@
         opacity: 0.9;
     }
 
-    /* STATS OVERLAP */
     .stats-overlap {
-        margin-top: -120px;
+        margin-top: -125px !important;
         position: relative;
-        z-index: 20;
+        z-index: 999;
         /* Ensure it floats above banner */
         padding-bottom: 70px;
     }
@@ -274,14 +272,63 @@
         background-color: #f8fafc;
     }
 
-    /* Stats Section Overlap */
-    .why-choose-two {
-        position: relative;
-        z-index: 10;
-        margin-top: -80px;
-        /* Negative margin for overlap */
-
+    /* Subscription Banner */
+    .subscription-banner {
+        background: linear-gradient(135deg, #1A202E 0%, #2c3e50 100%);
+        border-left: 5px solid #FF2B2B;
+        border-radius: 12px;
+        padding: 20px 24px;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
     }
+
+    .subscription-banner h4 {
+        margin: 0 0 6px 0;
+        font-weight: 800;
+        font-size: 1.2rem;
+    }
+
+    .subscription-banner p {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 0.95rem;
+    }
+
+    .subscription-banner .banner-cta {
+        white-space: nowrap;
+        background: #FF2B2B;
+        color: #fff;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+    .subscription-banner .banner-cta:hover {
+        background: #e61a1a;
+        transform: translateY(-2px);
+        color: #fff;
+    }
+
+    @media (max-width: 768px) {
+        .subscription-banner {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .subscription-banner .banner-cta {
+            width: 100%;
+            text-align: center;
+        }
+    }
+
+
 </style>
 {% endblock %}
 
@@ -318,7 +365,26 @@
     </div>
 </section>
 
-<!-- SECTION 2: STATS OVERVIEW -->
+{% if not subscription_status.is_subscribed %}
+<section class="pt-30 pb-30">
+    <div class="container">
+        <div class="subscription-banner">
+            <div>
+                {% if trial_info.is_active %}
+                <h4>Free trial active - {{ trial_info.days_remaining }} day{{ trial_info.days_remaining|pluralize }} left</h4>
+                <p>Upgrade now to keep posting jobs after your trial ends.</p>
+                {% else %}
+                <h4>Your trial has ended</h4>
+                <p>Subscribe to continue posting jobs and access premium features.</p>
+                {% endif %}
+            </div>
+            <a href="{% url 'subscriptions' %}" class="banner-cta">View Plans</a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- SECTION 2B: STATS OVERVIEW -->
 <section class="stats-overlap">
     <div class="container">
         <div class="row justify-content-center">
@@ -445,7 +511,8 @@
                                 <div class="d-flex align-items-start">
                                     <div class="flex-grow-1">
                                         <p class="mb-1 small fw-bold text-dark">{{ notif.message }}</p>
-                                        <span class="text-muted" style="font-size: 0.75rem;">{{ notif.timestamp|timesince }} ago</span>
+                                        <span class="text-muted" style="font-size: 0.75rem;">{{
+                                            notif.timestamp|timesince }} ago</span>
                                     </div>
                                     <small class="text-primary"><i class='bx bx-chevron-right'></i></small>
                                 </div>

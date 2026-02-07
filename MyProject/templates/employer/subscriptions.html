@@ -3,131 +3,584 @@
 
 {% block content %}
 <style>
-	.pricing-header {
-		background: linear-gradient(135deg, #212529 0%, #343a40 100%);
-		padding: 80px 0 60px;
-		color: white;
+	@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&display=swap');
+
+	/* Color Theme Variables */
+	:root {
+		--primary-dark: #1A202E;
+		--secondary-dark: #212529;
+		--tertiary-dark: #343a40;
+		--primary-red: #FF2B2B;
+		--success-green: #198754;
+		--light-text: #ffffff;
+		--neutral-gray: #6c757d;
 	}
 
-	.pricing-card {
-		background: white;
-		border-radius: 20px;
-		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-		padding: 40px;
-		height: 100%;
+	/* Page Shell */
+	.subscription-shell {
+		background: #f5f7fb;
+		padding-bottom: 60px;
+		font-family: 'Sora', 'Segoe UI', sans-serif;
+	}
+
+	/* Trial Status Section */
+	.trial-section {
+		background: linear-gradient(135deg, #101622 0%, #1a2231 100%);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-left: 4px solid var(--primary-red);
+		border-radius: 16px;
+		padding: 28px;
+		margin-bottom: 40px;
 		position: relative;
-		transition: transform 0.3s ease;
-		border: 2px solid transparent;
+		overflow: hidden;
+		box-shadow: 0 16px 40px rgba(16, 22, 34, 0.18);
 	}
 
-	.pricing-card:hover {
-		transform: translateY(-5px);
-	}
-
-	.pricing-card.featured {
-		border-color: #198754;
-		box-shadow: 0 15px 40px rgba(25, 135, 84, 0.1);
-	}
-
-	.popular-badge {
+	.trial-section::before {
+		content: '';
 		position: absolute;
-		top: 20px;
-		right: 20px;
-		background: #198754;
-		color: white;
-		padding: 5px 15px;
-		border-radius: 50px;
-		font-size: 0.8rem;
-		font-weight: 600;
+		top: -50%;
+		right: -10%;
+		width: 300px;
+		height: 300px;
+		background: rgba(255, 43, 43, 0.05);
+		border-radius: 50%;
+		animation: pulse 4s ease-in-out infinite;
+	}
+
+	@keyframes pulse {
+		0%, 100% {
+			transform: scale(1);
+			opacity: 0.1;
+		}
+		50% {
+			transform: scale(1.1);
+			opacity: 0.15;
+		}
+	}
+
+	.trial-content {
+		position: relative;
+		z-index: 1;
+		color: var(--light-text);
+	}
+
+	.trial-title {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		font-size: 1.35rem;
+		font-weight: 700;
+		margin-bottom: 12px;
+	}
+
+	.trial-pill {
+		background: rgba(255, 255, 255, 0.12);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		padding: 4px 10px;
+		border-radius: 999px;
+		font-size: 0.75rem;
+		letter-spacing: 0.4px;
 		text-transform: uppercase;
 	}
 
-	.price-amount {
-		font-size: 3.5rem;
-		font-weight: 800;
-		color: #212529;
+	.trial-countdown-container {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+		gap: 15px;
 		margin: 20px 0;
+	}
+
+	.countdown-box {
+		background: rgba(255, 255, 255, 0.06);
+		border: 1px solid rgba(255, 255, 255, 0.12);
+		border-radius: 12px;
+		padding: 16px;
+		text-align: center;
+		backdrop-filter: blur(10px);
+	}
+
+	.countdown-number {
+		font-size: 2rem;
+		font-weight: 700;
+		color: var(--primary-red);
+		display: block;
+	}
+
+	.countdown-label {
+		font-size: 0.85rem;
+		color: rgba(255, 255, 255, 0.7);
+		text-transform: uppercase;
+		margin-top: 5px;
+	}
+
+	.trial-message,
+	.trial-expire-warning {
+		padding: 14px 16px;
+		border-radius: 8px;
+		margin-bottom: 16px;
+		color: rgba(255, 255, 255, 0.92);
+		font-size: 0.95rem;
+	}
+
+	.trial-message {
+		background: rgba(25, 135, 84, 0.18);
+		border: 1px solid rgba(25, 135, 84, 0.35);
+	}
+
+	.trial-expire-warning {
+		background: rgba(255, 43, 43, 0.14);
+		border: 1px solid rgba(255, 43, 43, 0.35);
+	}
+
+	.trial-action-buttons {
+		display: flex;
+		gap: 15px;
+		margin-top: 20px;
+		flex-wrap: wrap;
+	}
+
+	.btn-trial {
+		padding: 11px 20px;
+		border: none;
+		border-radius: 10px;
+		font-weight: 600;
+		font-size: 0.95rem;
+		cursor: pointer;
+		transition: all 0.25s ease;
+		text-decoration: none;
+		display: inline-block;
+	}
+
+	.btn-trial-primary {
+		background: var(--primary-red);
+		color: var(--light-text);
+	}
+
+	.btn-trial-primary:hover {
+		background: #e61a1a;
+		transform: translateY(-2px);
+		box-shadow: 0 8px 20px rgba(255, 43, 43, 0.3);
+	}
+
+	.btn-trial-secondary {
+		background: transparent;
+		color: var(--light-text);
+		border: 2px solid var(--light-text);
+	}
+
+	.btn-trial-secondary:hover {
+		background: var(--light-text);
+		color: var(--primary-dark);
+		transform: translateY(-2px);
+	}
+
+	/* Active Subscription Section */
+	.subscription-status-section {
+		margin-bottom: 40px;
+	}
+
+	.status-card {
+		background: #ffffff;
+		border-radius: 16px;
+		overflow: hidden;
+		box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+		border: 1px solid #e8eef6;
+	}
+
+	.status-card-header {
+		background: #0f172a;
+		color: var(--light-text);
+		padding: 20px 24px;
+		font-weight: 700;
+		font-size: 1.05rem;
+		letter-spacing: 0.2px;
+	}
+
+	.status-card-body {
+		padding: 25px;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		gap: 20px;
+	}
+
+	.status-item {
+		padding: 16px;
+		background: #f8fafc;
+		border-radius: 12px;
+		border: 1px solid #e6eef7;
+	}
+
+	.status-item-label {
+		font-size: 0.85rem;
+		color: var(--neutral-gray);
+		text-transform: uppercase;
+		font-weight: 600;
+		margin-bottom: 8px;
+	}
+
+	.status-item-value {
+		font-size: 1.3rem;
+		font-weight: 700;
+		color: var(--secondary-dark);
+	}
+
+	/* Pricing Header */
+	.pricing-header {
+		background: radial-gradient(1200px circle at 10% 10%, rgba(255, 43, 43, 0.12), transparent 50%),
+			linear-gradient(135deg, #0f172a 0%, #111827 100%);
+		padding: 70px 0 70px;
+		color: var(--light-text);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+	}
+
+	.pricing-header h2 {
+		color: var(--light-text);
+		font-weight: 700;
+	}
+
+	.pricing-header p {
+		color: rgba(255, 255, 255, 0.8);
+	}
+
+	/* Pricing Cards */
+	.pricing-card {
+		background: #ffffff;
+		border: 1px solid #e8eef6;
+		border-radius: 16px;
+		padding: 32px;
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		transition: all 0.25s ease;
+		box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+	}
+
+	.pricing-card:hover {
+		transform: translateY(-8px);
+		box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+	}
+
+	.pricing-card.featured {
+		border: 2px solid #ffdad6;
+		background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+		box-shadow: 0 20px 40px rgba(255, 43, 43, 0.15);
+	}
+
+	.popular-badge {
+		background: #0f172a;
+		color: #fff;
+		padding: 6px 12px;
+		border-radius: 999px;
+		font-size: 0.72rem;
+		font-weight: 700;
+		display: inline-block;
+		margin-bottom: 16px;
+		text-transform: uppercase;
+		letter-spacing: 0.4px;
+	}
+
+	.pricing-card h5 {
+		color: var(--secondary-dark);
+		font-weight: 700;
+		margin-bottom: 10px;
+	}
+
+	.pricing-card.featured h5 {
+		color: var(--success-green);
+	}
+
+	.price-amount {
+		margin: 15px 0 20px;
+		font-size: 2.5rem;
+		font-weight: 700;
+		color: var(--secondary-dark);
 	}
 
 	.price-currency {
 		font-size: 1.5rem;
 		vertical-align: super;
-		margin-right: 5px;
 	}
 
 	.price-period {
-		font-size: 1rem;
-		color: #adb5bd;
-		font-weight: 400;
+		font-size: 0.9rem;
+		color: var(--neutral-gray);
+		font-weight: 500;
 	}
 
 	.feature-list {
 		list-style: none;
 		padding: 0;
-		margin: 30px 0;
-		text-align: left;
+		margin: 20px 0;
+		flex: 1;
 	}
 
 	.feature-list li {
-		margin-bottom: 15px;
-		color: #6c757d;
-		display: flex;
-		align-items: center;
+		padding: 10px 0;
+		color: #4b5563;
+		font-size: 0.95rem;
+		border-bottom: 1px solid #eef2f7;
 	}
 
-	.feature-list li i {
-		color: #198754;
-		margin-right: 12px;
-		font-size: 1.2rem;
+	.feature-list li:last-child {
+		border-bottom: none;
 	}
 
-	.btn-plan {
-		padding: 15px;
-		border-radius: 10px;
+	.feature-list i {
+		color: var(--success-green);
+		margin-right: 8px;
 		font-weight: 700;
+	}
+
+	/* Buttons */
+	.btn-plan {
+		padding: 12px 24px;
+		border: none;
+		border-radius: 8px;
+		font-weight: 600;
+		font-size: 0.95rem;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		text-decoration: none;
+		display: inline-block;
 		width: 100%;
-		transition: all 0.3s;
+		text-align: center;
 	}
 
 	.btn-plan-outline {
-		border: 2px solid #212529;
-		color: #212529;
+		background: transparent;
+		color: #0f172a;
+		border: 2px solid #0f172a;
 	}
 
 	.btn-plan-outline:hover {
-		background: #212529;
-		color: white;
+		background: var(--secondary-dark);
+		color: var(--light-text);
+		transform: translateY(-2px);
 	}
 
 	.btn-plan-primary {
-		background: #198754;
-		color: white;
-		border: 2px solid #198754;
-		box-shadow: 0 5px 15px rgba(25, 135, 84, 0.3);
+		background: var(--primary-red);
+		color: var(--light-text);
+		border: 2px solid var(--primary-red);
+		box-shadow: 0 5px 15px rgba(255, 43, 43, 0.3);
 	}
 
 	.btn-plan-primary:hover {
-		background: #146c43;
-		border-color: #146c43;
+		background: #e61a1a;
+		border-color: #e61a1a;
 		transform: translateY(-2px);
+		box-shadow: 0 8px 20px rgba(255, 43, 43, 0.4);
+	}
+
+	/* Subscription History */
+	.history-card {
+		background: #ffffff;
+		border-radius: 16px;
+		overflow: hidden;
+		box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+		border: 1px solid #e8eef6;
+	}
+
+	.history-card .card-header {
+		background: #0f172a;
+		color: var(--light-text);
+		border: none;
+		padding: 20px 24px;
+	}
+
+	.history-card .card-header h5 {
+		color: var(--light-text);
+		margin: 0;
+		font-weight: 700;
+	}
+
+	.history-table {
+		margin: 0;
+	}
+
+	.history-table thead {
+		background: #f8f9fa;
+	}
+
+	.history-table thead th {
+		color: #0f172a;
+		border-bottom: 2px solid #0f172a;
+		font-weight: 700;
+		padding: 15px;
+		font-size: 0.85rem;
+		text-transform: uppercase;
+		letter-spacing: 0.3px;
+	}
+
+	.history-table tbody tr {
+		border-bottom: 1px solid #e9ecef;
+		transition: all 0.3s ease;
+	}
+
+	.history-table tbody tr:hover {
+		background: #f8f9fa;
+	}
+
+	.history-table tbody td {
+		padding: 15px;
+		vertical-align: middle;
+		color: var(--neutral-gray);
+	}
+
+	.badge-active {
+		background: linear-gradient(135deg, var(--success-green) 0%, #157347 100%);
+		color: var(--light-text);
+		padding: 6px 12px;
+		border-radius: 20px;
+		font-weight: 600;
+		font-size: 0.85rem;
+	}
+
+	.badge-expired {
+		background: #f8d7da;
+		color: #721c24;
+		padding: 6px 12px;
+		border-radius: 20px;
+		font-weight: 600;
+		font-size: 0.85rem;
+	}
+
+	.empty-state {
+		text-align: center;
+		padding: 40px 20px;
+	}
+
+	.empty-state-icon {
+		font-size: 2.5rem;
+		color: #94a3b8;
+		margin-bottom: 15px;
+		display: block;
+	}
+
+	.empty-state-text {
+		color: var(--neutral-gray);
+		font-size: 1rem;
+	}
+
+	/* Responsive */
+	@media (max-width: 768px) {
+		.trial-section {
+			padding: 20px;
+		}
+
+		.trial-countdown-container {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		.trial-action-buttons {
+			flex-direction: column;
+		}
+
+		.btn-trial {
+			width: 100%;
+		}
+
+		.pricing-header {
+			padding: 60px 0 40px;
+		}
+
+		.status-card-body {
+			grid-template-columns: 1fr;
+		}
 	}
 </style>
 
+<div class="subscription-shell">
+
+<!-- Trial Status Section -->
+{% if trial_info.is_active %}
+<div class="container mt-5 mb-5">
+	<div class="trial-section">
+		<div class="trial-content">
+			<div class="trial-title">
+				<span class="trial-pill">Trial</span>
+				<span>Free Trial Active</span>
+			</div>
+			
+			{% if trial_info.is_expiring_soon %}
+			<div class="trial-expire-warning">
+				<strong>Heads up:</strong> Your free trial expires in <strong>{{ trial_info.days_remaining }} day{{ trial_info.days_remaining|pluralize }}</strong>. Upgrade now to keep posting without interruption.
+			</div>
+			{% else %}
+			<div class="trial-message">
+				You are on a free trial. Post jobs and find candidates for 2 weeks at no cost. Upgrade anytime to unlock premium tools.
+			</div>
+			{% endif %}
+			
+			<!-- Countdown Timer -->
+			<div class="trial-countdown-container">
+				<div class="countdown-box">
+					<span class="countdown-number">{{ trial_info.days_remaining }}</span>
+					<span class="countdown-label">Days</span>
+				</div>
+				{% if trial_info.trial_expires_at %}
+				<div class="countdown-box">
+					<span class="countdown-number">{{ trial_info.trial_expires_at|date:"d" }}</span>
+					<span class="countdown-label">{{ trial_info.trial_expires_at|date:"M" }}</span>
+				</div>
+				{% endif %}
+			</div>
+
+			<div class="trial-action-buttons">
+				<a href="{% url 'payment_page' 'sponsor' %}" class="btn-trial btn-trial-primary">
+					Upgrade to Sponsor
+				</a>
+				<a href="{% url 'payment_page' 'premium' %}" class="btn-trial btn-trial-secondary">
+					Explore Premium
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+{% elif subscription_status.is_subscribed %}
+<!-- Active Subscription Status Section -->
+<div class="container mt-5 mb-5">
+	<div class="subscription-status-section">
+		<div class="status-card">
+			<div class="status-card-header">
+				Active Subscription
+			</div>
+			<div class="status-card-body">
+				<div class="status-item">
+					<div class="status-item-label">Current Plan</div>
+					<div class="status-item-value">{{ subscription_status.current_plan|title }}</div>
+				</div>
+				<div class="status-item">
+					<div class="status-item-label">Expires On</div>
+					<div class="status-item-value">{{ subscription_status.subscription_expires_at|date:"M d, Y" }}</div>
+				</div>
+				<div class="status-item">
+					<div class="status-item-label">Status</div>
+					<div class="status-item-value" style="color: var(--success-green);">Active</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endif %}
+
 <!-- Header -->
 <div class="pricing-header text-center">
-	<h2 class="fw-bold mb-3 display-5">Choose Your Plan</h2>
-	<p class="lead opacity-75">Unlock powerful tools to find the perfect candidates faster.</p>
+	<div class="container">
+		<h2 class="fw-bold mb-3 display-5">Subscription Plans</h2>
+		<p class="lead opacity-75">Upgrade to unlock stronger reach, analytics, and priority placement.</p>
+	</div>
 </div>
 
 <div class="container pb-5" style="margin-top: -40px;">
 	<!-- Pricing Cards -->
 	<div class="row g-4 justify-content-center mb-5">
-		<!-- Free Plan -->
+		<!-- Starter Plan -->
 		<div class="col-lg-4 col-md-6">
 			<div class="pricing-card">
-				<h5 class="fw-bold text-muted text-uppercase mb-3">Starter</h5>
-				<div class="price-amount"><span class="price-currency">$</span>0<span class="price-period">/mo</span>
-				</div>
+				<h5 class="fw-bold text-uppercase mb-3">Starter</h5>
+				<div class="price-amount"><span class="price-currency">$</span>0<span class="price-period">/mo</span></div>
 				<p class="text-muted small">Perfect for small businesses just getting started.</p>
 
 				<ul class="feature-list">
@@ -136,7 +589,11 @@
 					<li><i class="bi bi-check-circle-fill"></i> Candidate management</li>
 				</ul>
 
-				<button class="btn btn-plan btn-secondary opacity-50 pe-none mt-auto">Current Plan</button>
+				{% if trial_info.is_active %}
+				<button class="btn btn-plan btn-secondary opacity-50" disabled>Your Current Plan (Trial)</button>
+				{% else %}
+				<button class="btn btn-plan btn-secondary opacity-50" disabled>Current Plan</button>
+				{% endif %}
 			</div>
 		</div>
 
@@ -144,9 +601,8 @@
 		<div class="col-lg-4 col-md-6">
 			<div class="pricing-card featured">
 				<span class="popular-badge">Most Popular</span>
-				<h5 class="fw-bold text-success text-uppercase mb-3">Sponsor</h5>
-				<div class="price-amount"><span class="price-currency">$</span>199<span class="price-period">/mo</span>
-				</div>
+				<h5 class="fw-bold text-uppercase mb-3">Sponsor</h5>
+				<div class="price-amount"><span class="price-currency">$</span>199<span class="price-period">/mo</span></div>
 				<p class="text-muted small">Boost your reach and find candidates 2x faster.</p>
 
 				<ul class="feature-list">
@@ -156,17 +612,15 @@
 					<li><i class="bi bi-check-circle-fill"></i> Analytics Dashboard</li>
 				</ul>
 
-				<a href="{% url 'payment_page' 'sponsor' %}" class="btn btn-plan btn-plan-primary mt-auto">Upgrade to
-					Sponsor</a>
+				<a href="{% url 'payment_page' 'sponsor' %}" class="btn btn-plan btn-plan-primary mt-auto">Upgrade to Sponsor</a>
 			</div>
 		</div>
 
 		<!-- Premium Plan -->
 		<div class="col-lg-4 col-md-6">
 			<div class="pricing-card">
-				<h5 class="fw-bold text-dark text-uppercase mb-3">Premium</h5>
-				<div class="price-amount"><span class="price-currency">$</span>299<span class="price-period">/mo</span>
-				</div>
+				<h5 class="fw-bold text-uppercase mb-3">Premium</h5>
+				<div class="price-amount"><span class="price-currency">$</span>299<span class="price-period">/mo</span></div>
 				<p class="text-muted small">Maximum visibility for high-volume hiring.</p>
 
 				<ul class="feature-list">
@@ -176,22 +630,21 @@
 					<li><i class="bi bi-check-circle-fill"></i> Access to resume database</li>
 				</ul>
 
-				<a href="{% url 'payment_page' 'premium' %}" class="btn btn-plan btn-plan-outline mt-auto">Go
-					Premium</a>
+				<a href="{% url 'payment_page' 'premium' %}" class="btn btn-plan btn-plan-outline mt-auto">Go Premium</a>
 			</div>
 		</div>
 	</div>
 
-	<!-- History Table -->
+	<!-- Subscription History Table -->
 	<div class="row justify-content-center">
 		<div class="col-lg-10">
-			<div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-				<div class="card-header bg-white py-3 px-4 border-0">
-					<h5 class="fw-bold mb-0">Subscription History</h5>
+			<div class="history-card">
+				<div class="card-header">
+					<h5>Subscription History</h5>
 				</div>
 				<div class="table-responsive">
-					<table class="table table-hover align-middle mb-0">
-						<thead class="bg-light">
+					<table class="table history-table align-middle mb-0">
+						<thead>
 							<tr>
 								<th class="ps-4">Plan Name</th>
 								<th>Start Date</th>
@@ -201,21 +654,31 @@
 							</tr>
 						</thead>
 						<tbody>
-							{% for plan in plans %}
+							{% for subscription in subscriptions %}
 							<tr>
-								<td class="ps-4 fw-bold text-dark">{{ plan.plan_name|title }}</td>
-								<td class="text-muted small">{{ plan.start_date }}</td>
-								<td class="text-muted small">{{ plan.end_date }}</td>
-								<td class="fw-bold">${{ plan.price }}</td>
+								<td class="ps-4 fw-bold">
+									{% if subscription.is_free_trial %}
+									🎁 {{ subscription.plan_name|title }} (Free Trial)
+									{% else %}
+									{{ subscription.plan_name|title }}
+									{% endif %}
+								</td>
+								<td class="text-muted small">{{ subscription.start_date|date:"M d, Y" }}</td>
+								<td class="text-muted small">{{ subscription.end_date|date:"M d, Y" }}</td>
+								<td class="fw-bold">${{ subscription.amount }}</td>
 								<td class="pe-4 text-end">
-									<span class="badge bg-success-subtle text-success rounded-pill px-3">Active</span>
+									{% if subscription.is_active and subscription.end_date >= today %}
+									<span class="badge-active">Active</span>
+									{% else %}
+									<span class="badge-expired">Expired</span>
+									{% endif %}
 								</td>
 							</tr>
 							{% empty %}
 							<tr>
-								<td colspan="5" class="text-center py-5 text-muted">
-									<i class="bi bi-receipt mb-2 d-block" style="font-size: 2rem;"></i>
-									No subscription history found.
+								<td colspan="5" class="text-center py-5">
+									<span class="empty-state-icon">•</span>
+									<p class="empty-state-text">No subscription history yet. Your trial or first plan will appear here.</p>
 								</td>
 							</tr>
 							{% endfor %}

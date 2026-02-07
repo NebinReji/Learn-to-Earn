@@ -23,6 +23,9 @@ def contact(request):
 def team(request):
     return render(request, 'guest/team.html')
 
+def terms(request):
+    return render(request, 'guest/terms.html')
+
 def addemployer(request):
     if request.method == 'POST':
         form = EmployerSignupForm(request.POST)
@@ -131,5 +134,12 @@ def login_view(request):
 
 def custom_logout(request):
     from django.contrib.auth import logout
+    
+    # Clear all messages before logging out
+    storage = messages.get_messages(request)
+    for _ in storage:
+        pass
+    storage.used = True
+    
     logout(request)
     return redirect('login')

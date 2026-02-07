@@ -65,6 +65,70 @@ class Employer(models.Model):
 
     def is_profile_complete(self):
         return bool(self.district)
+    
+    def get_subscription_status(self):
+        """Get comprehensive subscription status information."""
+        from django.utils import timezone
+        
+        status = {
+            'is_in_trial': False,
+            'days_remaining': 0,
+            'trial_expires_at': None,
+            'is_subscribed': False,
+            'subscription_expires_at': None,
+            'can_post_jobs': False,
+            'current_plan': None,
+            'subscription_active': None
+        }
+        
+        # Get the most recent subscription
+        latest_subscription = self.subscriptions.order_by('-start_date').first()
+        
+        if not latest_subscription:
+            return status
+        
+        # Check if in trial
+        if latest_subscription.is_free_trial:
+            status['is_in_trial'] = latest_subscription.is_trial_active()
+            status['days_remaining'] = latest_subscription.get_trial_days_remaining()
+            status['trial_expires_at'] = latest_subscription.get_trial_end_date()
+            status['can_post_jobs'] = status['is_in_trial']  # Can post during trial
+
+        # Check if has active subscription
+        if latest_subscription.is_active:
+            today = timezone.now().date()
+            if today <= latest_subscription.end_date:
+                status['is_subscribed'] = True
+                status['subscription_expires_at'] = latest_subscription.end_date
+                status['can_post_jobs'] = True
+                status['current_plan'] = latest_subscription.plan_name
+                status['subscription_active'] = latest_subscription
+            else:
+                latest_subscription.is_active = False
+                latest_subscription.save(update_fields=['is_active'])
+        
+        return status
+    
+    def init_free_trial(self):
+        """Initialize a 2-week free trial for new employers."""
+        from django.utils import timezone
+        from datetime import timedelta
+        
+        # Check if any trial or subscription exists
+        if self.subscriptions.exists():
+            return None
+        
+        # Create a new free trial subscription
+        trial_subscription = self.subscriptions.create(
+            plan_name='basic',
+            is_free_trial=True,
+            free_trial_start_date=timezone.now().date(),
+            trial_days=14,
+            amount=0.00,
+            is_active=True,
+            end_date=timezone.now().date() + timedelta(days=14)
+        )
+        return trial_subscription
 
 class student(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="student_profile",null=True)

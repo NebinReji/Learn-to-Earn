@@ -1,17 +1,29 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from employer.models import Jobposting
-from guest.models import student
+from guest.models import student, Notification
 from student.models import Application, SkillService
 from student.forms import StudentProfileForm, StudentProfileSetupForm
+
+
+# Helper function to get notification data for context
+def get_notification_context(user):
+    """Returns notification data for navbar"""
+    return {
+        'recent_notifications': Notification.objects.filter(user=user).order_by('-timestamp')[:5],
+        'unread_notifications_count': Notification.objects.filter(user=user, is_read=False).count()
+    }
+
 
 
 def index(request):
     try:
         stud = student.objects.get(user_id=request.user.id)
         
-        # Redirect to verification pending if profile submitted but not verified
-        if stud.is_profile_complete() and not stud.verification_status:
+        if not stud.is_profile_complete():
+             return redirect('student_profile_setup')
+             
+        if not stud.verification_status:
              return redirect('student_verification_pending')
              
         applications_count = Application.objects.filter(student=stud).count()
@@ -32,8 +44,7 @@ def index(request):
         applied_job_ids = Application.objects.filter(student=stud).values_list('job_id', flat=True)
 
         # Dashboard Widgets
-        from guest.models import Notification
-        recent_notifications = Notification.objects.filter(user=request.user).order_by('-timestamp')[:3]
+        notification_context = get_notification_context(request.user)
 
         context = {
             'applications_count': applications_count,
@@ -43,11 +54,11 @@ def index(request):
             'available_skills': available_skills,
             'recent_applications': recent_applications,
             'applied_job_ids': applied_job_ids,
-            'recent_notifications': recent_notifications,
+            **notification_context,  # Add notification data
         }
         return render(request, 'student/index.html', context)
     except student.DoesNotExist:
-        return render(request, 'student/index.html')
+        return redirect('student_profile_setup')
 
 
 def complete_profile(request):
@@ -89,8 +100,14 @@ def view_jobs(request):
             applied_job_ids = Application.objects.filter(student=stud).values_list('job_id', flat=True)
         except student.DoesNotExist:
             pass
-            
-    return render(request, 'student/viewjobs.html', {'jobs': jobs, 'applied_job_ids': applied_job_ids})
+    
+    context = {
+        'jobs': jobs,
+        'applied_job_ids': applied_job_ids,
+    }
+    if request.user.is_authenticated:
+        context.update(get_notification_context(request.user))
+    return render(request, 'student/viewjobs.html', context)
 
 
 def job_detail(request, job_id):
@@ -172,8 +189,13 @@ def profile(request):
             return redirect('student_profile')
     else:
         form = StudentProfileForm(instance=stud)
-        
-    return render(request, 'student/profile.html', {'form': form, 'student': stud})
+    
+    context = {
+        'form': form,
+        'student': stud,
+        **get_notification_context(request.user)
+    }
+    return render(request, 'student/profile.html', context)
 
 def profile_setup(request):
     user_id = request.user.id
@@ -237,32 +259,92 @@ def my_applications(request):
         return redirect('student_verification_pending')
 
     applications = Application.objects.filter(student=stud).select_related('job', 'job__employer').order_by('-applied_date')
-    return render(request, 'student/my_applications.html', {'applications': applications})
+    context = {
+        'applications': applications,
+        **get_notification_context(request.user)
+    }
+    return render(request, 'student/my_applications.html', context)
 
 from student.forms import FeedbackForm
 from student.models import Feedback
 
 def review_employer(request, application_id):
+    """Student provides feedback about the employer"""
     application = get_object_or_404(Application, id=application_id)
     
     # Verify student owns the application
     if application.student.user != request.user:
         messages.error(request, "Unauthorized")
         return redirect('student_my_applications')
+    
+    # Check if feedback already exists from student
+    existing_feedback = Feedback.objects.filter(
+        application=application,
+        reviewer_role='student'
+    ).first()
         
     if request.method == 'POST':
-        form = FeedbackForm(request.POST)
+        form = FeedbackForm(request.POST, instance=existing_feedback)
         if form.is_valid():
             feedback = form.save(commit=False)
             feedback.application = application
             feedback.reviewer_role = 'student'
             feedback.save()
             messages.success(request, "Feedback submitted successfully!")
+            
+            # Send notification to employer
+            from guest.models import Notification
+            if existing_feedback:
+                # Updated feedback
+                notification_message = f"{application.student.student_name} has updated their feedback for the '{application.job.job_title}' job."
+            else:
+                # New feedback
+                notification_message = f"{application.student.student_name} has shared feedback about your job '{application.job.job_title}' (Rating: {feedback.rating}⭐)."
+            
+            Notification.objects.create(
+                user=application.job.employer.user,
+                message=notification_message,
+                link=f'/employer/application/{application.id}/view/'
+            )
+            
             return redirect('student_my_applications')
     else:
-        form = FeedbackForm()
+        form = FeedbackForm(instance=existing_feedback)
     
-    return render(request, 'student/review_employer.html', {'form': form, 'application': application})
+    context = {
+        'form': form,
+        'application': application,
+        'existing_feedback': existing_feedback
+    }
+    return render(request, 'student/review_employer.html', context)
+
+
+def view_application_feedback(request, application_id):
+    """View all feedback for an application (student view)"""
+    application = get_object_or_404(Application, id=application_id)
+    
+    # Verify student owns the application
+    if application.student.user != request.user:
+        messages.error(request, "Unauthorized")
+        return redirect('student_my_applications')
+    
+    # Get all feedback for this application
+    employer_feedbacks = Feedback.objects.filter(
+        application=application,
+        reviewer_role='employer'
+    )
+    student_feedbacks = Feedback.objects.filter(
+        application=application,
+        reviewer_role='student'
+    )
+    
+    context = {
+        'application': application,
+        'employer_feedbacks': employer_feedbacks,
+        'student_feedbacks': student_feedbacks,
+    }
+    return render(request, 'student/application_feedback.html', context)
+
 
 # -------------------- Skills & Services Views --------------------
 
@@ -295,6 +377,15 @@ def add_skill(request):
             service.student = stud
             service.save()
             messages.success(request, "Skill Service added successfully!")
+            
+            # Send notification
+            from guest.models import Notification
+            Notification.objects.create(
+                user=request.user,
+                message=f"Your skill service '{service.title}' has been created and is pending verification.",
+                link='/student/my-skills/'
+            )
+            
             return redirect('my_skills')
     else:
         form = SkillServiceForm()
@@ -320,7 +411,12 @@ def my_skills(request):
     services = SkillService.objects.filter(student=stud)
     bookings = ServiceBooking.objects.filter(service__student=stud).order_by('-booking_date')
     
-    return render(request, 'student/my_skills.html', {'services': services, 'bookings': bookings})
+    context = {
+        'services': services,
+        'bookings': bookings,
+        **get_notification_context(request.user)
+    }
+    return render(request, 'student/my_skills.html', context)
 
 # Public / Employer Views for Skills
 
@@ -330,8 +426,11 @@ def service_list(request):
     category = request.GET.get('category')
     if category:
         services = services.filter(category=category)
-        
-    return render(request, 'student/service_list.html', {'services': services})
+    
+    context = {'services': services}
+    if request.user.is_authenticated:
+        context.update(get_notification_context(request.user))
+    return render(request, 'student/service_list.html', context)
 
 def service_detail(request, service_id):
     service = get_object_or_404(SkillService, id=service_id)
@@ -350,7 +449,6 @@ def service_detail(request, service_id):
             messages.success(request, "Booking request sent successfully!")
 
             # Notifications
-            from guest.models import Notification
             Notification.objects.create(
                 user=service.student.user,
                 message=f"New skill request for '{service.title}' from {request.user.name}.",
@@ -362,8 +460,11 @@ def service_detail(request, service_id):
                 link=f"/student/services/{service.id}/"
             )
             return redirect('service_list')
-            
-    return render(request, 'student/service_detail.html', {'service': service})
+    
+    context = {'service': service}
+    if request.user.is_authenticated:
+        context.update(get_notification_context(request.user))
+    return render(request, 'student/service_detail.html', context)
 
 def edit_skill(request, service_id):
     service = get_object_or_404(SkillService, id=service_id)
@@ -391,33 +492,40 @@ def manage_booking(request, booking_id, action):
     if booking.service.student.user.id != request.user.id:
         messages.error(request, "Unauthorized action.")
         return redirect('my_skills')
-        
+    
+    from guest.models import Notification
+    notification_message = None
     status_message = None
+    
     if action == 'approve':
         booking.status = 'approved'
         status_message = "approved"
+        notification_message = f"✅ Your request for '{booking.service.title}' has been APPROVED by {booking.service.student.student_name}."
         messages.success(request, "Booking request approved!")
     elif action == 'reject':
         booking.status = 'rejected'
         status_message = "rejected"
+        notification_message = f"❌ Your request for '{booking.service.title}' has been REJECTED by {booking.service.student.student_name}."
         messages.error(request, "Booking request rejected.")
     elif action == 'complete':
         booking.status = 'completed'
         status_message = "completed"
+        notification_message = f"✅ The service '{booking.service.title}' has been marked as COMPLETED by {booking.service.student.student_name}."
         messages.success(request, "Service marked as completed successfully!")
     elif action == 'revoke':
         booking.status = 'rejected'
         status_message = "revoked"
+        notification_message = f"⚠️ The booking for '{booking.service.title}' has been REVOKED by {booking.service.student.student_name}."
         messages.warning(request, "Service booking has been revoked/stopped.")
     
     booking.save()
 
     # Notify requester about status update
-    if status_message:
-        from guest.models import Notification
+    if notification_message:
         Notification.objects.create(
             user=booking.requester,
-            message=f"Your request for '{booking.service.title}' was {status_message}.",
+            message=notification_message,
             link='/student/services/'
         )
+    
     return redirect('my_skills')

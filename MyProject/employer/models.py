@@ -1,10 +1,13 @@
 from django.db import models
+from django.utils import timezone
+from datetime import timedelta
 from guest.models import Employer
 
 class Subscription(models.Model):
     employer = models.ForeignKey(Employer, on_delete=models.CASCADE, related_name='subscriptions')
     PLAN_CHOICES = [
         ('basic', 'Basic Plan'),
+        ('sponsor', 'Sponsor Plan'),
         ('premium', 'Premium Plan'),
         ('enterprise', 'Enterprise Plan'),
     ]
@@ -13,9 +16,40 @@ class Subscription(models.Model):
     end_date = models.DateField()
     amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     is_active = models.BooleanField(default=True)
+    
+    # Free trial fields
+    is_free_trial = models.BooleanField(default=False)
+    free_trial_start_date = models.DateField(null=True, blank=True)
+    trial_days = models.IntegerField(default=14)
 
     def __str__(self):
         return f"{self.employer.company_name} - {self.plan_name}"
+    
+    def get_trial_end_date(self):
+        """Calculate the trial end date based on start date and trial duration."""
+        if self.is_free_trial and self.free_trial_start_date:
+            return self.free_trial_start_date + timedelta(days=self.trial_days)
+        return None
+    
+    def get_trial_days_remaining(self):
+        """Get the number of days remaining in the free trial."""
+        if not self.is_free_trial or not self.free_trial_start_date:
+            return 0
+        trial_end = self.get_trial_end_date()
+        today = timezone.now().date()
+        remaining = (trial_end - today).days
+        return max(0, remaining)
+    
+    def is_trial_active(self):
+        """Check if the trial is still active."""
+        if not self.is_free_trial or not self.free_trial_start_date:
+            return False
+        return self.get_trial_days_remaining() > 0
+    
+    def is_trial_expiring_soon(self):
+        """Check if trial is expiring within 3 days."""
+        remaining = self.get_trial_days_remaining()
+        return 0 < remaining <= 3
 
 class Jobposting(models.Model):
     employer = models.ForeignKey(Employer, on_delete=models.CASCADE, related_name='job_postings')

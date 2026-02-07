@@ -77,6 +77,7 @@
                                         {% elif application.status == 'reviewed' %} bg-info text-white
                                         {% elif application.status == 'shortlisted' %} bg-primary text-white
                                         {% elif application.status == 'accepted' %} bg-success text-white
+                                        {% elif application.status == 'completed' %} bg-success text-white
                                         {% elif application.status == 'rejected' %} bg-danger text-white
                                         {% endif %}
                                     ">
@@ -88,7 +89,7 @@
                                         class="btn btn-sm btn-primary">
                                         View Profile
                                     </a>
-                                    {% if application.status != 'accepted' and application.status != 'rejected' %}
+                                    {% if application.status != 'accepted' and application.status != 'rejected' and application.status != 'completed' %}
                                     <a href="{% url 'update_status' application.id 'shortlisted' %}"
                                         class="btn btn-sm btn-info text-white ms-1">
                                         Shortlist
@@ -96,6 +97,22 @@
                                     <a href="{% url 'update_status' application.id 'accepted' %}"
                                         class="btn btn-sm btn-success ms-1">
                                         Approve
+                                    </a>
+                                    {% endif %}
+                                    {% if application.status == 'accepted' %}
+                                    <a href="{% url 'mark_job_completed' application.id %}"
+                                        class="btn btn-sm btn-warning ms-1" title="Mark job as completed">
+                                        ✓ Complete
+                                    </a>
+                                    {% endif %}
+                                    {% if application.status == 'completed' %}
+                                    <a href="{% url 'review_student' application.id %}"
+                                        class="btn btn-sm btn-secondary ms-1" title="Give feedback about student">
+                                        💬 Feedback
+                                    </a>
+                                    <a href="{% url 'view_applied_student' application.id %}"
+                                        class="btn btn-sm btn-info ms-1" title="View details and feedback">
+                                        📋 Details
                                     </a>
                                     {% endif %}
                                 </td>
@@ -123,8 +140,9 @@
                                 <p><strong>Student Name:</strong> {{ application.student.student_name }}</p>
                                 <p><strong>Email:</strong> {{ application.student.email }}</p>
                                 <p><strong>Phone:</strong> {{ application.student.phone_number }}</p>
-                                <p><strong>Academic Status:</strong> {{
-                                    application.student.academic_status|default:"N/A" }}</p>
+                                <p><strong>Academic Status:</strong>
+                                    {{ application.student.academic_status|default:"N/A" }}
+                                </p>
                                 <p><strong>Skills:</strong> {{ application.student.skills|default:"N/A" }}</p>
                                 <p><strong>Applied Date:</strong> {{ application.applied_date|date:"d M Y, h:i A" }}</p>
                                 <p><strong>Current Status:</strong> {{ application.get_status_display }}</p>

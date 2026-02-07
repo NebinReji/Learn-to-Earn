@@ -7,7 +7,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="card shadow-sm border-0">
-                    <div class="card-header bg-primary text-white p-4">
+                    <div class="card-header text-white p-4" style="background-color: #1A202E;">
                         {% if is_edit %}
                         <h4 class="mb-0 text-white">Edit Your Service</h4>
                         <p class="mb-0 small text-white-50">Update the details of your service offering.</p>
@@ -45,8 +45,7 @@
                             </div>
 
                             <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary btn-lg">{% if is_edit %}Update Service{%
-                                    else %}Publish Service{% endif %}</button>
+                                <button type="submit" class="btn btn-lg" style="background-color: #FF2B2B; border-color: #FF2B2B; color: white;">{% if is_edit %}Update Service{% else %}Publish Service{% endif %}</button>
                                 <a href="{% url 'my_skills' %}" class="btn btn-outline-secondary">Cancel</a>
                             </div>
                         </form>

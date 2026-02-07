@@ -18,8 +18,8 @@
 
     .form-control-lg:focus,
     .form-select-lg:focus {
-        border-color: #0d6efd;
-        box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1);
+        border-color: #FF2B2B;
+        box-shadow: 0 0 0 4px rgba(255, 43, 43, 0.1);
     }
 
     .form-label {
@@ -34,7 +34,7 @@
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="card setup-card border-0 shadow-lg">
-                <div class="card-header bg-primary text-white py-4 px-5 text-center">
+                <div class="card-header text-white py-4 px-5 text-center" style="background-color: #1A202E;">
                     <h3 class="fw-bold mb-1">Complete Your Profile</h3>
                     <p class="mb-0 opacity-75">Let's get your student account ready for employers!</p>
                 </div>
@@ -55,7 +55,7 @@
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
 
-                        <h5 class="text-primary fw-bold mb-3 small text-uppercase">Basic Information</h5>
+                        <h5 class="fw-bold mb-3 small text-uppercase" style="color: #1A202E;">Basic Information</h5>
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
                                 <label class="form-label">District *</label>
@@ -88,7 +88,7 @@
 
                         <hr class="my-4 text-muted opacity-25">
 
-                        <h5 class="text-primary fw-bold mb-3 small text-uppercase">Job Preferences</h5>
+                        <h5 class="fw-bold mb-3 small text-uppercase" style="color: #1A202E;">Job Preferences</h5>
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
                                 <label class="form-label">Availability</label>
@@ -116,7 +116,7 @@
                         </div>
 
                         <div class="d-grid mt-5">
-                            <button type="submit" class="btn btn-primary btn-lg py-3 rounded-pill fw-bold">
+                            <button type="submit" class="btn btn-lg py-3 rounded-pill fw-bold" style="background-color: #FF2B2B; border-color: #FF2B2B; color: white;">
                                 Complete Setup <i class="bi bi-arrow-right ms-2"></i>
                             </button>
                         </div>

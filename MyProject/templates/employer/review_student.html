@@ -1,0 +1,167 @@
+{% extends 'employer/base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Page Title Start -->
+<section class="page-title title-bg5">
+    <div class="d-table">
+        <div class="d-table-cell">
+            <h2>Give Feedback</h2>
+            <ul>
+                <li>
+                    <a href="{% url 'employer_index' %}">Home</a>
+                </li>
+                <li>
+                    <a href="{% url 'view_applications' %}">Applications</a>
+                </li>
+                <li>Feedback</li>
+            </ul>
+        </div>
+    </div>
+    <div class="lines">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+</section>
+<!-- Page Title End -->
+
+<section class="job-section pt-100 pb-70">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-lg">
+                    <div class="card-body p-5">
+                        <h3 class="card-title mb-4">Share Your Feedback</h3>
+                        
+                        <!-- Application Details -->
+                        <div class="alert alert-light border-start border-4 mb-4" style="border-left-color: #FF2B2B !important;">
+                            <h6 class="mb-3"><strong>Application Details</strong></h6>
+                            <p class="mb-2"><strong>Student Name:</strong> {{ application.student.student_name }}</p>
+                            <p class="mb-2"><strong>Job Title:</strong> {{ application.job.job_title }}</p>
+                            <p class="mb-2"><strong>Applied Date:</strong> {{ application.applied_date|date:"d M Y, h:i A" }}</p>
+                            <p class="mb-0"><strong>Status:</strong> <span class="badge bg-success">{{ application.get_status_display }}</span></p>
+                        </div>
+
+                        <!-- Feedback Form -->
+                        <form method="POST" class="feedback-form">
+                            {% csrf_token %}
+                            
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">
+                                    Rating <span class="text-danger">*</span>
+                                </label>
+                                <div class="rating-input">
+                                    <div class="d-flex gap-3 align-items-center">
+                                        <label class="rating-option">
+                                            <input type="radio" name="rating" value="1" class="rating-radio"
+                                                {% if form.rating.value == '1' %} checked {% endif %}>
+                                            <span class="star-display">⭐</span>
+                                        </label>
+                                        <label class="rating-option">
+                                            <input type="radio" name="rating" value="2" class="rating-radio"
+                                                {% if form.rating.value == '2' %} checked {% endif %}>
+                                            <span class="star-display">⭐⭐</span>
+                                        </label>
+                                        <label class="rating-option">
+                                            <input type="radio" name="rating" value="3" class="rating-radio"
+                                                {% if form.rating.value == '3' %} checked {% endif %}>
+                                            <span class="star-display">⭐⭐⭐</span>
+                                        </label>
+                                        <label class="rating-option">
+                                            <input type="radio" name="rating" value="4" class="rating-radio"
+                                                {% if form.rating.value == '4' %} checked {% endif %}>
+                                            <span class="star-display">⭐⭐⭐⭐</span>
+                                        </label>
+                                        <label class="rating-option">
+                                            <input type="radio" name="rating" value="5" class="rating-radio"
+                                                {% if form.rating.value == '5' %} checked {% endif %}>
+                                            <span class="star-display">⭐⭐⭐⭐⭐</span>
+                                        </label>
+                                    </div>
+                                    {% if form.rating.errors %}
+                                        <div class="invalid-feedback d-block mt-2">
+                                            {{ form.rating.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <small class="form-text text-muted d-block mt-2">Rate the student's work on a scale of 1-5 stars</small>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="{{ form.review_text.id_for_label }}" class="form-label fw-bold">
+                                    Feedback <span class="text-danger">*</span>
+                                </label>
+                                <div class="form-group">
+                                    {% if form.review_text.errors %}
+                                        {{ form.review_text }}
+                                    {% else %}
+                                        {{ form.review_text }}
+                                    {% endif %}
+                                    {% if form.review_text.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.review_text.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <small class="form-text text-muted">Share your honest feedback about the student's performance, skills, and behavior</small>
+                            </div>
+
+                            <!-- Existing Feedback Display -->
+                            {% if existing_feedback %}
+                            <div class="alert alert-info mt-4">
+                                <h6 class="mb-2"><strong>Previous Feedback ({{ existing_feedback.created_at|date:"d M Y" }})</strong></h6>
+                                <p class="mb-2"><strong>Rating:</strong> <span class="badge bg-success">{{ existing_feedback.rating }} ⭐</span></p>
+                                <p class="mb-0"><strong>Review:</strong> {{ existing_feedback.review_text }}</p>
+                            </div>
+                            {% endif %}
+
+                            <div class="mt-5 d-flex gap-3">
+                                <button type="submit" class="btn btn-lg px-5" style="background-color: #FF2B2B; border-color: #FF2B2B; color: white;">
+                                    {% if existing_feedback %}Update Feedback{% else %}Submit Feedback{% endif %}
+                                </button>
+                                <a href="{% url 'view_applications' %}" class="btn btn-secondary btn-lg px-5">
+                                    Cancel
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.rating-input {
+    margin-top: 10px;
+}
+
+.rating-option {
+    cursor: pointer;
+    font-size: 28px;
+    transition: transform 0.2s, text-shadow 0.2s;
+    display: inline-block;
+}
+
+.rating-option:hover .star-display {
+    text-shadow: 0 0 10px rgba(255, 193, 7, 0.8);
+    transform: scale(1.15);
+}
+
+.rating-radio {
+    display: none;
+}
+
+.rating-radio:checked + .star-display {
+    text-shadow: 0 0 15px rgba(255, 193, 7, 1);
+    transform: scale(1.2);
+}
+
+.feedback-form textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+</style>
+
+{% endblock %}

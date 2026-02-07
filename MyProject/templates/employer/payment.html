@@ -130,7 +130,7 @@
                             <form method="post" action="{% url 'process_payment' %}" id="paymentForm"
                                 onsubmit="return validatePaymentForm()">
                                 {% csrf_token %}
-                                <input type="hidden" name="plan" value="{{ plan_name }}">
+                                <input type="hidden" name="plan" value="{{ plan_type }}">
 
                                 <div class="mb-4">
                                     <label class="form-label text-muted fw-bold small text-uppercase">Cardholder
@@ -191,7 +191,7 @@
                                 </button>
 
                                 <div class="text-center mt-3">
-                                    <a href="{% url 'employer_subscriptions' %}"
+                                    <a href="{% url 'subscriptions' %}"
                                         class="text-decoration-none text-muted small"><i
                                             class="bi bi-arrow-left me-1"></i> Cancel and Return</a>
                                 </div>

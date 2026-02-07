@@ -148,6 +148,7 @@ class EmployerSignupForm(forms.ModelForm):
         employer.verification_status = False  # Pending verification
         if commit:
             employer.save()
+            employer.init_free_trial()
         return employer
 
 

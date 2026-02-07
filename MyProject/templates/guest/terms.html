@@ -1,0 +1,50 @@
+{% extends 'guest/base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Page Title Start -->
+<section class="page-title title-bg6">
+    <div class="d-table">
+        <div class="d-table-cell">
+            <h2>Terms and Conditions</h2>
+            <ul>
+                <li>
+                    <a href="{% url 'guest_index' %}">Home</a>
+                </li>
+                <li>Terms and Conditions</li>
+            </ul>
+        </div>
+    </div>
+    <div class="lines">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+</section>
+<!-- Page Title End -->
+
+<section class="terms-section pt-100 pb-70">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header text-white p-4" style="background-color: #1A202E;">
+                        <h3 class="mb-0 text-white">Terms and Conditions for Employers</h3>
+                        <p class="mb-0 small text-white-50">Last Updated: {{ last_updated|default:"February 7, 2026" }}</p>
+                    </div>
+                    <div class="card-body p-5">
+                        {% include 'guest/_terms_content.html' %}
+
+                        <div class="text-center mt-5">
+                            <a href="{% url 'addemployer' %}" class="btn btn-lg px-5" style="background-color: #FF2B2B; border-color: #FF2B2B; color: white;">
+                                <i class='bx bx-arrow-back me-2'></i>Back to Registration
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

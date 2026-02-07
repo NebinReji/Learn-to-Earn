@@ -12,6 +12,8 @@ urlpatterns = [
     path('verification-pending/', views.verification_pending, name='student_verification_pending'),
     path('notifications/', views.notifications, name='student_notifications'),
     path('my-applications/', views.my_applications, name='student_my_applications'),
+    path('my-applications/<int:application_id>/review/', views.review_employer, name='review_employer'),
+    path('my-applications/<int:application_id>/feedback/', views.view_application_feedback, name='view_application_feedback'),
     
     # Skills & Services
     path('add-skill/', views.add_skill, name='add_skill'),

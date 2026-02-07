@@ -16,7 +16,7 @@
                                             {% csrf_token %}
                                             {{ form.as_p }}
                                             <div class="text-center">
-                                                <button type="submit" class="btn btn-primary">Update Category</button>
+                                                <button type="submit" class="btn" style="background-color: #FF2B2B; border-color: #FF2B2B; color: white;">Update Category</button>
                                                 <a href="{% url 'viewcategory' %}" class="btn btn-secondary">Cancel</a>
                                             </div>
                                         </form>

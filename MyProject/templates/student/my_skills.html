@@ -1,16 +1,38 @@
 {% extends 'student/base.html' %}
 {% load static %}
 
+
+{% block extra_css %}
+<style>
+    .badge-pending {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .badge-approved {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+
+    .badge-success-custom {
+        background: #d1fae5;
+        color: #065f46;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <section class="section-padding pt-100 pb-70">
     <div class="container">
 
         <div class="d-flex justify-content-between align-items-center mb-5">
             <div>
-                <h2 style="font-size: 2.25rem; font-weight: 700; color: var(--primary-dark); margin-bottom: 5px;">My Skills & Services</h2>
+                <h2 style="font-size: 2.25rem; font-weight: 700; color: var(--primary-dark); margin-bottom: 5px;">My
+                    Skills & Services</h2>
                 <p style="color: #64748b; margin-bottom: 0;">Manage your services and track booking requests</p>
             </div>
-            <a href="{% url 'add_skill' %}" class="btn btn-lg px-4 py-2" style="background: var(--primary-red); border: none; color: white; font-weight: 600; border-radius: 8px;">
+            <a href="{% url 'add_skill' %}" class="btn btn-lg px-4 py-2"
+                style="background: var(--primary-red); border: none; color: white; font-weight: 600; border-radius: 8px;">
                 <i class='bx bx-plus me-1'></i> Add New Skill
             </a>
         </div>
@@ -18,37 +40,63 @@
         <!-- Active Services Tab -->
         <div class="row mb-5">
             <div class="col-12">
-                <h4 class="mb-4" style="font-size: 1.35rem; font-weight: 600; color: var(--primary-dark);">Your Listed Services</h4>
+                <h4 class="mb-4" style="font-size: 1.35rem; font-weight: 600; color: var(--primary-dark);">Your Listed
+                    Services</h4>
                 {% if services %}
                 <div class="row">
                     {% for service in services %}
                     <div class="col-lg-4 col-md-6 mb-4">
-                        <div class="h-100" style="background: #fff; border-radius: 12px; padding: 30px 25px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); border: 1px solid #f1f5f9; transition: all 0.3s ease; display: flex; flex-direction: column;" onmouseover="this.style.boxShadow='0 12px 35px rgba(0, 0, 0, 0.12)'; this.style.transform='translateY(-5px)'; this.style.borderColor='var(--primary-red)';" onmouseout="this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.04)'; this.style.transform='translateY(0)'; this.style.borderColor='#f1f5f9';">
+                        <div class="h-100"
+                            style="background: #fff; border-radius: 12px; padding: 30px 25px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); border: 1px solid #f1f5f9; transition: all 0.3s ease; display: flex; flex-direction: column;"
+                            onmouseover="this.style.boxShadow='0 12px 35px rgba(0, 0, 0, 0.12)'; this.style.transform='translateY(-5px)'; this.style.borderColor='var(--primary-red)';"
+                            onmouseout="this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.04)'; this.style.transform='translateY(0)'; this.style.borderColor='#f1f5f9';">
                             <div style="flex-grow: 1;">
-                                <span class="badge mb-3" style="background: #f1f5f9; color: var(--primary-dark); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 500;">{{ service.get_category_display }}</span>
-                                <h5 style="font-size: 1.15rem; font-weight: 600; color: var(--primary-dark); margin-bottom: 12px;">{{ service.title }}</h5>
-                                <h6 class="fw-bold mb-3" style="color: var(--primary-red); font-size: 1.25rem;">₹{{ service.price }}</h6>
-                                <p class="text-muted" style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px;">{{ service.description|truncatechars:80 }}</p>
+                                <span class="badge mb-3"
+                                    style="background: #f1f5f9; color: var(--primary-dark); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 500;">
+                                    {{ service.get_category_display }}
+                                </span>
+                                <h5
+                                    style="font-size: 1.15rem; font-weight: 600; color: var(--primary-dark); margin-bottom: 12px;">
+                                    {{ service.title }}
+                                </h5>
+                                <h6 class="fw-bold mb-3" style="color: var(--primary-red); font-size: 1.25rem;">
+                                    ₹{{ service.price }}
+                                </h6>
+                                <p class="text-muted"
+                                    style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px;">
+                                    {{ service.description|truncatechars:80 }}
+                                </p>
                             </div>
-                            <div class="d-flex justify-content-between align-items-center pt-3" style="border-top: 1px solid #f1f5f9;">
+                            <div class="d-flex justify-content-between align-items-center pt-3"
+                                style="border-top: 1px solid #f1f5f9;">
                                 <small style="font-size: 0.9rem;">
                                     {% if service.verification_status == 'verified' %}
-                                    <i class='bx bxs-check-circle' style="color: #10b981;"></i> <span style="color: #10b981; font-weight: 500;">Verified</span>
+                                    <i class='bx bxs-check-circle' style="color: #10b981;"></i> <span
+                                        style="color: #10b981; font-weight: 500;">Verified</span>
                                     {% else %}
-                                    <i class='bx bxs-time-five' style="color: #f59e0b;"></i> <span style="color: #f59e0b; font-weight: 500;">Pending</span>
+                                    <i class='bx bxs-time-five' style="color: #f59e0b;"></i> <span
+                                        style="color: #f59e0b; font-weight: 500;">Pending</span>
                                     {% endif %}
                                 </small>
-                                <a href="{% url 'edit_skill' service.id %}" style="color: var(--primary-red); text-decoration: none; font-weight: 600; font-size: 0.9rem;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Edit <i class='bx bx-edit-alt'></i></a>
+                                <a href="{% url 'edit_skill' service.id %}"
+                                    style="color: var(--primary-red); text-decoration: none; font-weight: 600; font-size: 0.9rem;"
+                                    onmouseover="this.style.textDecoration='underline';"
+                                    onmouseout="this.style.textDecoration='none';">Edit <i
+                                        class='bx bx-edit-alt'></i></a>
                             </div>
                         </div>
                     </div>
                     {% endfor %}
                 </div>
                 {% else %}
-                <div class="text-center p-5" style="background: #f8fafc; border-radius: 12px; border: 2px dashed #e2e8f0;">
-                    <i class='bx bx-briefcase-alt-2' style="font-size: 3rem; color: #cbd5e1; margin-bottom: 15px; display: block;"></i>
+                <div class="text-center p-5"
+                    style="background: #f8fafc; border-radius: 12px; border: 2px dashed #e2e8f0;">
+                    <i class='bx bx-briefcase-alt-2'
+                        style="font-size: 3rem; color: #cbd5e1; margin-bottom: 15px; display: block;"></i>
                     <p class="mb-4" style="color: #64748b; font-size: 1.05rem;">You haven't listed any skills yet.</p>
-                    <a href="{% url 'add_skill' %}" class="btn btn-lg px-4 py-2" style="background: var(--primary-red); border: none; color: white; font-weight: 600; border-radius: 8px;">List Your First Service <i class='bx bx-plus-circle ms-1'></i></a>
+                    <a href="{% url 'add_skill' %}" class="btn btn-lg px-4 py-2"
+                        style="background: var(--primary-red); border: none; color: white; font-weight: 600; border-radius: 8px;">List
+                        Your First Service <i class='bx bx-plus-circle ms-1'></i></a>
                 </div>
                 {% endif %}
             </div>
@@ -59,52 +107,81 @@
         <!-- Booking Requests -->
         <div class="row mt-5">
             <div class="col-12">
-                <h4 class="mb-4" style="font-size: 1.35rem; font-weight: 600; color: var(--primary-dark);">Incoming Booking Requests</h4>
+                <h4 class="mb-4" style="font-size: 1.35rem; font-weight: 600; color: var(--primary-dark);">Incoming
+                    Booking Requests</h4>
                 {% if bookings %}
-                <div class="table-responsive" style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); border: 1px solid #f1f5f9;">
+                <div class="table-responsive"
+                    style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); border: 1px solid #f1f5f9;">
                     <table class="table table-hover align-middle mb-0">
                         <thead style="background: #f8fafc;">
                             <tr style="border-bottom: 2px solid #e2e8f0;">
-                                <th style="padding: 15px 20px; font-weight: 600; color: var(--primary-dark); font-size: 0.9rem;">Service</th>
-                                <th style="padding: 15px 20px; font-weight: 600; color: var(--primary-dark); font-size: 0.9rem;">Requester</th>
-                                <th style="padding: 15px 20px; font-weight: 600; color: var(--primary-dark); font-size: 0.9rem;">Contact</th>
-                                <th style="padding: 15px 20px; font-weight: 600; color: var(--primary-dark); font-size: 0.9rem;">Date</th>
-                                <th style="padding: 15px 20px; font-weight: 600; color: var(--primary-dark); font-size: 0.9rem;">Status</th>
-                                <th style="padding: 15px 20px; font-weight: 600; color: var(--primary-dark); font-size: 0.9rem;">Action</th>
+                                <th
+                                    style="padding: 15px 20px; font-weight: 600; color: var(--primary-dark); font-size: 0.9rem;">
+                                    Service</th>
+                                <th
+                                    style="padding: 15px 20px; font-weight: 600; color: var(--primary-dark); font-size: 0.9rem;">
+                                    Requester</th>
+                                <th
+                                    style="padding: 15px 20px; font-weight: 600; color: var(--primary-dark); font-size: 0.9rem;">
+                                    Contact</th>
+                                <th
+                                    style="padding: 15px 20px; font-weight: 600; color: var(--primary-dark); font-size: 0.9rem;">
+                                    Date</th>
+                                <th
+                                    style="padding: 15px 20px; font-weight: 600; color: var(--primary-dark); font-size: 0.9rem;">
+                                    Status</th>
+                                <th
+                                    style="padding: 15px 20px; font-weight: 600; color: var(--primary-dark); font-size: 0.9rem;">
+                                    Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for booking in bookings %}
                             <tr style="border-bottom: 1px solid #f1f5f9;">
-                                <td style="padding: 15px 20px; font-weight: 600; color: var(--primary-dark);">{{ booking.service.title }}</td>
+                                <td style="padding: 15px 20px; font-weight: 600; color: var(--primary-dark);">
+                                    {{ booking.service.title }}
+                                </td>
                                 <td style="padding: 15px 20px;">{{ booking.requester.name }}</td>
                                 <td style="padding: 15px 20px;">
                                     <div style="font-size: 0.9rem; color: #64748b; line-height: 1.6;">
                                         <i class='bx bx-envelope'></i> {{ booking.requester.email }}<br>
                                         {% if booking.requester.employer_profile %}
-                                        <i class='bx bx-phone'></i> {{ booking.requester.employer_profile.phone|default:"N/A" }}
+                                        <i class='bx bx-phone'></i>
+                                        {{ booking.requester.employer_profile.phone|default:"N/A" }}
                                         {% elif booking.requester.student_profile %}
-                                        <i class='bx bx-phone'></i> {{ booking.requester.student_profile.phone_number|default:"N/A" }}
+                                        <i class='bx bx-phone'></i>
+                                        {{ booking.requester.student_profile.phone_number|default:"N/A" }}
                                         {% else %}
                                         <i class='bx bx-phone'></i> N/A
                                         {% endif %}
                                     </div>
                                 </td>
-                                <td style="padding: 15px 20px; color: #64748b; font-size: 0.9rem;">{{ booking.booking_date|date:"M d, Y" }}</td>
+                                <td style="padding: 15px 20px; color: #64748b; font-size: 0.9rem;">
+                                    {{ booking.booking_date|date:"M d, Y" }}
+                                </td>
                                 <td style="padding: 15px 20px;">
-                                    <span class="badge" style="background: {% if booking.status == 'pending' %}#fef3c7; color: #92400e{% elif booking.status == 'approved' %}#dbeafe; color: #1e40af{% else %}#d1fae5; color: #065f46{% endif %}; padding: 6px 12px; border-radius: 6px; font-weight: 500;">
+                                    <span class="badge 
+                                        {% if booking.status == 'pending' %}badge-pending
+                                        {% elif booking.status == 'approved' %}badge-approved
+                                        {% else %}badge-success-custom{% endif %}"
+                                        style="padding: 6px 12px; border-radius: 6px; font-weight: 500;">
                                         {{ booking.get_status_display }}
                                     </span>
                                 </td>
                                 <td>
                                     {% if booking.status == 'pending' %}
-                                    <a href="{% url 'manage_booking' booking.id 'approve' %}" class="btn btn-sm me-1" style="background: #10b981; color: white; border: none; padding: 5px 12px; border-radius: 6px; font-weight: 500;">Approve</a>
-                                    <a href="{% url 'manage_booking' booking.id 'reject' %}" class="btn btn-sm" style="background: #ef4444; color: white; border: none; padding: 5px 12px; border-radius: 6px; font-weight: 500;">Reject</a>
+                                    <a href="{% url 'manage_booking' booking.id 'approve' %}" class="btn btn-sm me-1"
+                                        style="background: #10b981; color: white; border: none; padding: 5px 12px; border-radius: 6px; font-weight: 500;">Approve</a>
+                                    <a href="{% url 'manage_booking' booking.id 'reject' %}" class="btn btn-sm"
+                                        style="background: #ef4444; color: white; border: none; padding: 5px 12px; border-radius: 6px; font-weight: 500;">Reject</a>
                                     {% elif booking.status == 'approved' or booking.status == 'paid' %}
-                                    <a href="{% url 'manage_booking' booking.id 'complete' %}" class="btn btn-sm me-1" style="background: var(--primary-red); color: white; border: none; padding: 5px 12px; border-radius: 6px; font-weight: 500;">Complete</a>
-                                    <a href="{% url 'manage_booking' booking.id 'revoke' %}" class="btn btn-sm" style="background: var(--primary-dark); color: white; border: none; padding: 5px 12px; border-radius: 6px; font-weight: 500;">Revoke</a>
+                                    <a href="{% url 'manage_booking' booking.id 'complete' %}" class="btn btn-sm me-1"
+                                        style="background: var(--primary-red); color: white; border: none; padding: 5px 12px; border-radius: 6px; font-weight: 500;">Complete</a>
+                                    <a href="{% url 'manage_booking' booking.id 'revoke' %}" class="btn btn-sm"
+                                        style="background: var(--primary-dark); color: white; border: none; padding: 5px 12px; border-radius: 6px; font-weight: 500;">Revoke</a>
                                     {% else %}
-                                    <span class="badge" style="background: #94a3b8; color: white; padding: 6px 12px; border-radius: 6px;">Closed</span>
+                                    <span class="badge"
+                                        style="background: #94a3b8; color: white; padding: 6px 12px; border-radius: 6px;">Closed</span>
                                     {% endif %}
                                 </td>
                             </tr>
@@ -113,8 +190,10 @@
                     </table>
                 </div>
                 {% else %}
-                <div class="text-center p-4" style="background: #f8fafc; border-radius: 12px; border: 1px solid #f1f5f9;">
-                    <i class='bx bx-calendar-x' style="font-size: 2.5rem; color: #cbd5e1; margin-bottom: 10px; display: block;"></i>
+                <div class="text-center p-4"
+                    style="background: #f8fafc; border-radius: 12px; border: 1px solid #f1f5f9;">
+                    <i class='bx bx-calendar-x'
+                        style="font-size: 2.5rem; color: #cbd5e1; margin-bottom: 10px; display: block;"></i>
                     <p class="mb-0" style="color: #64748b;">No booking requests received yet.</p>
                 </div>
                 {% endif %}

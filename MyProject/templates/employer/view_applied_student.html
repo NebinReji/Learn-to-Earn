@@ -1,0 +1,186 @@
+{% extends 'employer/base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Page Title Start -->
+<section class="page-title title-bg5">
+    <div class="d-table">
+        <div class="d-table-cell">
+            <h2>Application Details & Feedback</h2>
+            <ul>
+                <li>
+                    <a href="{% url 'employer_index' %}">Home</a>
+                </li>
+                <li>
+                    <a href="{% url 'view_applications' %}">Applications</a>
+                </li>
+                <li>Details</li>
+            </ul>
+        </div>
+    </div>
+    <div class="lines">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+</section>
+<!-- Page Title End -->
+
+<section class="job-section pt-100 pb-70">
+    <div class="container">
+        <!-- Application Information -->
+        <div class="row mb-5">
+            <div class="col-lg-8">
+                <div class="card shadow-lg mb-4">
+                    <div class="card-body p-5">
+                        <h3 class="card-title mb-4">Application Information</h3>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <p><strong>Student Name:</strong></p>
+                                <p class="h6">{{ student.student_name }}</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <p><strong>Job Title:</strong></p>
+                                <p class="h6">{{ application.job.job_title }}</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <p><strong>Email:</strong></p>
+                                <p class="h6">{{ student.email }}</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <p><strong>Phone:</strong></p>
+                                <p class="h6">{{ student.phone_number|default:"N/A" }}</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <p><strong>Applied Date:</strong></p>
+                                <p class="h6">{{ application.applied_date|date:"d M Y, h:i A" }}</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <p><strong>Status:</strong></p>
+                                <span class="badge bg-success px-3 py-2">{{ application.get_status_display }}</span>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="mb-0">
+                            <p><strong>Skills:</strong></p>
+                            <p class="h6">{{ student.skills|default:"N/A" }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Summary Card -->
+            <div class="col-lg-4">
+                <div class="card shadow-lg">
+                    <div class="card-body p-5 text-center">
+                        <h5 class="card-title mb-4">Student Profile</h5>
+                        {% if student.profile_picture %}
+                        <div class="mb-4">
+                            <img src="{{ student.profile_picture.url }}" alt="Profile" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                        </div>
+                        {% endif %}
+                        <p><strong>Academic Status:</strong></p>
+                        <p class="h6 mb-4">{{ student.academic_status|default:"N/A" }}</p>
+                        
+                        <a href="{% url 'view_student_profile' student.id %}" class="btn btn-primary w-100">
+                            View Full Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feedback Section -->
+        <div class="row">
+            <!-- Student Feedback (Student reviewing Employer) -->
+            <div class="col-lg-6 mb-5">
+                <div class="card shadow-lg">
+                    <div class="card-header bg-primary text-white p-4">
+                        <h5 class="mb-0">📝 Student's Feedback About Your Company</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        {% if student_feedbacks %}
+                            {% for feedback in student_feedbacks %}
+                            <div class="feedback-item mb-4">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <span class="badge bg-warning">⭐ {{ feedback.rating }} stars</span>
+                                    <small class="text-muted">{{ feedback.created_at|date:"d M Y" }}</small>
+                                </div>
+                                <p class="mb-0">{{ feedback.review_text }}</p>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="text-muted text-center py-5">
+                                No feedback provided yet. The student will provide feedback once they review the job completion.
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Employer Feedback (You reviewing Student) -->
+            <div class="col-lg-6 mb-5">
+                <div class="card shadow-lg">
+                    <div class="card-header bg-success text-white p-4">
+                        <h5 class="mb-0">💬 Your Feedback About Student</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        {% if employer_feedbacks %}
+                            {% for feedback in employer_feedbacks %}
+                            <div class="feedback-item mb-4">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <span class="badge bg-success">⭐ {{ feedback.rating }} stars</span>
+                                    <small class="text-muted">{{ feedback.created_at|date:"d M Y" }}</small>
+                                </div>
+                                <p class="mb-0">{{ feedback.review_text }}</p>
+                                <hr class="my-3">
+                                {% if forloop.last %}
+                                <a href="{% url 'review_student' application.id %}" class="btn btn-sm btn-warning">
+                                    Edit Feedback
+                                </a>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="text-muted text-center py-5">
+                                You haven't provided feedback yet.
+                            </p>
+                            <a href="{% url 'review_student' application.id %}" class="btn btn-success w-100">
+                                🖊️ Add Feedback
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="mt-5 text-center">
+            <a href="{% url 'view_applications' %}" class="btn btn-secondary btn-lg">
+                ← Back to Applications
+            </a>
+        </div>
+    </div>
+</section>
+
+<style>
+.feedback-item {
+    border-left: 4px solid #007bff;
+    padding-left: 15px;
+}
+
+.feedback-item:last-child {
+    margin-bottom: 0;
+}
+</style>
+
+{% endblock %}

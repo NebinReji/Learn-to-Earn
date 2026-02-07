@@ -28,12 +28,13 @@
         <div class="row align-items-center justify-content-center">
             <div class="col-lg-8">
                 <div class="user-content">
-                    <div class="top text-center mb-4">
-                        <h2>Job Details</h2>
-                        <p>Fill out the form below to post a new part-time job.</p>
-                    </div>
-
-                    <form method="post" class="card p-4 shadow-sm border-0">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header text-white p-4" style="background-color: #1A202E;">
+                            <h4 class="mb-0 text-white">Post a New Job</h4>
+                            <p class="mb-0 small text-white-50">Fill out the form below to post a new part-time job.</p>
+                        </div>
+                        <div class="card-body p-4">
+                    <form method="post">
                         {% csrf_token %}
 
                         {% if form.non_field_errors %}
@@ -113,10 +114,12 @@
                         </div>
 
                         <div class="text-center mt-4">
-                            <a href="{% url 'employer_index' %}" class="btn btn-secondary me-2">Cancel</a>
-                            <button type="submit" class="btn btn-primary">Post Job</button>
+                            <a href="{% url 'employer_index' %}" class="btn btn-outline-secondary me-2">Cancel</a>
+                            <button type="submit" class="btn btn-lg" style="background-color: #FF2B2B; border-color: #FF2B2B; color: white;">Post Job</button>
                         </div>
                     </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

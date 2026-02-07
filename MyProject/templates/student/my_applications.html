@@ -56,6 +56,7 @@
                                         {% elif app.status == 'reviewed' %}bg-info text-white
                                         {% elif app.status == 'shortlisted' %}bg-primary
                                         {% elif app.status == 'accepted' %}bg-success
+                                        {% elif app.status == 'completed' %}bg-success
                                         {% elif app.status == 'rejected' %}bg-danger
                                         {% endif %} rounded-pill px-3">
                                         {{ app.get_status_display }}
@@ -66,6 +67,16 @@
                                         class="btn btn-outline-primary btn-sm">
                                         View Job
                                     </a>
+                                    {% if app.status == 'completed' %}
+                                    <a href="{% url 'review_employer' app.id %}"
+                                        class="btn btn-outline-secondary btn-sm ms-2" title="Leave feedback">
+                                        💬 Feedback
+                                    </a>
+                                    <a href="{% url 'view_application_feedback' app.id %}"
+                                        class="btn btn-outline-info btn-sm ms-2" title="View feedback">
+                                        📋 Details
+                                    </a>
+                                    {% endif %}
                                 </td>
                             </tr>
                             {% endfor %}

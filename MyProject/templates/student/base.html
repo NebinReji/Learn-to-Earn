@@ -62,8 +62,8 @@
         }
 
         .navbar {
-            padding-top: 5px;
-            padding-bottom: 5px;
+            padding-top: 15px;
+            padding-bottom: 15px;
         }
 
         .navbar-area .container {
@@ -73,10 +73,21 @@
 
         .navbar-area .logo img,
         .navbar-brand img {
-            height: 160px !important;
+            height: 120px !important;
             width: auto !important;
-            max-width: 380px !important;
+            max-width: 400px !important;
             object-fit: contain !important;
+        }
+
+        .navbar-brand {
+            padding: 0 !important;
+            margin: 0 !important;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-nav {
+            align-items: center;
         }
 
         .navbar-toggler {
@@ -95,7 +106,7 @@
 
         /* NAVBAR STYLING */
         .navbar-nav .nav-link {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 600;
             color: rgba(255, 255, 255, 0.8) !important;
             margin: 0 12px;
@@ -196,7 +207,53 @@
                             <li class="nav-item"><a href="{% url 'student_profile' %}" class="nav-link">Profile</a></li>
                         </ul>
 
-                        <div class="other-option">
+                        <div class="other-option d-flex align-items-center">
+                            <!-- Notification Dropdown -->
+                            <div class="dropdown me-3">
+                                <a class="nav-link position-relative text-dark" href="#" id="notificationDropdown"
+                                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class='bx bx-bell' style="font-size: 1.5rem;"></i>
+                                    {% if unread_notifications_count > 0 %}
+                                    <span
+                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                        style="font-size: 0.7rem; padding: 0.35rem 0.5rem;">
+                                        {{ unread_notifications_count }}
+                                    </span>
+                                    {% endif %}
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end shadow border-0"
+                                    aria-labelledby="notificationDropdown"
+                                    style="min-width: 320px; max-height: 400px; overflow-y: auto;">
+                                    <li>
+                                        <h6 class="dropdown-header border-bottom py-2">📬 Notifications</h6>
+                                    </li>
+                                    {% if recent_notifications %}
+                                    {% for notif in recent_notifications %}
+                                    <li>
+                                        <a class="dropdown-item py-3 border-bottom {% if not notif.is_read %}bg-light fw-bold{% endif %}" href="{{ notif.link|default:'#' }}">
+                                            <p class="mb-1 text-wrap small">{{ notif.message }}</p>
+                                            <small class="text-muted" style="font-size: 0.75rem;">
+                                                {{ notif.timestamp|timesince }} ago
+                                            </small>
+                                        </a>
+                                    </li>
+                                    {% endfor %}
+                                    {% else %}
+                                    <li>
+                                        <div class="dropdown-item text-center py-3 text-muted small">No new notifications</div>
+                                    </li>
+                                    {% endif %}
+                                    {% if recent_notifications %}
+                                    <li><hr class="dropdown-divider my-0"></li>
+                                    <li>
+                                        <a href="{% url 'student_notifications' %}" class="dropdown-item text-center py-2 small text-primary">
+                                            View All Notifications
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+
                             <a href="{% url 'logout' %}" class="signin-btn">Log Out</a>
                         </div>
                     </div>

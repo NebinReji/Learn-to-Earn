@@ -73,8 +73,8 @@
         }
 
         .navbar {
-            padding-top: 5px;
-            padding-bottom: 5px;
+            padding-top: 15px;
+            padding-bottom: 15px;
         }
 
         .navbar-area .container {
@@ -85,7 +85,7 @@
         .navbar-light .navbar-nav .nav-link {
             color: rgba(255, 255, 255, 0.8) !important;
             font-weight: 600;
-            font-size: 16px;
+            font-size: 18px;
             margin: 0 12px;
             letter-spacing: 0.3px;
             transition: color 0.3s ease;
@@ -98,10 +98,21 @@
 
         .navbar-area .logo img,
         .navbar-brand img {
-            height: 160px !important;
+            height: 120px !important;
             width: auto !important;
-            max-width: 380px !important;
+            max-width: 400px !important;
             object-fit: contain !important;
+        }
+
+        .navbar-brand {
+            padding: 0 !important;
+            margin: 0 !important;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-nav {
+            align-items: center;
         }
 
         .footer-logo img {
@@ -395,7 +406,7 @@
                             </li>
                             <li><a href="{% url 'about' %}"><i class='bx bx-chevrons-right bx-tada'></i>About</a></li>
                             <li><a href="#"><i class='bx bx-chevrons-right bx-tada'></i>FAQ</a></li>
-                            <li><a href="#"><i class='bx bx-chevrons-right bx-tada'></i>Privacy</a></li>
+                            <li><a href="{% url 'terms' %}"><i class='bx bx-chevrons-right bx-tada'></i>Terms & Conditions</a></li>
                             <li><a href="{% url 'contact' %}"><i class='bx bx-chevrons-right bx-tada'></i>Contact</a>
                             </li>
                         </ul>

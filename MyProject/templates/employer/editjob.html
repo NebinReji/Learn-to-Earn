@@ -28,12 +28,13 @@
 		<div class="row justify-content-center">
 			<div class="col-lg-8">
 				<div class="user-content">
-					<div class="top text-center mb-4">
-						<h2>Edit Job Details</h2>
-						<p>Update the information for your job posting.</p>
-					</div>
-
-					<form method="post" class="card p-4 shadow-sm border-0">
+					<div class="card shadow-sm border-0">
+						<div class="card-header text-white p-4" style="background-color: #1A202E;">
+							<h4 class="mb-0 text-white">Edit Job Details</h4>
+							<p class="mb-0 small text-white-50">Update the information for your job posting.</p>
+						</div>
+						<div class="card-body p-4">
+					<form method="post">
 						{% csrf_token %}
 
 						{% if form.non_field_errors %}
@@ -110,10 +111,12 @@
 						</div>
 
 						<div class="text-center mt-4">
-							<a href="{% url 'viewjobs' %}" class="btn btn-secondary me-2">Cancel</a>
-							<button type="submit" class="btn btn-primary">Update Job</button>
+							<a href="{% url 'viewjobs' %}" class="btn btn-outline-secondary me-2">Cancel</a>
+							<button type="submit" class="btn btn-lg" style="background-color: #FF2B2B; border-color: #FF2B2B; color: white;">Update Job</button>
 						</div>
 					</form>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
